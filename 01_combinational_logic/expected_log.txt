@@ -1,0 +1,83 @@
+TEST d { a b c d } sel 0 y a
+TEST d { a b c d } sel 1 y b
+TEST d { a b c d } sel 2 y c
+TEST d { a b c d } sel 3 y d
+TEST d { 7 a 3 x } sel 0 y 7
+TEST d { 7 a 3 x } sel 1 y a
+TEST d { 7 a 3 x } sel 2 y 3
+TEST d { 7 a 3 x } sel 3 y x
+01_01_mux_question.sv PASS
+01_02_mux_if.sv:33: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+01_02_mux_if.sv:33: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+TEST d { a b c d } sel 0 y a
+TEST d { a b c d } sel 1 y b
+TEST d { a b c d } sel 2 y c
+TEST d { a b c d } sel 3 y d
+TEST d { 7 a 3 x } sel 0 y 7
+TEST d { 7 a 3 x } sel 1 y a
+TEST d { 7 a 3 x } sel 2 y 3
+TEST d { 7 a 3 x } sel 3 y x
+01_02_mux_if.sv PASS
+TEST d { a b c d } sel 0 y a
+TEST d { a b c d } sel 1 y b
+TEST d { a b c d } sel 2 y c
+TEST d { a b c d } sel 3 y d
+TEST d { 7 a 3 x } sel 0 y 7
+TEST d { 7 a 3 x } sel 1 y a
+TEST d { 7 a 3 x } sel 2 y 3
+TEST d { 7 a 3 x } sel 3 y x
+01_03_mux_case.sv PASS
+TEST d { a b c d } sel 0 y a
+TEST d { a b c d } sel 1 y b
+TEST d { a b c d } sel 2 y c
+TEST d { a b c d } sel 3 y d
+TEST d { 7 a 3 x } sel 0 y 7
+TEST d { 7 a 3 x } sel 1 y a
+TEST d { 7 a 3 x } sel 2 y 3
+TEST d { 7 a 3 x } sel 3 y x
+01_04_mux_index.sv PASS
+TEST d { a b c d } sel 0 y a
+TEST d { a b c d } sel 1 y b
+TEST d { a b c d } sel 2 y c
+TEST d { a b c d } sel 3 y d
+TEST d { 7 a 3 x } sel 0 y 7
+TEST d { 7 a 3 x } sel 1 y a
+TEST d { 7 a 3 x } sel 2 y 3
+TEST d { 7 a 3 x } sel 3 y x
+01_05_mux_gates.sv PASS
+TEST d { a b c d } sel 0 y a
+TEST d { a b c d } sel 1 y b
+TEST d { a b c d } sel 2 y c
+TEST d { a b c d } sel 3 y d
+TEST d { 7 a 3 x } sel 0 y 7
+TEST d { 7 a 3 x } sel 1 y a
+TEST d { 7 a 3 x } sel 2 y 3
+TEST d { 7 a 3 x } sel 3 y x
+01_06_mux_2n_using_muxes_n.sv PASS
+TEST d { a b c d } sel 0 y a
+TEST d { a b c d } sel 1 y b
+TEST d { a b c d } sel 2 y c
+TEST d { a b c d } sel 3 y d
+TEST d { 7 a 3 x } sel 0 y 7
+TEST d { 7 a 3 x } sel 1 y a
+TEST d { 7 a 3 x } sel 2 y 3
+TEST d { 7 a 3 x } sel 3 y x
+01_07_mux_using_narrow_data_muxes.sv PASS
+TEST ~ 0 = 1
+TEST ~ 1 = 0
+01_08_not_gate_using_mux.sv PASS
+TEST 0 & 0 = 0
+TEST 0 & 1 = 0
+TEST 1 & 0 = 0
+TEST 1 & 1 = 1
+01_09_and_gate_using_mux.sv PASS
+TEST 0 | 0 = 0
+TEST 0 | 1 = 1
+TEST 1 | 0 = 1
+TEST 1 | 1 = 1
+01_10_or_gate_using_mux.sv PASS
+TEST 0 ^ 0 = 0
+TEST 0 ^ 1 = 1
+TEST 1 ^ 0 = 1
+TEST 1 ^ 1 = 0
+01_11_xor_gate_using_mux.sv PASS

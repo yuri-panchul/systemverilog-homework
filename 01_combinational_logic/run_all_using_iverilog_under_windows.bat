@@ -1,3 +1,14 @@
+@echo off
+
+where iverilog > nul 2>&1
+
+if errorlevel 1 (
+    echo ERROR: iverilog.exe is not in the path or cannot be run.
+    echo See README.md file in the package directory for the instructions on how to install Icarus Verilog.
+    pause
+    exit /b 1
+)
+
 echo ALL PROBLEMS > log.txt
 
 for %%f in (*.sv) do (

@@ -10,11 +10,11 @@
 ## Ссылки
 
 * [Школа Синтеза Цифровых Схем](https://engineer.yadro.com/chip-design-school/)
-* [Занятие первое: введение в маршрут проектирования и упражнения с комбинационной логикой](https://www.youtube.com/live/6pkBgJkqi8Y)
+* [Занятие первое: введение в маршрут проектирования и упражнения с комбинационной логикой](https://youtu.be/DFcvEO-gP0c)
 
 <!-- Some markdown video embedding tricks from https://stackoverflow.com/questions/4279611/how-to-embed-a-video-into-github-readme-md -->
 
-[![](https://img.youtube.com/vi/6pkBgJkqi8Y/hqdefault.jpg)](https://www.youtube.com/watch?v=6pkBgJkqi8Y)
+[![](https://img.youtube.com/vi/DFcvEO-gP0c/hqdefault.jpg)](https://youtu.be/DFcvEO-gP0c)
 
 
 ## Инструкция по установке

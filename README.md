@@ -31,6 +31,57 @@
 
 `sudo apt-get install verilog gtkwave`
 
+---
+#### Замечание:
+
+Если у вас старая версия дистрибутива Linux (Ubuntu), то при установке Icarus
+Verilog вы получите старую версию, которая не поддерживает `always_comb`,
+`always_ff` и многие другие конструкции SystemVerilog. Как решить эту проблему:
+1. **Проверка версии iverilog**
+    ```bash
+    iverilog -v
+    ```
+
+    Если версия iverilog меньше 11, переходим к пункту 2.
+
+2. **Установка предварительных пакетов**
+    ```bash
+    sudo apt-get install build-essential bison flex gperf readline-common libncurses5-dev nmon autoconf
+    ```
+
+3. **Скачивание последней версии iverilog**
+
+   На сегодняшний момент (12.10.2023) последняя версия iverilog: 12.0
+   Переходим по [ссылке](https://sourceforge.net/projects/iverilog/files/iverilog/12.0/) и скачиваем архив.
+
+4. **Сборка iverilog**
+    - Распакуйте архив:
+        ```bash
+        tar -xzf verilog-12.0.tar.gz
+        ```
+
+    - Войдите в разархивированную папку:
+        ```bash
+        cd verilog-12.0
+        ```
+
+    - Сконфигурируйте iverilog:
+        ```bash
+        ./configure --prefix=/usr
+        ```
+
+    - Протестируйте сборку Icarus
+        ```bash
+        make check
+        ```
+        В результате, в терминале появится несколько надписей `Hello, world!`
+
+    - Установите Icarus
+        ```bash
+        make install
+        ```
+---
+
 ### Установка на Windows
 
 Версию Icarus Verilog для Windows можно загрузить [с данного сайта](https://bleyer.org/icarus/)

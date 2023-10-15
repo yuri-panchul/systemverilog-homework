@@ -15,8 +15,10 @@ for %%f in (*.sv) do (
     rem C:\iverilog\bin\iverilog -g2005-sv %%f >> log.txt 2>&1
     rem C:\iverilog\bin\vvp a.out >> log.txt 2>&1
     rem C:\iverilog\gtkwave\bin\gtkwave dump.vcd
+
     iverilog -g2005-sv %%f >> log.txt 2>&1
     vvp a.out >> log.txt 2>&1
+    rem gtkwave dump.vcd
 )
 
 del /q a.out

@@ -92,7 +92,7 @@ Verilog вы получите старую версию, которая не п�
 [![](https://img.youtube.com/vi/5Kync4z5VOw/hqdefault.jpg)](https://www.youtube.com/watch?v=5Kync4z5VOw)
 
 При установке не забудьте добавить пути к исполняемым файлам icarus/gtkwave в PATH, т.к это может вызвать ошибку при запуске.
-Поставьте галочку напротив Add executable folder(s) to the user PATH при установке или сделайте это [вручную] (https://remontka.pro/add-to-path-variable-windows/)
+Поставьте галочку напротив Add executable folder(s) to the user PATH при установке или сделайте это [вручную](https://remontka.pro/add-to-path-variable-windows/)
 
 ### Установка на Apple Mac
 

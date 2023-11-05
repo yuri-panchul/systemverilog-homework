@@ -24,7 +24,7 @@ module formula_1_impl_1_top
 
     formula_1_impl_1_fsm i_formula_1_impl_1_fsm (.*);
 
-    isqrt i_isqrt
+    isqrt # (.n_pipe_stages (4)) i_isqrt
     (
         .clk   ( clk         ),
         .rst   ( rst         ),

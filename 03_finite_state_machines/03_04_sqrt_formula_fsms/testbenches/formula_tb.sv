@@ -115,7 +115,20 @@ module formula_tb
         arg_vld <= '0;
         reset ();
 
-        // Direct testing
+        // Direct testing - a single test
+
+        a       <= 1;
+        b       <= 4;
+        c       <= 9;
+        arg_vld <= '1;
+
+        @ (posedge clk);
+        arg_vld <= '0;
+
+        while (~ res_vld)
+            @ (posedge clk);
+
+        // Direct testing - a group of tests
 
         for (int i = 0; i < 100; i = i * 3 + 1)
         begin

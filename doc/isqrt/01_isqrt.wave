@@ -1,0 +1,7 @@
+{signal: [
+  {name: 'clk'    , wave: 'p...............'},
+  {name: 'x_vld'  , wave: '0101....01.0....'},
+  {name: 'x'      , wave: 'x3x45678x95x....', data: "n m p" },
+  {name: 'y_vld'  , wave: '0....101....01.0'},
+  {name: 'y'      , wave: '...x.3x45678x95x', data: "√n √m √p" },
+]}

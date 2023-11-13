@@ -219,9 +219,9 @@ module formula_tb
             if (arg_vld)
             begin
                 case (formula)
-                default: assert (0);
                 1: res_expected = formula_1_fn (a, b, c);
                 2: res_expected = formula_2_fn (a, b, c);
+                default: assert (0);
                 endcase
 
                 queue.push_back (res_expected);

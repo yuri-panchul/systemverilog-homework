@@ -35,6 +35,11 @@ module formula_1_impl_2_fsm
     // using two instances of the isqrt module in parallel.
     //
     // Design the FSM to calculate an answer and provide the correct `res` value
+    //
+    // You can read the discussion of this problem
+    // in the article by Yuri Panchul published in
+    // FPGA-Systems Magazine :: FSM :: Issue ALFA (state_0)
+    // You can download this issue from https://fpga-systems.ru/fsm
 
 
 endmodule

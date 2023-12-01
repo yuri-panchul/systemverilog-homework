@@ -1,0 +1,661 @@
+TEST  0 +  0 =  0
+TEST  1 +  2 =  3
+TEST  1 + -2 = -1
+TEST -1 +  2 =  1
+TEST -1 + -2 = -3
+TEST  4 +  7 = overflow
+TEST  4 + -7 = -3
+TEST -4 +  7 =  3
+TEST -4 + -7 = overflow
+TEST  3 +  5 = overflow
+TEST  3 + -5 = -2
+TEST -3 +  5 =  2
+TEST -3 + -5 = -8
+TEST  3 +  6 = overflow
+TEST  3 + -6 = -3
+TEST -3 +  6 =  3
+TEST -3 + -6 = overflow
+TEST  2 +  1 =  3
+TEST -2 +  1 = -1
+TEST  2 + -1 =  1
+TEST -2 + -1 = -3
+TEST  7 +  4 = overflow
+TEST -7 +  4 = -3
+TEST  7 + -4 =  3
+TEST -7 + -4 = overflow
+TEST  5 +  3 = overflow
+TEST -5 +  3 = -2
+TEST  5 + -3 =  2
+TEST -5 + -3 = -8
+TEST  6 +  3 = overflow
+TEST -6 +  3 = -3
+TEST  6 + -3 =  3
+TEST -6 + -3 = overflow
+TEST  1 +  1 =  2
+TEST  1 + -1 =  0
+TEST -1 +  1 =  0
+TEST -1 + -1 = -2
+TEST  4 +  4 = overflow
+TEST  4 + -4 =  0
+TEST -4 +  4 =  0
+TEST -4 + -4 = -8
+04_01_signed_add_with_overflow.sv PASS
+TEST  0 +  0 =  0
+TEST  1 +  2 =  3
+TEST  1 + -2 = -1
+TEST -1 +  2 =  1
+TEST -1 + -2 = -3
+TEST  4 +  7 =  7
+TEST  4 + -7 = -3
+TEST -4 +  7 =  3
+TEST -4 + -7 = -8
+TEST  3 +  5 =  7
+TEST  3 + -5 = -2
+TEST -3 +  5 =  2
+TEST -3 + -5 = -8
+TEST  3 +  6 =  7
+TEST  3 + -6 = -3
+TEST -3 +  6 =  3
+TEST -3 + -6 = -8
+TEST  2 +  1 =  3
+TEST -2 +  1 = -1
+TEST  2 + -1 =  1
+TEST -2 + -1 = -3
+TEST  7 +  4 =  7
+TEST -7 +  4 = -3
+TEST  7 + -4 =  3
+TEST -7 + -4 = -8
+TEST  5 +  3 =  7
+TEST -5 +  3 = -2
+TEST  5 + -3 =  2
+TEST -5 + -3 = -8
+TEST  6 +  3 =  7
+TEST -6 +  3 = -3
+TEST  6 + -3 =  3
+TEST -6 + -3 = -8
+TEST  1 +  1 =  2
+TEST  1 + -1 =  0
+TEST -1 +  1 =  0
+TEST -1 + -1 = -2
+TEST  4 +  4 =  7
+TEST  4 + -4 =  0
+TEST -4 +  4 =  0
+TEST -4 + -4 = -8
+04_02_signed_add_with_saturation.sv PASS
+TEST unsigned  0 *  0 =   0
+TEST unsigned  0 *  1 =   0
+TEST unsigned  0 *  2 =   0
+TEST unsigned  0 *  3 =   0
+TEST unsigned  0 *  4 =   0
+TEST unsigned  0 *  5 =   0
+TEST unsigned  0 *  6 =   0
+TEST unsigned  0 *  7 =   0
+TEST unsigned  0 *  8 =   0
+TEST unsigned  0 *  9 =   0
+TEST unsigned  0 * 10 =   0
+TEST unsigned  0 * 11 =   0
+TEST unsigned  0 * 12 =   0
+TEST unsigned  0 * 13 =   0
+TEST unsigned  0 * 14 =   0
+TEST unsigned  0 * 15 =   0
+TEST unsigned  1 *  0 =   0
+TEST unsigned  1 *  1 =   1
+TEST unsigned  1 *  2 =   2
+TEST unsigned  1 *  3 =   3
+TEST unsigned  1 *  4 =   4
+TEST unsigned  1 *  5 =   5
+TEST unsigned  1 *  6 =   6
+TEST unsigned  1 *  7 =   7
+TEST unsigned  1 *  8 =   8
+TEST unsigned  1 *  9 =   9
+TEST unsigned  1 * 10 =  10
+TEST unsigned  1 * 11 =  11
+TEST unsigned  1 * 12 =  12
+TEST unsigned  1 * 13 =  13
+TEST unsigned  1 * 14 =  14
+TEST unsigned  1 * 15 =  15
+TEST unsigned  2 *  0 =   0
+TEST unsigned  2 *  1 =   2
+TEST unsigned  2 *  2 =   4
+TEST unsigned  2 *  3 =   6
+TEST unsigned  2 *  4 =   8
+TEST unsigned  2 *  5 =  10
+TEST unsigned  2 *  6 =  12
+TEST unsigned  2 *  7 =  14
+TEST unsigned  2 *  8 =  16
+TEST unsigned  2 *  9 =  18
+TEST unsigned  2 * 10 =  20
+TEST unsigned  2 * 11 =  22
+TEST unsigned  2 * 12 =  24
+TEST unsigned  2 * 13 =  26
+TEST unsigned  2 * 14 =  28
+TEST unsigned  2 * 15 =  30
+TEST unsigned  3 *  0 =   0
+TEST unsigned  3 *  1 =   3
+TEST unsigned  3 *  2 =   6
+TEST unsigned  3 *  3 =   9
+TEST unsigned  3 *  4 =  12
+TEST unsigned  3 *  5 =  15
+TEST unsigned  3 *  6 =  18
+TEST unsigned  3 *  7 =  21
+TEST unsigned  3 *  8 =  24
+TEST unsigned  3 *  9 =  27
+TEST unsigned  3 * 10 =  30
+TEST unsigned  3 * 11 =  33
+TEST unsigned  3 * 12 =  36
+TEST unsigned  3 * 13 =  39
+TEST unsigned  3 * 14 =  42
+TEST unsigned  3 * 15 =  45
+TEST unsigned  4 *  0 =   0
+TEST unsigned  4 *  1 =   4
+TEST unsigned  4 *  2 =   8
+TEST unsigned  4 *  3 =  12
+TEST unsigned  4 *  4 =  16
+TEST unsigned  4 *  5 =  20
+TEST unsigned  4 *  6 =  24
+TEST unsigned  4 *  7 =  28
+TEST unsigned  4 *  8 =  32
+TEST unsigned  4 *  9 =  36
+TEST unsigned  4 * 10 =  40
+TEST unsigned  4 * 11 =  44
+TEST unsigned  4 * 12 =  48
+TEST unsigned  4 * 13 =  52
+TEST unsigned  4 * 14 =  56
+TEST unsigned  4 * 15 =  60
+TEST unsigned  5 *  0 =   0
+TEST unsigned  5 *  1 =   5
+TEST unsigned  5 *  2 =  10
+TEST unsigned  5 *  3 =  15
+TEST unsigned  5 *  4 =  20
+TEST unsigned  5 *  5 =  25
+TEST unsigned  5 *  6 =  30
+TEST unsigned  5 *  7 =  35
+TEST unsigned  5 *  8 =  40
+TEST unsigned  5 *  9 =  45
+TEST unsigned  5 * 10 =  50
+TEST unsigned  5 * 11 =  55
+TEST unsigned  5 * 12 =  60
+TEST unsigned  5 * 13 =  65
+TEST unsigned  5 * 14 =  70
+TEST unsigned  5 * 15 =  75
+TEST unsigned  6 *  0 =   0
+TEST unsigned  6 *  1 =   6
+TEST unsigned  6 *  2 =  12
+TEST unsigned  6 *  3 =  18
+TEST unsigned  6 *  4 =  24
+TEST unsigned  6 *  5 =  30
+TEST unsigned  6 *  6 =  36
+TEST unsigned  6 *  7 =  42
+TEST unsigned  6 *  8 =  48
+TEST unsigned  6 *  9 =  54
+TEST unsigned  6 * 10 =  60
+TEST unsigned  6 * 11 =  66
+TEST unsigned  6 * 12 =  72
+TEST unsigned  6 * 13 =  78
+TEST unsigned  6 * 14 =  84
+TEST unsigned  6 * 15 =  90
+TEST unsigned  7 *  0 =   0
+TEST unsigned  7 *  1 =   7
+TEST unsigned  7 *  2 =  14
+TEST unsigned  7 *  3 =  21
+TEST unsigned  7 *  4 =  28
+TEST unsigned  7 *  5 =  35
+TEST unsigned  7 *  6 =  42
+TEST unsigned  7 *  7 =  49
+TEST unsigned  7 *  8 =  56
+TEST unsigned  7 *  9 =  63
+TEST unsigned  7 * 10 =  70
+TEST unsigned  7 * 11 =  77
+TEST unsigned  7 * 12 =  84
+TEST unsigned  7 * 13 =  91
+TEST unsigned  7 * 14 =  98
+TEST unsigned  7 * 15 = 105
+TEST unsigned  8 *  0 =   0
+TEST unsigned  8 *  1 =   8
+TEST unsigned  8 *  2 =  16
+TEST unsigned  8 *  3 =  24
+TEST unsigned  8 *  4 =  32
+TEST unsigned  8 *  5 =  40
+TEST unsigned  8 *  6 =  48
+TEST unsigned  8 *  7 =  56
+TEST unsigned  8 *  8 =  64
+TEST unsigned  8 *  9 =  72
+TEST unsigned  8 * 10 =  80
+TEST unsigned  8 * 11 =  88
+TEST unsigned  8 * 12 =  96
+TEST unsigned  8 * 13 = 104
+TEST unsigned  8 * 14 = 112
+TEST unsigned  8 * 15 = 120
+TEST unsigned  9 *  0 =   0
+TEST unsigned  9 *  1 =   9
+TEST unsigned  9 *  2 =  18
+TEST unsigned  9 *  3 =  27
+TEST unsigned  9 *  4 =  36
+TEST unsigned  9 *  5 =  45
+TEST unsigned  9 *  6 =  54
+TEST unsigned  9 *  7 =  63
+TEST unsigned  9 *  8 =  72
+TEST unsigned  9 *  9 =  81
+TEST unsigned  9 * 10 =  90
+TEST unsigned  9 * 11 =  99
+TEST unsigned  9 * 12 = 108
+TEST unsigned  9 * 13 = 117
+TEST unsigned  9 * 14 = 126
+TEST unsigned  9 * 15 = 135
+TEST unsigned 10 *  0 =   0
+TEST unsigned 10 *  1 =  10
+TEST unsigned 10 *  2 =  20
+TEST unsigned 10 *  3 =  30
+TEST unsigned 10 *  4 =  40
+TEST unsigned 10 *  5 =  50
+TEST unsigned 10 *  6 =  60
+TEST unsigned 10 *  7 =  70
+TEST unsigned 10 *  8 =  80
+TEST unsigned 10 *  9 =  90
+TEST unsigned 10 * 10 = 100
+TEST unsigned 10 * 11 = 110
+TEST unsigned 10 * 12 = 120
+TEST unsigned 10 * 13 = 130
+TEST unsigned 10 * 14 = 140
+TEST unsigned 10 * 15 = 150
+TEST unsigned 11 *  0 =   0
+TEST unsigned 11 *  1 =  11
+TEST unsigned 11 *  2 =  22
+TEST unsigned 11 *  3 =  33
+TEST unsigned 11 *  4 =  44
+TEST unsigned 11 *  5 =  55
+TEST unsigned 11 *  6 =  66
+TEST unsigned 11 *  7 =  77
+TEST unsigned 11 *  8 =  88
+TEST unsigned 11 *  9 =  99
+TEST unsigned 11 * 10 = 110
+TEST unsigned 11 * 11 = 121
+TEST unsigned 11 * 12 = 132
+TEST unsigned 11 * 13 = 143
+TEST unsigned 11 * 14 = 154
+TEST unsigned 11 * 15 = 165
+TEST unsigned 12 *  0 =   0
+TEST unsigned 12 *  1 =  12
+TEST unsigned 12 *  2 =  24
+TEST unsigned 12 *  3 =  36
+TEST unsigned 12 *  4 =  48
+TEST unsigned 12 *  5 =  60
+TEST unsigned 12 *  6 =  72
+TEST unsigned 12 *  7 =  84
+TEST unsigned 12 *  8 =  96
+TEST unsigned 12 *  9 = 108
+TEST unsigned 12 * 10 = 120
+TEST unsigned 12 * 11 = 132
+TEST unsigned 12 * 12 = 144
+TEST unsigned 12 * 13 = 156
+TEST unsigned 12 * 14 = 168
+TEST unsigned 12 * 15 = 180
+TEST unsigned 13 *  0 =   0
+TEST unsigned 13 *  1 =  13
+TEST unsigned 13 *  2 =  26
+TEST unsigned 13 *  3 =  39
+TEST unsigned 13 *  4 =  52
+TEST unsigned 13 *  5 =  65
+TEST unsigned 13 *  6 =  78
+TEST unsigned 13 *  7 =  91
+TEST unsigned 13 *  8 = 104
+TEST unsigned 13 *  9 = 117
+TEST unsigned 13 * 10 = 130
+TEST unsigned 13 * 11 = 143
+TEST unsigned 13 * 12 = 156
+TEST unsigned 13 * 13 = 169
+TEST unsigned 13 * 14 = 182
+TEST unsigned 13 * 15 = 195
+TEST unsigned 14 *  0 =   0
+TEST unsigned 14 *  1 =  14
+TEST unsigned 14 *  2 =  28
+TEST unsigned 14 *  3 =  42
+TEST unsigned 14 *  4 =  56
+TEST unsigned 14 *  5 =  70
+TEST unsigned 14 *  6 =  84
+TEST unsigned 14 *  7 =  98
+TEST unsigned 14 *  8 = 112
+TEST unsigned 14 *  9 = 126
+TEST unsigned 14 * 10 = 140
+TEST unsigned 14 * 11 = 154
+TEST unsigned 14 * 12 = 168
+TEST unsigned 14 * 13 = 182
+TEST unsigned 14 * 14 = 196
+TEST unsigned 14 * 15 = 210
+TEST unsigned 15 *  0 =   0
+TEST unsigned 15 *  1 =  15
+TEST unsigned 15 *  2 =  30
+TEST unsigned 15 *  3 =  45
+TEST unsigned 15 *  4 =  60
+TEST unsigned 15 *  5 =  75
+TEST unsigned 15 *  6 =  90
+TEST unsigned 15 *  7 = 105
+TEST unsigned 15 *  8 = 120
+TEST unsigned 15 *  9 = 135
+TEST unsigned 15 * 10 = 150
+TEST unsigned 15 * 11 = 165
+TEST unsigned 15 * 12 = 180
+TEST unsigned 15 * 13 = 195
+TEST unsigned 15 * 14 = 210
+TEST unsigned 15 * 15 = 225
+TEST   signed -8 * -8 =   64
+TEST   signed -8 * -7 =   56
+TEST   signed -8 * -6 =   48
+TEST   signed -8 * -5 =   40
+TEST   signed -8 * -4 =   32
+TEST   signed -8 * -3 =   24
+TEST   signed -8 * -2 =   16
+TEST   signed -8 * -1 =    8
+TEST   signed -8 *  0 =    0
+TEST   signed -8 *  1 =   -8
+TEST   signed -8 *  2 =  -16
+TEST   signed -8 *  3 =  -24
+TEST   signed -8 *  4 =  -32
+TEST   signed -8 *  5 =  -40
+TEST   signed -8 *  6 =  -48
+TEST   signed -8 *  7 =  -56
+TEST   signed -7 * -8 =   56
+TEST   signed -7 * -7 =   49
+TEST   signed -7 * -6 =   42
+TEST   signed -7 * -5 =   35
+TEST   signed -7 * -4 =   28
+TEST   signed -7 * -3 =   21
+TEST   signed -7 * -2 =   14
+TEST   signed -7 * -1 =    7
+TEST   signed -7 *  0 =    0
+TEST   signed -7 *  1 =   -7
+TEST   signed -7 *  2 =  -14
+TEST   signed -7 *  3 =  -21
+TEST   signed -7 *  4 =  -28
+TEST   signed -7 *  5 =  -35
+TEST   signed -7 *  6 =  -42
+TEST   signed -7 *  7 =  -49
+TEST   signed -6 * -8 =   48
+TEST   signed -6 * -7 =   42
+TEST   signed -6 * -6 =   36
+TEST   signed -6 * -5 =   30
+TEST   signed -6 * -4 =   24
+TEST   signed -6 * -3 =   18
+TEST   signed -6 * -2 =   12
+TEST   signed -6 * -1 =    6
+TEST   signed -6 *  0 =    0
+TEST   signed -6 *  1 =   -6
+TEST   signed -6 *  2 =  -12
+TEST   signed -6 *  3 =  -18
+TEST   signed -6 *  4 =  -24
+TEST   signed -6 *  5 =  -30
+TEST   signed -6 *  6 =  -36
+TEST   signed -6 *  7 =  -42
+TEST   signed -5 * -8 =   40
+TEST   signed -5 * -7 =   35
+TEST   signed -5 * -6 =   30
+TEST   signed -5 * -5 =   25
+TEST   signed -5 * -4 =   20
+TEST   signed -5 * -3 =   15
+TEST   signed -5 * -2 =   10
+TEST   signed -5 * -1 =    5
+TEST   signed -5 *  0 =    0
+TEST   signed -5 *  1 =   -5
+TEST   signed -5 *  2 =  -10
+TEST   signed -5 *  3 =  -15
+TEST   signed -5 *  4 =  -20
+TEST   signed -5 *  5 =  -25
+TEST   signed -5 *  6 =  -30
+TEST   signed -5 *  7 =  -35
+TEST   signed -4 * -8 =   32
+TEST   signed -4 * -7 =   28
+TEST   signed -4 * -6 =   24
+TEST   signed -4 * -5 =   20
+TEST   signed -4 * -4 =   16
+TEST   signed -4 * -3 =   12
+TEST   signed -4 * -2 =    8
+TEST   signed -4 * -1 =    4
+TEST   signed -4 *  0 =    0
+TEST   signed -4 *  1 =   -4
+TEST   signed -4 *  2 =   -8
+TEST   signed -4 *  3 =  -12
+TEST   signed -4 *  4 =  -16
+TEST   signed -4 *  5 =  -20
+TEST   signed -4 *  6 =  -24
+TEST   signed -4 *  7 =  -28
+TEST   signed -3 * -8 =   24
+TEST   signed -3 * -7 =   21
+TEST   signed -3 * -6 =   18
+TEST   signed -3 * -5 =   15
+TEST   signed -3 * -4 =   12
+TEST   signed -3 * -3 =    9
+TEST   signed -3 * -2 =    6
+TEST   signed -3 * -1 =    3
+TEST   signed -3 *  0 =    0
+TEST   signed -3 *  1 =   -3
+TEST   signed -3 *  2 =   -6
+TEST   signed -3 *  3 =   -9
+TEST   signed -3 *  4 =  -12
+TEST   signed -3 *  5 =  -15
+TEST   signed -3 *  6 =  -18
+TEST   signed -3 *  7 =  -21
+TEST   signed -2 * -8 =   16
+TEST   signed -2 * -7 =   14
+TEST   signed -2 * -6 =   12
+TEST   signed -2 * -5 =   10
+TEST   signed -2 * -4 =    8
+TEST   signed -2 * -3 =    6
+TEST   signed -2 * -2 =    4
+TEST   signed -2 * -1 =    2
+TEST   signed -2 *  0 =    0
+TEST   signed -2 *  1 =   -2
+TEST   signed -2 *  2 =   -4
+TEST   signed -2 *  3 =   -6
+TEST   signed -2 *  4 =   -8
+TEST   signed -2 *  5 =  -10
+TEST   signed -2 *  6 =  -12
+TEST   signed -2 *  7 =  -14
+TEST   signed -1 * -8 =    8
+TEST   signed -1 * -7 =    7
+TEST   signed -1 * -6 =    6
+TEST   signed -1 * -5 =    5
+TEST   signed -1 * -4 =    4
+TEST   signed -1 * -3 =    3
+TEST   signed -1 * -2 =    2
+TEST   signed -1 * -1 =    1
+TEST   signed -1 *  0 =    0
+TEST   signed -1 *  1 =   -1
+TEST   signed -1 *  2 =   -2
+TEST   signed -1 *  3 =   -3
+TEST   signed -1 *  4 =   -4
+TEST   signed -1 *  5 =   -5
+TEST   signed -1 *  6 =   -6
+TEST   signed -1 *  7 =   -7
+TEST   signed  0 * -8 =    0
+TEST   signed  0 * -7 =    0
+TEST   signed  0 * -6 =    0
+TEST   signed  0 * -5 =    0
+TEST   signed  0 * -4 =    0
+TEST   signed  0 * -3 =    0
+TEST   signed  0 * -2 =    0
+TEST   signed  0 * -1 =    0
+TEST   signed  0 *  0 =    0
+TEST   signed  0 *  1 =    0
+TEST   signed  0 *  2 =    0
+TEST   signed  0 *  3 =    0
+TEST   signed  0 *  4 =    0
+TEST   signed  0 *  5 =    0
+TEST   signed  0 *  6 =    0
+TEST   signed  0 *  7 =    0
+TEST   signed  1 * -8 =   -8
+TEST   signed  1 * -7 =   -7
+TEST   signed  1 * -6 =   -6
+TEST   signed  1 * -5 =   -5
+TEST   signed  1 * -4 =   -4
+TEST   signed  1 * -3 =   -3
+TEST   signed  1 * -2 =   -2
+TEST   signed  1 * -1 =   -1
+TEST   signed  1 *  0 =    0
+TEST   signed  1 *  1 =    1
+TEST   signed  1 *  2 =    2
+TEST   signed  1 *  3 =    3
+TEST   signed  1 *  4 =    4
+TEST   signed  1 *  5 =    5
+TEST   signed  1 *  6 =    6
+TEST   signed  1 *  7 =    7
+TEST   signed  2 * -8 =  -16
+TEST   signed  2 * -7 =  -14
+TEST   signed  2 * -6 =  -12
+TEST   signed  2 * -5 =  -10
+TEST   signed  2 * -4 =   -8
+TEST   signed  2 * -3 =   -6
+TEST   signed  2 * -2 =   -4
+TEST   signed  2 * -1 =   -2
+TEST   signed  2 *  0 =    0
+TEST   signed  2 *  1 =    2
+TEST   signed  2 *  2 =    4
+TEST   signed  2 *  3 =    6
+TEST   signed  2 *  4 =    8
+TEST   signed  2 *  5 =   10
+TEST   signed  2 *  6 =   12
+TEST   signed  2 *  7 =   14
+TEST   signed  3 * -8 =  -24
+TEST   signed  3 * -7 =  -21
+TEST   signed  3 * -6 =  -18
+TEST   signed  3 * -5 =  -15
+TEST   signed  3 * -4 =  -12
+TEST   signed  3 * -3 =   -9
+TEST   signed  3 * -2 =   -6
+TEST   signed  3 * -1 =   -3
+TEST   signed  3 *  0 =    0
+TEST   signed  3 *  1 =    3
+TEST   signed  3 *  2 =    6
+TEST   signed  3 *  3 =    9
+TEST   signed  3 *  4 =   12
+TEST   signed  3 *  5 =   15
+TEST   signed  3 *  6 =   18
+TEST   signed  3 *  7 =   21
+TEST   signed  4 * -8 =  -32
+TEST   signed  4 * -7 =  -28
+TEST   signed  4 * -6 =  -24
+TEST   signed  4 * -5 =  -20
+TEST   signed  4 * -4 =  -16
+TEST   signed  4 * -3 =  -12
+TEST   signed  4 * -2 =   -8
+TEST   signed  4 * -1 =   -4
+TEST   signed  4 *  0 =    0
+TEST   signed  4 *  1 =    4
+TEST   signed  4 *  2 =    8
+TEST   signed  4 *  3 =   12
+TEST   signed  4 *  4 =   16
+TEST   signed  4 *  5 =   20
+TEST   signed  4 *  6 =   24
+TEST   signed  4 *  7 =   28
+TEST   signed  5 * -8 =  -40
+TEST   signed  5 * -7 =  -35
+TEST   signed  5 * -6 =  -30
+TEST   signed  5 * -5 =  -25
+TEST   signed  5 * -4 =  -20
+TEST   signed  5 * -3 =  -15
+TEST   signed  5 * -2 =  -10
+TEST   signed  5 * -1 =   -5
+TEST   signed  5 *  0 =    0
+TEST   signed  5 *  1 =    5
+TEST   signed  5 *  2 =   10
+TEST   signed  5 *  3 =   15
+TEST   signed  5 *  4 =   20
+TEST   signed  5 *  5 =   25
+TEST   signed  5 *  6 =   30
+TEST   signed  5 *  7 =   35
+TEST   signed  6 * -8 =  -48
+TEST   signed  6 * -7 =  -42
+TEST   signed  6 * -6 =  -36
+TEST   signed  6 * -5 =  -30
+TEST   signed  6 * -4 =  -24
+TEST   signed  6 * -3 =  -18
+TEST   signed  6 * -2 =  -12
+TEST   signed  6 * -1 =   -6
+TEST   signed  6 *  0 =    0
+TEST   signed  6 *  1 =    6
+TEST   signed  6 *  2 =   12
+TEST   signed  6 *  3 =   18
+TEST   signed  6 *  4 =   24
+TEST   signed  6 *  5 =   30
+TEST   signed  6 *  6 =   36
+TEST   signed  6 *  7 =   42
+TEST   signed  7 * -8 =  -56
+TEST   signed  7 * -7 =  -49
+TEST   signed  7 * -6 =  -42
+TEST   signed  7 * -5 =  -35
+TEST   signed  7 * -4 =  -28
+TEST   signed  7 * -3 =  -21
+TEST   signed  7 * -2 =  -14
+TEST   signed  7 * -1 =   -7
+TEST   signed  7 *  0 =    0
+TEST   signed  7 *  1 =    7
+TEST   signed  7 *  2 =   14
+TEST   signed  7 *  3 =   21
+TEST   signed  7 *  4 =   28
+TEST   signed  7 *  5 =   35
+TEST   signed  7 *  6 =   42
+TEST   signed  7 *  7 =   49
+04_03_signed_or_unsigned_mul.sv PASS
+TEST 00100100 00100000 00100000 00100000 00100000 00000100 00000100 00000100 00000100
+TEST 10000001 00001000 00001000 00001000 00001000 00010000 00010000 00010000 00010000
+TEST 00001001 01001000 01001000 01001000 01001000 00000001 00000001 00000001 00000001
+TEST 01100011 00011000 00011000 00011000 00011000 00001100 00001100 00001100 00001100
+TEST 00001101 01101000 01101000 01101000 01101000 00000001 00000001 00000001 00000001
+TEST 10001101 01101000 01101000 01101000 01101000 00010001 00010001 00010001 00010001
+TEST 01100101 00101000 00101000 00101000 00101000 00001100 00001100 00001100 00001100
+TEST 00010010 10010000 10010000 10010000 10010000 00000010 00000010 00000010 00000010
+TEST 00000001 00001000 00001000 00001000 00001000 00000000 00000000 00000000 00000000
+TEST 00001101 01101000 01101000 01101000 01101000 00000001 00000001 00000001 00000001
+TEST 01110110 10110000 10110000 10110000 10110000 00001110 00001110 00001110 00001110
+TEST 00111101 11101000 11101000 11101000 11101000 00000111 00000111 00000111 00000111
+TEST 11101101 01101000 01101000 01101000 01101000 00011101 00011101 00011101 00011101
+TEST 10001100 01100000 01100000 01100000 01100000 00010001 00010001 00010001 00010001
+TEST 11111001 11001000 11001000 11001000 11001000 00011111 00011111 00011111 00011111
+TEST 11000110 00110000 00110000 00110000 00110000 00011000 00011000 00011000 00011000
+TEST 11000101 00101000 00101000 00101000 00101000 00011000 00011000 00011000 00011000
+TEST 10101010 01010000 01010000 01010000 01010000 00010101 00010101 00010101 00010101
+TEST 11100101 00101000 00101000 00101000 00101000 00011100 00011100 00011100 00011100
+TEST 01110111 10111000 10111000 10111000 10111000 00001110 00001110 00001110 00001110
+04_04_four_ways_of_doing_shift.sv PASS
+TEST 00000000 << 00000000 00000000 (EXP 00000000) >> 00000000 00000000 (EXP 00000000)
+TEST 10000000 << 00000100 00000100 (EXP 00000100) >> 00010000 00010000 (EXP 00010000)
+TEST 01000000 << 00000010 00000010 (EXP 00000010) >> 00001000 00001000 (EXP 00001000)
+TEST 00100000 << 00000001 00000001 (EXP 00000001) >> 00000100 00000100 (EXP 00000100)
+TEST 00010000 << 10000000 10000000 (EXP 10000000) >> 00000010 00000010 (EXP 00000010)
+TEST 00001000 << 01000000 01000000 (EXP 01000000) >> 00000001 00000001 (EXP 00000001)
+TEST 00000100 << 00100000 00100000 (EXP 00100000) >> 10000000 10000000 (EXP 10000000)
+TEST 00000010 << 00010000 00010000 (EXP 00010000) >> 01000000 01000000 (EXP 01000000)
+TEST 00000001 << 00001000 00001000 (EXP 00001000) >> 00100000 00100000 (EXP 00100000)
+TEST 11111111 << 11111111 11111111 (EXP 11111111) >> 11111111 11111111 (EXP 11111111)
+TEST 10110101 << 10101101 10101101 (EXP 10101101) >> 10110110 10110110 (EXP 10110110)
+TEST 01110000 << 10000011 10000011 (EXP 10000011) >> 00001110 00001110 (EXP 00001110)
+TEST 00100110 << 00110001 00110001 (EXP 00110001) >> 11000100 11000100 (EXP 11000100)
+TEST 11100000 << 00000111 00000111 (EXP 00000111) >> 00011100 00011100 (EXP 00011100)
+TEST 01101100 << 01100011 01100011 (EXP 01100011) >> 10001101 10001101 (EXP 10001101)
+TEST 11010001 << 10001110 10001110 (EXP 10001110) >> 00111010 00111010 (EXP 00111010)
+TEST 11000011 << 00011110 00011110 (EXP 00011110) >> 01111000 01111000 (EXP 01111000)
+TEST 00110100 << 10100001 10100001 (EXP 10100001) >> 10000110 10000110 (EXP 10000110)
+TEST 11110000 << 10000111 10000111 (EXP 10000111) >> 00011110 00011110 (EXP 00011110)
+TEST 01100110 << 00110011 00110011 (EXP 00110011) >> 11001100 11001100 (EXP 11001100)
+04_05_circular_shifts.sv PASS
+04_06_arithmetic_shift_or_signed_divide_by_power_of_2.sv:42: sorry: constant selects in always_* processes are not currently supported (all bits will be included).
+TEST   36 00100100   4 00000100   4 00000100   4 00000100   4 00000100
+TEST -127 10000001 -16 11110000 -16 11110000 -16 11110000 -16 11110000
+TEST    9 00001001   1 00000001   1 00000001   1 00000001   1 00000001
+TEST   99 01100011  12 00001100  12 00001100  12 00001100  12 00001100
+TEST   13 00001101   1 00000001   1 00000001   1 00000001   1 00000001
+TEST -115 10001101 -15 11110001 -15 11110001 -15 11110001 -15 11110001
+TEST  101 01100101  12 00001100  12 00001100  12 00001100  12 00001100
+TEST   18 00010010   2 00000010   2 00000010   2 00000010   2 00000010
+TEST    1 00000001   0 00000000   0 00000000   0 00000000   0 00000000
+TEST   13 00001101   1 00000001   1 00000001   1 00000001   1 00000001
+TEST  118 01110110  14 00001110  14 00001110  14 00001110  14 00001110
+TEST   61 00111101   7 00000111   7 00000111   7 00000111   7 00000111
+TEST  -19 11101101  -3 11111101  -3 11111101  -3 11111101  -3 11111101
+TEST -116 10001100 -15 11110001 -15 11110001 -15 11110001 -15 11110001
+TEST   -7 11111001  -1 11111111  -1 11111111  -1 11111111  -1 11111111
+TEST  -58 11000110  -8 11111000  -8 11111000  -8 11111000  -8 11111000
+TEST  -59 11000101  -8 11111000  -8 11111000  -8 11111000  -8 11111000
+TEST  -86 10101010 -11 11110101 -11 11110101 -11 11110101 -11 11110101
+TEST  -27 11100101  -4 11111100  -4 11111100  -4 11111100  -4 11111100
+TEST  119 01110111  14 00001110  14 00001110  14 00001110  14 00001110
+02_06_arithmetic_shift_or_signed_divide_by_power_of_2.sv PASS

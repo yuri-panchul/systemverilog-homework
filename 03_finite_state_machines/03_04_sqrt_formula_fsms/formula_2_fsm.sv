@@ -25,7 +25,7 @@ module formula_2_fsm
 );
     // Task:
     // Implement a module that calculates the folmula from the `formula_2_fn.svh` file
-    // using only one instance of the isrt module.
+    // using only one instance of the isqrt module.
     //
     // Design the FSM to calculate answer step-by-step and provide the correct `res` value
 

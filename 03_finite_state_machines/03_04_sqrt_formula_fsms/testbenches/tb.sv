@@ -12,8 +12,9 @@ module tb;
     initial
     begin
         `ifdef __ICARUS__
-            // Uncomment the following lines to generate the vcd file and analyze it using GTKwave
-            // $dumpfile("dump.vcd");
+            // Uncomment the following line
+            // to generate a VCD file and analyze it using GTKwave
+
             // $dumpvars;
         `endif
 

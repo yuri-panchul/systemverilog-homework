@@ -120,9 +120,13 @@ module testbench;
 
   initial
   begin
-    // Remove the comments below to generate the dump.vcd file and analyze it with GTKwave
-    // $dumpfile("dump_03_03.vcd");
-    // $dumpvars(0, testbench);
+    `ifdef __ICARUS__
+        // Uncomment the following lines
+        // to generate a VCD file and analyze it using GTKwave
+
+        // $dumpvars;
+        // $dumpfile ("dump_03_03.vcd");
+    `endif
 
     // Run testbench 3 times
     repeat (3)

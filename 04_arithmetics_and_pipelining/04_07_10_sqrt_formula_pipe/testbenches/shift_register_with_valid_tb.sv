@@ -173,7 +173,7 @@ module shift_register_with_valid_tb
 
     always @ (posedge clk)
     begin
-        if (out_vld !== expected_out_vld)
+        if (expected_out_vld !== 'x & out_vld !== expected_out_vld)
         begin
             $display ("%s FAIL: expected out_vld mismatch. Expected %b, actual %b",
                 test_id, expected_out_vld, out_vld);
@@ -181,7 +181,7 @@ module shift_register_with_valid_tb
             $finish;
         end
 
-        if (out_vld & (out_data !== expected_out_data))
+        if (expected_out_vld & (out_data !== expected_out_data))
         begin
             $display ("%s FAIL: out_data mismatch. Expected %h, actual %h",
                 test_id, expected_out_data, out_data);

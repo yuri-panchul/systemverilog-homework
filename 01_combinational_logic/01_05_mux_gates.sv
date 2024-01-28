@@ -62,6 +62,16 @@ module mux_4_1
   // mux_4_1_width_1 as examples,
   // write code for 4:1 mux using only &, | and ~ operations,
   // and possibly some wire continuous assignments.
+  
+    wire sel0 = ~ sel [0] & ~ sel [1];
+	wire sel1 =   sel [0] & ~ sel [1];
+	wire sel2 = ~ sel [0] &   sel [1];
+	wire sel3 =   sel [0] &   sel [1];
+  
+    assign y =   ((d0 & { 4 { sel0 }})
+             | (d1 & { 4 {   sel1 }})
+			 | (d2 & { 4 {   sel2 }})
+			 | (d3 & { 4 {   sel3 }}));
 
 
 endmodule

@@ -17,11 +17,13 @@ module mux_4_1
   input  [1:0] sel,
   output [3:0] y
 );
-
+logic [3:0] mux1_y, mux2_y;
   // TODO
 
   // Implement mux_4_1 using three instances of mux_2_1
-
+mux_2_1 mux_a (.d0 (d0), .d1(d1), .sel(sel[0]), .y(mux1_y));
+mux_2_1 mux_b (.d0 (d2), .d1(d3), .sel(sel[0]), .y(mux2_y));
+mux_2_1 mux_y (.d0 (mux1_y), .d1(mux2_y), .sel(sel[1]), .y(y));
 
 endmodule
 

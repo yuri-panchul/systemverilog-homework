@@ -23,6 +23,7 @@ module mux_4_1
   // Using code for mux_2_1 as an example,
   // write code for 4:1 mux using "?:" operator
 
+assign y = sel[1] == 1'b1 ? (sel[0] == 1'b1 ? d3 : d2) : (sel[0] == 1'b1 ? d1 : d0);
 
 endmodule
 

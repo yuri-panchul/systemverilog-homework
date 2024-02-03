@@ -18,12 +18,13 @@ module xor_gate_using_mux
     output o
 );
 
+	wire b_bar;
   // TODO
 
   // Implement xor gate using instance(s) of mux,
   // constants 0 and 1, and wire connections
-	wire sel0 = a ^ b;
-	mux mx1 (.d0(1'b0), .d1(1'b1), .sel(sel0), .y(o));
+	mux mx_inv (.d0(1'b1), .d1(1'b0), .sel(b), .y(b_bar));
+	mux mx0 (.d0(b), .d1(b_bar), .sel(a), .y(o));
 
 endmodule
 

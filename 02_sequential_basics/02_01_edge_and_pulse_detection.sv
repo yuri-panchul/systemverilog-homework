@@ -25,7 +25,7 @@ endmodule
 //----------------------------------------------------------------------------
 
 module one_cycle_pulse_detector (input clk, rst, a, output detected);
-	logic a_r0, a_r1, a_r2;
+	logic a_r0, a_r1;
   // Task:
   // Create an one cycle pulse (010) detector.
   //
@@ -36,11 +36,9 @@ always_ff@(posedge clk)
 	if(rst) begin
 		a_r0 <= '0; 
 		a_r1 <= '0;
-		a_r2 <= '0;
 	end else begin
 		a_r0 <= a; 
 		a_r1 <= a_r0;
-		a_r2 <= a_r1;
 	end
 	
 	assign detected = ~a_r1 & a_r0 & ~a;

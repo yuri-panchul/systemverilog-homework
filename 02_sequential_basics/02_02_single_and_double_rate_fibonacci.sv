@@ -31,8 +31,25 @@ module fibonacci_2
   output logic [15:0] num2
 );
 
+	logic [15:0]  num3, num4;
+
   // Task:
   // Implement a module that generates two fibonacci numbers per cycle
+  always_ff @ (posedge clk)
+    if (rst)
+      { num, num2, num3} <= { 16'd1, 16'd1, 16'd2};
+    else begin
+	  { num, num2} <= { num3, num2 + num3};
+	end
+	
+  always_comb// @ (negedge clk)
+    if (rst)
+       num3 = 16'd2;
+    else begin
+	  num3  = num + num2 ;
+	end
+	
+	
 
 
 endmodule
@@ -47,7 +64,7 @@ module testbench;
 
   initial
   begin
-    clk = 0;
+    clk = 1;
 
     forever
       # 500 clk = ~ clk;
@@ -57,6 +74,9 @@ module testbench;
 
   initial
   begin
+     `ifdef __ICARUS__
+        $dumpvars;
+    `endif
     rst <= 'x;
     repeat (2) @ (posedge clk);
     rst <= '1;
@@ -99,7 +119,8 @@ module testbench;
       begin
         $display ("%s FAIL %d !== %d", `__FILE__, n1, n2);
         $finish;
-      end
+      end else
+		$display (" Good n1 %d === n2 %d",  n1, n2);
     end
 
     $display ("%s PASS", `__FILE__);

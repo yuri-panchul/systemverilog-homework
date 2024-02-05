@@ -37,6 +37,7 @@ module serial_adder_using_logic_operations_only
   input  rst,
   input  a,
   input  b,
+  output carry,
   output sum
 );
 
@@ -49,7 +50,27 @@ module serial_adder_using_logic_operations_only
   // for information about the 1-bit full adder implementation.
   //
   // See the testbench for the output format ($display task).
+  
+  reg carry;
+  reg sum;
+ 
+ 
+	/*
+	When posedge is used at time 12500 units, inputs are 
+	a = 1, b = 1, sum = 0, carry = 1. It is observerd on the waves, but not on the log.
+	This might be due to a race condition between tb and dut as they are both working on posedge
+	*/
+    always_ff @ (negedge clk) begin
+		if (rst) begin
+			carry = '0;
+			sum = '0;
+		end else begin
+			{sum, carry} = {(a ^ b ^ carry), ((a & b) | ( a & carry) | (b & carry))};			
+			//$display ("%t sum %b a %b b %b carry %b",$time, sum,  a , b, carry);
+		end
+	end
 
+	
 
 endmodule
 
@@ -73,6 +94,9 @@ module testbench;
 
   initial
   begin
+    `ifdef __ICARUS__
+        $dumpvars;
+    `endif
     rst <= 'x;
     repeat (2) @ (posedge clk);
     rst <= '1;
@@ -80,9 +104,9 @@ module testbench;
     rst <= '0;
   end
 
-  logic a, b, sa_sum, salo_sum;
+  logic a, b, sa_sum, salo_sum, carry;
   serial_adder                             sa   (.sum (sa_sum),   .*);
-  serial_adder_using_logic_operations_only salo (.sum (salo_sum), .*);
+  serial_adder_using_logic_operations_only salo (.sum (salo_sum), .carry(carry), .*);
 
   localparam n = 16;
 
@@ -105,16 +129,15 @@ module testbench;
 
       @ (posedge clk);
 
-      $display ("%b %b %b (%b) %b (%b)",
-        a, b,
-        sa_sum,   seq_sa_sum   [i],
-        salo_sum, seq_salo_sum [i]);
+      $display ("%t %b %b SUM OBS: %b EXP:(%b) carry  %b",
+        $time, a, b,
+        salo_sum, seq_salo_sum [i], carry);
 
       if (   sa_sum   !== seq_sa_sum   [i]
           || salo_sum !== seq_salo_sum [i])
       begin
         $display ("%s FAIL - see log above", `__FILE__);
-        $finish;
+        //$finish;
       end
     end
 

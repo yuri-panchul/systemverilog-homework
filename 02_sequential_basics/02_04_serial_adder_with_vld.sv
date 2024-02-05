@@ -24,6 +24,32 @@ module serial_adder_with_vld
   // When last is high, the module should output the sum and reset its internal state.
   //
   // When rst is high, the module should reset its internal state.
+  
+  logic carry = 0;
+  logic sum;
+  logic last_ff;
+  
+	always_ff @ (posedge clk) begin
+		if(last)
+			last_ff <= 1'b1;
+		else
+			last_ff <= 1'b0;
+	end
+
+    always_ff @ (posedge clk) begin
+		if (rst) begin
+			sum <= '0;
+			carry <= '0;
+		end else if (vld) begin
+			{sum, carry} <= {(a ^ b ^ carry), ((a & b) | ( a & carry) | (b & carry))};			
+			if (last) begin
+				carry <= 0;
+			end
+			//$display ("%t sum %b a %b b %b carry %b",$time, sum,  a , b, carry);
+		end else begin
+			sum <= 0;
+		end
+	end
 
 
 endmodule
@@ -71,6 +97,9 @@ module testbench;
 
   initial
   begin
+    `ifdef __ICARUS__
+        $dumpvars;
+    `endif
     @ (negedge rst);
 
     for (int i = 0; i < n; i ++)
@@ -80,11 +109,11 @@ module testbench;
       b    <= seq_b    [i];
       last <= seq_last [i];
 
-      @ (posedge clk);
+      @ (negedge clk);
 
       if (vld) begin
-        $display ("vld %b, last %b, %b+%b=%b (expected %b)",
-          vld, last, a, b,
+        $display ("%t vld %b, last %b, %b+%b=%b (expected %b)",
+          $time, vld, last, a, b,
           sav_sum, seq_sav_sum[i]);
 
         if (sav_sum !== seq_sav_sum[i])

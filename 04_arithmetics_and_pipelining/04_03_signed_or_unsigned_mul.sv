@@ -17,7 +17,7 @@ module signed_mul_4
 endmodule
 
 // A parameterized module
-// that implements the signed multiplication of N-bit numbers
+// that implements the unsigned multiplication of N-bit numbers
 // which produces 2N-bit result
 
 module unsigned_mul

@@ -1,3 +1,4 @@
+*.hex
 a.out
 dump*.vcd
 log.txt

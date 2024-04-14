@@ -14,6 +14,7 @@ then
 fi
 
 rm -rf log.txt
+rm -f lint.txt
 
 for f in *.sv
 do
@@ -22,6 +23,16 @@ do
 
     # gtkwave dump.vcd
 done
+
+if command -v verilator > /dev/null 2>&1
+then
+    verilator --lint-only -Wall --timing --top testbench \
+    -Wno-DECLFILENAME -Wno-INITIALDLY -Wno-MODDUP *.sv  >> lint.txt 2>&1
+
+    sed -i '/- Verilator:/d' lint.txt
+    sed -i '/- V e r i l a t i o n/d' lint.txt
+    sed -i '/%Error:/d' lint.txt
+fi
 
 rm -f a.out
 

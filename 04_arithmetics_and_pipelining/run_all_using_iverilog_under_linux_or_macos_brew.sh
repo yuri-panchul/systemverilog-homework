@@ -13,6 +13,11 @@ then
     exit 1
 fi
 
+if [ "$1" = "--lint" ] && command -v verilator > /dev/null 2>&1
+then
+    lint=true
+fi
+
 rm -rf log.txt
 rm -f lint.txt
 
@@ -21,18 +26,21 @@ do
        iverilog -g2005-sv $f >> log.txt 2>&1  \
     && vvp a.out             >> log.txt 2>&1
 
+    if [ "$lint" = true ]
+    then
+        echo "==============================================\n" >> lint.txt
+        echo "File: $f\n" >> lint.txt
+        echo "==============================================\n" >> lint.txt
+
+        verilator --lint-only -Wall --timing -Wno-MULTITOP \
+        -Wno-DECLFILENAME -Wno-INITIALDLY $f >> lint.txt 2>&1
+
+        sed -i '/- Verilator:/d' lint.txt
+        sed -i '/- V e r i l a t i o n/d' lint.txt
+    fi
+
     # gtkwave dump.vcd
 done
-
-if command -v verilator > /dev/null 2>&1
-then
-    verilator --lint-only -Wall --timing --top testbench \
-    -Wno-DECLFILENAME -Wno-INITIALDLY -Wno-MODDUP *.sv  >> lint.txt 2>&1
-
-    sed -i '/- Verilator:/d' lint.txt
-    sed -i '/- V e r i l a t i o n/d' lint.txt
-    sed -i '/%Error:/d' lint.txt
-fi
 
 rm -f a.out
 

@@ -64,20 +64,31 @@ simulate_rtl ()
         exit 1
     fi
 
+    if [ "$1" = "--lint" ] && command -v verilator > /dev/null 2>&1
+    then
+        lint=true
+    fi
+
     rm -rf dump.vcd
 
        iverilog -g2005-sv *.sv >> log.txt 2>&1  \
     && vvp a.out               >> log.txt 2>&1
 
-    if command -v verilator > /dev/null 2>&1
-    then
-        verilator --lint-only -Wall --timing --top tb \
-        -Wno-DECLFILENAME -Wno-INITIALDLY -Wno-MODDUP *.sv  >> lint.txt 2>&1
+    for f in *.sv
+    do
+        if [ "$lint" = true ]
+        then
+            echo "==============================================\n" >> lint.txt
+            echo "File: $f\n" >> lint.txt
+            echo "==============================================\n" >> lint.txt
 
-        sed -i '/- Verilator:/d' lint.txt
-        sed -i '/- V e r i l a t i o n/d' lint.txt
-        sed -i '/%Error:/d' lint.txt
-    fi
+            verilator --lint-only -Wall --timing -Wno-MULTITOP \
+            -Wno-DECLFILENAME -Wno-INITIALDLY $f >> lint.txt 2>&1
+
+            sed -i '/- Verilator:/d' lint.txt
+            sed -i '/- V e r i l a t i o n/d' lint.txt
+        fi
+    done
 
     if [ -f dump.vcd ] ; then
         gtkwave dump.vcd --script gtkwave.tcl
@@ -90,7 +101,7 @@ if [ -f program.s ] ; then
     assembly
 fi
 
-simulate_rtl
+simulate_rtl $1
 
 # rm -f program.hex
   rm -f a.out

@@ -64,19 +64,45 @@ simulate_rtl ()
         exit 1
     fi
 
-    if [ "$1" = "--lint" ] && command -v verilator > /dev/null 2>&1
-    then
-        lint=true
-    fi
-
     rm -rf dump.vcd
 
        iverilog -g2005-sv *.sv >> log.txt 2>&1  \
     && vvp a.out               >> log.txt 2>&1
 
+    if [ -f dump.vcd ] ; then
+        gtkwave dump.vcd --script gtkwave.tcl
+    fi
+}
+
+#-----------------------------------------------------------------------------
+
+lint_code ()
+{
+    if [ "$1" = "--lint" ]
+    then
+
+        if command -v verilator > /dev/null 2>&1
+        then
+            run_lint=true
+        else
+        echo "ERROR [--lint]: Verilator is not in the path"                      \
+             "or cannot be run."                                                 \
+             "See README.md file in the package directory for the instructions"  \
+             "how to install Verilator."                                         \
+              2>&1
+
+            echo "Press enter"
+            read enter
+            exit 1
+        fi
+
+    else
+        run_lint=false
+    fi
+
     for f in *.sv
     do
-        if [ "$lint" = true ]
+        if [ $run_lint = true ]
         then
             echo "==============================================\n" >> lint.txt
             echo "File: $f\n" >> lint.txt
@@ -89,10 +115,6 @@ simulate_rtl ()
             sed -i '/- V e r i l a t i o n/d' lint.txt
         fi
     done
-
-    if [ -f dump.vcd ] ; then
-        gtkwave dump.vcd --script gtkwave.tcl
-    fi
 }
 
 #-----------------------------------------------------------------------------
@@ -101,7 +123,8 @@ if [ -f program.s ] ; then
     assembly
 fi
 
-simulate_rtl $1
+simulate_rtl
+lint_code $1
 
 # rm -f program.hex
   rm -f a.out

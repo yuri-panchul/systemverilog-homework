@@ -13,9 +13,26 @@ then
     exit 1
 fi
 
-if [ "$1" = "--lint" ] && command -v verilator > /dev/null 2>&1
+if [ "$1" = "--lint" ]
 then
-    lint=true
+
+    if command -v verilator > /dev/null 2>&1
+    then
+        run_lint=true
+    else
+    echo "ERROR [--lint]: Verilator is not in the path"                      \
+         "or cannot be run."                                                 \
+         "See README.md file in the package directory for the instructions"  \
+         "how to install Verilator."                                         \
+          2>&1
+
+        echo "Press enter"
+        read enter
+        exit 1
+    fi
+
+else
+    run_lint=false
 fi
 
 rm -rf log.txt
@@ -30,7 +47,7 @@ iverilog -g2005-sv                   \
 
 for f in *.sv
 do
-    if [ "$lint" = true ]
+    if [ $run_lint = true ]
     then
         echo "==============================================\n" >> lint.txt
         echo "File: $f\n" >> lint.txt

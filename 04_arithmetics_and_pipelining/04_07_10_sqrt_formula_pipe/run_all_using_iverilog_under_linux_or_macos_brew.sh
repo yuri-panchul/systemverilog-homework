@@ -49,9 +49,9 @@ for f in *.sv
 do
     if [ $run_lint = true ]
     then
-        echo "==============================================\n" >> lint.txt
-        echo "File: $f\n" >> lint.txt
-        echo "==============================================\n" >> lint.txt
+        printf "==============================================\n\n" >> lint.txt
+        printf "File: $f\n\n" >> lint.txt
+        printf "==============================================\n\n" >> lint.txt
 
         verilator --lint-only -Wall --timing -Wno-MULTITOP \
         -Wno-DECLFILENAME -Wno-INITIALDLY -Iblack_boxes $f >> lint.txt 2>&1

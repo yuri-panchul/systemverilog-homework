@@ -1,6 +1,7 @@
 #!/bin/sh
 
 rm -rf log.txt
+rm -f lint.txt
 
 #-----------------------------------------------------------------------------
 
@@ -75,11 +76,55 @@ simulate_rtl ()
 
 #-----------------------------------------------------------------------------
 
+lint_code ()
+{
+    if [ "$1" = "--lint" ]
+    then
+
+        if command -v verilator > /dev/null 2>&1
+        then
+            run_lint=true
+        else
+        echo "ERROR [--lint]: Verilator is not in the path"                      \
+             "or cannot be run."                                                 \
+             "See README.md file in the package directory for the instructions"  \
+             "how to install Verilator."                                         \
+              2>&1
+
+            echo "Press enter"
+            read enter
+            exit 1
+        fi
+
+    else
+        run_lint=false
+    fi
+
+    for f in *.sv
+    do
+        if [ $run_lint = true ]
+        then
+            printf "==============================================\n\n" >> lint.txt
+            printf "File: $f\n\n" >> lint.txt
+            printf "==============================================\n\n" >> lint.txt
+
+            verilator --lint-only -Wall --timing -Wno-MULTITOP \
+            -Wno-DECLFILENAME -Wno-INITIALDLY $f >> lint.txt 2>&1
+
+            sed -i '/- Verilator:/d' lint.txt
+            sed -i '/- V e r i l a t i o n/d' lint.txt
+        fi
+    done
+}
+
+#-----------------------------------------------------------------------------
+
 if [ -f program.s ] ; then
     assembly
 fi
 
 simulate_rtl
+lint_code $1
 
 # rm -f program.hex
   rm -f a.out

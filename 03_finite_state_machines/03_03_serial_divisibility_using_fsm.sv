@@ -60,7 +60,7 @@ module serial_divisibility_by_5_using_fsm
 
   // Implement a module that performs a serial test if input number is divisible by 5.
   //
-  // On each clock cycle, module recieves the next 1 bit of the input number.
+  // On each clock cycle, module receives the next 1 bit of the input number.
   // The module should set output to 1 if the currently known number is divisible by 5.
   //
   // Hint: new bit is coming to the right side of the long binary number `X`.

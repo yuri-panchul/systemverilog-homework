@@ -31,7 +31,7 @@ module formula_1_impl_2_fsm
 );
 
     // Task:
-    // Implement a module that calculates the folmula from the `formula_1_fn.svh` file
+    // Implement a module that calculates the formula from the `formula_1_fn.svh` file
     // using two instances of the isqrt module in parallel.
     //
     // Design the FSM to calculate an answer and provide the correct `res` value

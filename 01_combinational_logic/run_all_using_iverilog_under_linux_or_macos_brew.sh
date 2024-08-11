@@ -62,4 +62,4 @@ done
 
 rm -f a.out
 
-grep -e PASS -e FAIL -e error log.txt
+grep -e PASS -e FAIL -e error -e ++ log.txt | sed -e 's/PASS/\x1b[0;32m&\x1b[0m/g' -e 's/FAIL/\x1b[0;31m&\x1b[0m/g'

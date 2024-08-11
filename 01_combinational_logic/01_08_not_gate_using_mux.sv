@@ -46,12 +46,15 @@ module testbench;
 
         if (o !== ~ a)
           begin
-            $display ("%s FAIL: %h EXPECTED", `__FILE__, ~ a);
-            $finish;
+            $display("FAIL %s", `__FILE__);
+            $display("++ INPUT    => {a:%h, i:%h}", a, i);
+            $display("++ EXPECTED => {o:%h}", ~a);
+            $display("++ ACTUAL   => {o:%h}", o);
+            $fatal(1, "Test Failed");
           end
       end
 
-      $display ("%s PASS", `__FILE__);
+      $display ("PASS %s", `__FILE__);
       $finish;
     end
 

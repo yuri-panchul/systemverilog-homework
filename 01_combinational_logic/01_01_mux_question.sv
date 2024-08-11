@@ -52,13 +52,13 @@ module testbench;
 
     # 1;
 
-    $display ("TEST d { %h %h %h %h } sel %d y %h",
-        d0, d1, d2, d3, sel, y);
-
     if (y !== ty)
       begin
-        $display ("%s FAIL: %h EXPECTED", `__FILE__, ty);
-        $finish;
+        $display("FAIL %s", `__FILE__);
+        $display("++ INPUT    => {d0:%h, d1:%h, d2:%h, d3:%h, sel:%d}", d0, d1, d2, d3, sel,);
+        $display("++ EXPECTED => {y:%h}", ty);
+        $display("++ ACTUAL   => {y:%h}", y);
+        $fatal(1, "Test Failed");
       end
 
   endtask
@@ -75,7 +75,7 @@ module testbench;
       test (7, 10, 3, 'x, 2, 3);
       test (7, 10, 3, 'x, 3, 'x);
 
-      $display ("%s PASS", `__FILE__);
+      $display ("PASS %s", `__FILE__);
       $finish;
     end
 

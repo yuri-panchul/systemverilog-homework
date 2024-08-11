@@ -45,16 +45,18 @@ module testbench;
 
         # 1;
 
-        $display ("TEST %b ^ %b = %b", a, b, o);
-
         if (o !== (a ^ b))
           begin
-            $display ("%s FAIL: %h EXPECTED", `__FILE__, a ^ b);
-            $finish;
+            $display("FAIL %s", `__FILE__);
+            $display("++ INPUT    => {a:%h, b:%h, i:%h, j:%h}", a, b, i, j);
+            $display("++ EXPECTED => {o:%h}", a ^ b);
+            $display("++ ACTUAL   => {o:%h}", o);
+            $fatal(1, "Test Failed");
+
           end
       end
 
-      $display ("%s PASS", `__FILE__);
+      $display ("PASS %s", `__FILE__);
       $finish;
     end
 

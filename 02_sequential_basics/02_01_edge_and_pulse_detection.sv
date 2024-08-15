@@ -1,3 +1,5 @@
+`include "../util.sv"
+
 //----------------------------------------------------------------------------
 // Example
 //----------------------------------------------------------------------------
@@ -86,16 +88,18 @@ module testbench;
 
       @ (posedge clk);
 
-      $display ("%b %b (%b) %b (%b)",
-        a,
-        pd_detected,   seq_posedge         [i],
-        ocpd_detected, seq_one_cycle_pulse [i]);
-
       if (   pd_detected   !== seq_posedge         [i]
           || ocpd_detected !== seq_one_cycle_pulse [i])
       begin
-        $display ("%s FAIL - see log above", `__FILE__);
-        $finish;
+        $display("FAIL %s", `__FILE__);
+        $display("++ INPUT    => {%s, %s, %s, %s, %s, %s}",
+                 `PD(i), `PB(a),
+                 `PB(pd_detected), `PB(seq_posedge),
+                 `PB(ocpd_detected), `PB(seq_one_cycle_pulse));
+        $display("++ TEST     => {%s, %s, %s, %s}",
+                 `PB(pd_detected), `PB(seq_posedge[i]),
+                 `PB(ocpd_detected), `PB(seq_one_cycle_pulse[i]));
+        $fatal(1, "Test Failed");
       end
     end
 

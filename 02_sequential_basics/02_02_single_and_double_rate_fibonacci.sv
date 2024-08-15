@@ -1,3 +1,5 @@
+`include "../util.sv"
+
 //----------------------------------------------------------------------------
 // Example
 //----------------------------------------------------------------------------
@@ -81,8 +83,6 @@ module testbench;
     begin
       @ (posedge clk);
 
-      $display ("%d (%d %d)", f1_num, f2_num, f2_num2);
-
       fifo1.push_back (f1_num);
       fifo2.push_back (f2_num);
       fifo2.push_back (f2_num2);
@@ -97,11 +97,14 @@ module testbench;
 
       if (n1 !== n2)
       begin
-        $display ("%s FAIL %d !== %d", `__FILE__, n1, n2);
-        $finish;
+        $display("FAIL %s", `__FILE__);
+        $display("++ INPUT    => {%s, %s, %s}",
+                 `PD(f1_num), `PD(f1_num), `PD(f2_num2));
+        $display("++ TEST     => {%s, %s}",
+                 `PD(n1), `PD(n2));
+        $fatal(1, "Test Failed");
       end
     end
-
     $display ("%s PASS", `__FILE__);
     $finish;
   end

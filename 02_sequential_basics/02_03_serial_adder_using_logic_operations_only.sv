@@ -1,3 +1,5 @@
+`include "../util.sv"
+
 //----------------------------------------------------------------------------
 // Example
 //----------------------------------------------------------------------------
@@ -105,16 +107,16 @@ module testbench;
 
       @ (posedge clk);
 
-      $display ("%b %b %b (%b) %b (%b)",
-        a, b,
-        sa_sum,   seq_sa_sum   [i],
-        salo_sum, seq_salo_sum [i]);
-
       if (   sa_sum   !== seq_sa_sum   [i]
           || salo_sum !== seq_salo_sum [i])
       begin
-        $display ("%s FAIL - see log above", `__FILE__);
-        $finish;
+        $display("FAIL %s", `__FILE__);
+        $display("++ INPUT    => {%s, %s, %s}",
+                 `PD(i), `PB(a), `PB(b));
+        $display("++ TEST     => {%s, %s, %s, %s}",
+                 `PB(sa_sum), `PB(seq_sa_sum[i]),
+                 `PB(salo_sum), `PB(seq_salo_sum[i]));
+        $fatal(1, "Test Failed");
       end
     end
 

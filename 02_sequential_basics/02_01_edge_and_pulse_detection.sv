@@ -39,6 +39,8 @@ endmodule
 // Testbench
 //----------------------------------------------------------------------------
 
+`define KV(key, value)="name=",$sformatf(":%b", value)
+
 module testbench;
 
   logic clk;
@@ -94,8 +96,22 @@ module testbench;
       if (   pd_detected   !== seq_posedge         [i]
           || ocpd_detected !== seq_one_cycle_pulse [i])
       begin
-        $display ("%s FAIL - see log above", `__FILE__);
-        $finish;
+        $display("FAIL %s", `__FILE__);
+        $display("++ INPUT    => {a:%b, i:%b, pd_detected:%b, seq_posedge[%i]:%b, ocpd_detected:%b, seq_one_cyle_plus[%i]:%b}",
+                 a,
+                 pd_detected, i, seq_posedge         [i],
+                 ocpd_detected, i, seq_one_cycle_pulse [i]);
+        if (pd_detected !== seq_posedge[i])
+        // begin
+        //   $display("++ FAILED => {pd_detected:%b, seq_posedge[%i]:%b}",
+        //            pd_detected, i, seq_posedge[i],);
+        // end
+        // if (pd_detected !== seq_posedge[i])
+        // begin
+        //   $display("++ FAILED => {ocpd_detected:%b, seq_one_cyle_plus[%i]:%b}",
+        //            ocpd_detected, i, seq_one_cycle_pulse[i]);
+        // end
+        $fatal(1, "Test Failed");
       end
     end
 

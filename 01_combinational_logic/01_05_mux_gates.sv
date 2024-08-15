@@ -1,3 +1,5 @@
+`include "util.sv"
+
 module mux_2_1_width_1
 (
   input  d0, d1,
@@ -97,12 +99,11 @@ module testbench;
     if (y !== ty)
       begin
         $display("FAIL %s", `__FILE__);
-        $display("++ INPUT    => {d0:%h, d1:%h, d2:%h, d3:%h, sel:%d}", d0, d1, d2, d3, sel,);
-        $display("++ EXPECTED => {y:%h}", ty);
-        $display("++ ACTUAL   => {y:%h}", y);
+        $display("++ INPUT    => {%s, %s, %s, %s, %s}", 
+                 `KV(d0), `KV(d1), `KV(d2), `KV(d3), `KV(sel));
+        $display("++ EXPECTED => {%s}", `KV(ty));
+        $display("++ ACTUAL   => {%s}", `KV(y));
         $fatal(1, "Test Failed");
-        $display ("%s FAIL: %h EXPECTED", `__FILE__, ty);
-        $finish;
       end
 
   endtask

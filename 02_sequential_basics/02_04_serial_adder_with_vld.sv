@@ -100,7 +100,7 @@ module testbench;
         $display ("vld %b, last %b, %b+%b=%b", vld, last, a, b, sav_sum);
     end
 
-    $display ("%s PASS", `__FILE__);
+    $display ("PASS %s", `__FILE__);
     $finish;
   end
 

@@ -165,7 +165,7 @@ module testbench;
       end
     end
 
-    $display ("%s PASS", `__FILE__);
+    $display ("PASS %s", `__FILE__);
     $finish;
   end
 

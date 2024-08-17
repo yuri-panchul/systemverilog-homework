@@ -88,22 +88,25 @@ module testbench;
 
       @ (posedge clk);
 
+      // TODO: Why are we testing pd_detected at all? We should limit to
+      // only testing the things the student is working upon.
       if (   pd_detected   !== seq_posedge         [i]
           || ocpd_detected !== seq_one_cycle_pulse [i])
       begin
         $display("FAIL %s", `__FILE__);
-        $display("++ INPUT    => {%s, %s, %s, %s, %s, %s}",
-                 `PD(i), `PB(a),
-                 `PB(pd_detected), `PB(seq_posedge),
-                 `PB(ocpd_detected), `PB(seq_one_cycle_pulse));
-        $display("++ TEST     => {%s, %s, %s, %s}",
-                 `PB(pd_detected), `PB(seq_posedge[i]),
-                 `PB(ocpd_detected), `PB(seq_one_cycle_pulse[i]));
+        $display("++ INPUT    => {%s, %s}",
+                 `PB(seq_a), `PB(seq_one_cycle_pulse));
+        // TODO: This isn't great. It basically only list the first
+        // instance of i that failed. We should consider writing out
+        // the results of all i's and then only printing out the "table"
+        // of results in the event that there is a failure.
+        $display("++ TEST     => {%s, %s, %s}",
+                 `PD(i), `PB(ocpd_detected), `PB(seq_one_cycle_pulse[i]));
         $fatal(1, "Test Failed");
       end
     end
 
-    $display ("%s PASS", `__FILE__);
+    $display ("PASS %s", `__FILE__);
     $finish;
   end
 

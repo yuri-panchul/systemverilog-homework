@@ -46,7 +46,7 @@ do
     # Check the exit status of the last run command. Short circuit if
     # something failed (returned non zero exit status).
     if [ $? -ne 0 ]; then
-        grep -e PASS -e FAIL -e error -e ++ log.txt | sed -e 's/PASS/\x1b[0;32m&\x1b[0m/g' -e 's/FAIL/\x1b[0;31m&\x1b[0m/g' < log.txt
+        sed -e 's/PASS/\x1b[0;32m&\x1b[0m/g' -e 's/FAIL/\x1b[0;31m&\x1b[0m/g' < log.txt
         exit 1
     fi
 

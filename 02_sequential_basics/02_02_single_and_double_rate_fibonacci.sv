@@ -75,11 +75,15 @@ module testbench;
 
   logic [15:0] fifo1 [$], fifo2 [$];
 
+  integer     round = 1;
+
   initial
   begin
     @ (negedge rst);
-
-    while (fifo1.size () < n || fifo2.size () < n)
+    // TODO: Why check both? Isn't fifo2 always twice the size of
+    // fifo1? Let's use smaller so that n matches the number of
+    // test you end up running.
+    while (fifo1.size () < n)
     begin
       @ (posedge clk);
 
@@ -90,20 +94,22 @@ module testbench;
 
     while (fifo1.size () > 0 && fifo2.size () > 0)
     begin
-      logic [15:0] n1, n2;
+      logic [15:0] expected, actual;
 
-      n1 = fifo1.pop_front ();
-      n2 = fifo2.pop_front ();
+      expected = fifo1.pop_front ();
+      actual = fifo2.pop_front ();
 
-      if (n1 !== n2)
+      if (expected !== actual)
       begin
+        // TODO: We should try to get this to display as a table
+        // of [ROUND | EXPECTED | ACTUAL ] for all n rounds. This
+        // currently only displays the failing round.
         $display("FAIL %s", `__FILE__);
-        $display("++ INPUT    => {%s, %s, %s}",
-                 `PD(f1_num), `PD(f1_num), `PD(f2_num2));
-        $display("++ TEST     => {%s, %s}",
-                 `PD(n1), `PD(n2));
+        $display("++ TEST     => {%s, %s, %s}",
+                 `PD(round), `PD(expected), `PD(actual));
         $fatal(1, "Test Failed");
       end
+      round += 1;
     end
     $display ("PASS %s", `__FILE__);
     $finish;

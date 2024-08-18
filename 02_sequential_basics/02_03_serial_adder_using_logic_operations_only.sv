@@ -82,9 +82,9 @@ module testbench;
     rst <= '0;
   end
 
-  logic a, b, sa_sum, salo_sum;
-  serial_adder                             sa   (.sum (sa_sum),   .*);
-  serial_adder_using_logic_operations_only salo (.sum (salo_sum), .*);
+  logic a, b, sa_sum, actual;
+  serial_adder                             sa   (.sum (sa_sum), .*);
+  serial_adder_using_logic_operations_only salo (.sum (actual), .*);
 
   localparam n = 16;
 
@@ -108,12 +108,14 @@ module testbench;
 
       @ (posedge clk);
 
-      if (salo_sum !== seq_expected [i])
-      begin
+      if (sa_sum !== seq_expected [i]) // Sanity Check against serial_adder
+        $fatal(1, "Error: serial_adder example failed!");
+
+      if (actual !== seq_expected [i])
         $display("FAIL %s", `__FILE__);
         $display("++ INPUT    => {%s, %s}", `PB(seq_a), `PB(seq_b));
         $display("++ TEST     => {%s, %s, %s, %s}",
-                 `PD(i), `PB(seq_expected[i]), `PB(salo_sum), `PB(seq_expected));
+                 `PD(i), `PB(seq_expected[i]), `PB(actual), `PB(seq_expected));
         $fatal(1, "Test Failed");
       end
     end

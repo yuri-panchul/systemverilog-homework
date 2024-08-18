@@ -112,6 +112,7 @@ module testbench;
         $fatal(1, "Error: serial_adder example failed!");
 
       if (actual !== seq_expected [i])
+        begin // TODO: If you comment the line out it just says "I give up"
         $display("FAIL %s", `__FILE__);
         $display("++ INPUT    => {%s, %s}", `PB(seq_a), `PB(seq_b));
         $display("++ TEST     => {%s, %s, %s, %s}",

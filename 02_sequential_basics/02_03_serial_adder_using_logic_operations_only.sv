@@ -14,7 +14,7 @@ module serial_adder
 );
 
   // Note:
-  // carry_d represents the cominational data input to the carry register.
+  // carry_d represents the combinational data input to the carry register.
 
   logic carry;
   wire carry_d;
@@ -93,9 +93,10 @@ module testbench;
   localparam [0 : n - 1] seq_b        = 16'b0010_1010_1000_0100;
 
   // Expected sequence of correct output values
-  localparam [0 : n - 1] seq_sa_sum   = 16'b0110_0111_0100_0101;
-  localparam [0 : n - 1] seq_salo_sum = 16'b0110_0111_0100_0101;
+  localparam [0 : n - 1] seq_expected   = 16'b0110_0111_0100_0101;
+  // DONE: I removed this duplicate value
 
+  // TODO: If I misstype a variable, I just get nothing as an error?
   initial
   begin
     @ (negedge rst);
@@ -107,15 +108,12 @@ module testbench;
 
       @ (posedge clk);
 
-      if (   sa_sum   !== seq_sa_sum   [i]
-          || salo_sum !== seq_salo_sum [i])
+      if (salo_sum !== seq_expected [i])
       begin
         $display("FAIL %s", `__FILE__);
-        $display("++ INPUT    => {%s, %s, %s}",
-                 `PD(i), `PB(a), `PB(b));
+        $display("++ INPUT    => {%s, %s}", `PB(seq_a), `PB(seq_b));
         $display("++ TEST     => {%s, %s, %s, %s}",
-                 `PB(sa_sum), `PB(seq_sa_sum[i]),
-                 `PB(salo_sum), `PB(seq_salo_sum[i]));
+                 `PD(i), `PB(seq_expected[i]), `PB(salo_sum), `PB(seq_expected));
         $fatal(1, "Test Failed");
       end
     end

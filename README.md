@@ -1,136 +1,131 @@
-# Сборник задач на SystemVerilog для Школы Синтеза Цифровых Схем
+# Collection of SystemVerilog tasks for the School of Digital Circuit Synthesis
 
-> **Ни дня без строчки на Верилоге**
+> **Not a day without a line in Verilog**
 >
-> Сборник задач увеличивающейся сложности
+> Collection of tasks of increasing complexity
 >
-> Юрий Панчул, 2021-2023
+> Yuri Panchul, 2021-2023
 
+## Links
 
-## Ссылки
-
-* [Школа Синтеза Цифровых Схем](https://engineer.yadro.com/chip-design-school/)
-* [Занятие первое: введение в маршрут проектирования и упражнения с комбинационной логикой](https://youtu.be/DFcvEO-gP0c)
+* [School of Digital Circuit Synthesis](https://engineer.yadro.com/chip-design-school/)
+* [Lesson one: introduction to the design flow and exercises with combinational logic](https://youtu.be/DFcvEO-gP0c)
 
 <!-- Some markdown video embedding tricks from https://stackoverflow.com/questions/4279611/how-to-embed-a-video-into-github-readme-md -->
 
 [![](https://img.youtube.com/vi/DFcvEO-gP0c/hqdefault.jpg)](https://youtu.be/DFcvEO-gP0c)
 
 
-## Инструкция по установке
+## Installation instructions
 
-Задачи можно решать с любым симулятором верилога, который поддерживает SystemVerilog. А также c бесплатным симулятором Icarus Verilog, который хотя и не поддерживает весь SystemVerilog, но поддерживает Verilog 2005 с некоторыми элементами SystemVerilog, достаточных для решения наших задач. Icarus Verilog что используют с GTKWave, программой для работы с временными диаграммами. Для первых десяти задач GTKWave нам не понадобится, но его стоит установить вместе с Icarus Verilog на будущее.
+The tasks can be solved with any Verilog simulator that supports SystemVerilog. And also with the free Icarus Verilog simulator, which, although it does not support all of SystemVerilog, does support Verilog 2005 with some SystemVerilog elements, sufficient for solving our tasks. Icarus Verilog is used with GTKWave, a program for working with timing diagrams. We will not need GTKWave for the first ten tasks, but it is worth installing it together with Icarus Verilog for the future.
 
 <p><img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/5c1/69d/934/5c169d9349c4352399b6cd962cdaa645.png">
 <img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/219/8b5/8d9/2198b58d9b1daa7345c07d2770ca2763.png">
 </p>
 
-### Установка на Linux
+### Installation on Linux
 
-Под Ubuntu и Simply Linux можно установить Icarus Verilog и GTKWave с помощью команды:
+Under Ubuntu and Debain based Linux you can install Icarus Verilog and GTKWave with the command:
 
 `sudo apt-get install verilog gtkwave`
 
 ---
-#### Замечание:
+#### Note:
 
-Если у вас старая версия дистрибутива Linux (Ubuntu), то при установке Icarus
-Verilog вы получите старую версию, которая не поддерживает `always_comb`,
-`always_ff` и многие другие конструкции SystemVerilog. Как решить эту проблему:
-1. **Проверка версии iverilog**
+If you have an old version of Linux distribution (Ubuntu), then when you install Icarus Verilog you will get an old version that does not support `always_comb`, `always_ff` and many other SystemVerilog constructs. How to solve this problem:
+
+1. **Checking iverilog version** 
     ```bash
     iverilog -v
     ```
+    If the iverilog version is less than 11, go to point 3.
+    
 
-    Если версия iverilog меньше 11, переходим к пункту 2.
-
-2. **Установка предварительных пакетов**
+2. **Installation of preliminary packages**
     ```bash
     sudo apt-get install build-essential bison flex gperf readline-common libncurses5-dev nmon autoconf
     ```
 
-3. **Скачивание последней версии iverilog**
+3. **Download the latest version of iverilog**
 
-   На сегодняшний момент (12.10.2023) последняя версия iverilog: 12.0
-   Переходим по [ссылке](https://sourceforge.net/projects/iverilog/files/iverilog/12.0/) и скачиваем архив.
+    To date (8.25.2024) the latest version of Iverilog: 12.0
+    Go [here](https://sourceforge.net/projects/iverilog/files/iverilog/12.0/) and download the archive.
 
-4. **Сборка iverilog**
-    - Распакуйте архив:
+4. **Assembly iverilog**
+    - Extract the archive:
         ```bash
         tar -xzf verilog-12.0.tar.gz
         ```
 
-    - Войдите в разархивированную папку:
+    - Enter into the verilog folder:
         ```bash
         cd verilog-12.0
         ```
 
-    - Сконфигурируйте iverilog:
+    - Configure iverilog:
         ```bash
         ./configure --prefix=/usr
         ```
 
-    - Протестируйте сборку Icarus
+    - Run the make checks
         ```bash
         make check
         ```
-        В результате, в терминале появится несколько надписей `Hello, world!`
+        As a result, several inscriptions of `HELLO, World!` Will appear in the terminal
 
-    - Установите Icarus
+    - Install icarus
         ```bash
         sudo make install
         ```
 ---
 ### Verilator
 
-Дополнительно для проверки кода на некоторые синтаксические и стилистические ошибки можно установить Verilator (версии 5.002+).
+Additionally, to check the code for some syntactic and stylistic errors, you can install Verilator (versions 5.002+).
 
-Для Ubuntu 23.04 и выше:
+For Ubuntu 23.04 and above:
 
 `sudo apt-get install verilator`
 
-Для более ранних версий Ubuntu или других дистрибутивов можно установить Verilator вместе с [OSS CAD SUITE](https://github.com/YosysHQ/oss-cad-suite-build?tab=readme-ov-file#installation)
+For earlier versions of Ubuntu or other distributions, you can install Verilator along with [OSS CAD Suite] (https://github.com/yossyshq/oss-cad-suite-build?tab=Readme-ov-v-v-ville#installation)
 
-Для проверки добавьте опцию `--lint` к скрипту:
+To check, add the option`--lint` to the script:
 `./run_all_using_iverilog_under_linux_or_macos_brew.sh --lint`
 
-Результат появится в файле `lint.txt`
+The result will appear in the file `lint.txt`
 
 ---
-### Установка на Windows
+### Installation on Windows
 
-Версию Icarus Verilog для Windows можно загрузить [с данного сайта](https://bleyer.org/icarus/)
+The Icarus Verilog version for Windows can be downloaded [from this site] (https://bleyer.org/icarus/)
 
-[Видео инструкция по установке Icarus Verilog на Windows](https://youtu.be/5Kync4z5VOw)
+[Video Instructions for the installation of icarus verilog on Windows](https://youtu.be/5kync4z5vow)
 
 
 [![](https://img.youtube.com/vi/5Kync4z5VOw/hqdefault.jpg)](https://www.youtube.com/watch?v=5Kync4z5VOw)
 
-### Установка на Apple Mac
+### Installation on Apple Mac
 
-Icarus можно поставить даже на Apple Mac, что необычно для EDA инструментация (EDA - Electronic Design Automation). Это можно сделать в консоли с помощью программы brew:
+Icarus can even be put on Apple Mac, which is unusual for EDA tools (EDA - Electronic Design Automation). This can be done in the console using the Brew:
 
 `brew install icarus-verilog`
 
-[Видео инструкция по установке Icarus Verilog на MacOS](https://youtu.be/jUYkYoYr8hs)
-
+[Video Instructions for the installation of icarus verilog on macos](https://youtu.be/juykyoyr8hs)
 
 [![](https://img.youtube.com/vi/jUYkYoYr8hs/hqdefault.jpg)](https://www.youtube.com/watch?v=jUYkYoYr8hs)
 
 
-## Выполнение и проверка заданий
+## Execution and checking tasks
 
-Для проверки задач под Linux и MacOS, необходимо открыть консоль в папке с заданиями и запустить скрипт `./run_all_using_iverilog_under_linux_or_macos_brew.sh`. Он создаст файл _log.txt_ с результатами компиляции и симуляции всех задач набора.
+To check the tasks for Linux and MacOS, you need to open the console in the folder and start the script `./run_all_using_iverilog_under_linux_or_macos_brew.sh`. It will create a file _log.txt_ with the results of compilation and simulation of all set tasks.
 
-Для проверки задач под Windows необходимо открыть консоль в папке с заданиями и запустить пакетный файл `run_all_using_iverilog_under_windows.bat`. Он так же создаст файл _log.txt_ с результатами проверки.
+To check the tasks for Windows, you need to open the console in the task folder and run the bat file `run_all_using_iverilog_under_windows.bat`. This will also create a file _log.txt_ with the results of the check.
 
-После того, как тест для всех задачек покажет **PASS**, вы можете передать его на проверку преподавателю.
+After the test for all tasks will show **PASS**.
 
-## Рекомендуемая литература, которая поможет в решении задач
+## Recommended literature that will help in solving problems
 
-<!-- Особенность формата Markdown что списки нумеруются автоматически, поэтому для форматирования "как список" используют последовательность "1." -->
-
-1. [Харрис Д.М., Харрис С.Л., «Цифровая схемотехника и архитектура компьютера: RISC-V»](https://dmkpress.com/catalog/electronics/circuit_design/978-5-97060-961-3). К ней есть [версия для планшета для предыдущего издания](https://silicon-russia.com/public_materials/2018_01_15_latest_harris_harris_ru_barabanov_version/digital_design_rus-25.10.2017.pdf) (на основе архитектуры MIPS), а к той есть более короткие [слайды для лекций](http://www.silicon-russia.com/public_materials/2016_09_01_harris_and_harris_slides/DDCA2e_LectureSlides_Ru_20160901.zip).
+1. [Harris D.M., Harris S.L., “Digital circuitry and computer architecture: RISC-V”](https://dmkpress.com/catalog/electronics/circuit_design/978-5-97060-961-3). There is [a version for a tablet for a previous edition](https://silicon-russia.com/public_materials/2018_01_15_latest_harris_harris_ru_barabanov_version/digital_design_rus-25.10.2017.pdf) (based on MIPS architecture), but there are shorter [slides for lectures](http://www.silicon-russia.com/public_materials/2016_09_01_harris_and_harris_slides/DDCA2e_LectureSlides_Ru_20160901.zip).
 ![](https://habrastorage.org/r/w1560/getpro/habr/upload_files/26c/817/9c3/26c8179c34c52fa937cd2200f789c3d0.png)
 
-1. [Романов А.Ю., Панчул Ю.В. и коллектив авторов. «Цифровой синтез. Практический курс»](https://dmkpress.com/catalog/electronics/circuit_design/978-5-97060-850-0/)
+2. [Романов А.Ю., Панчул Ю.В. и коллектив авторов. «Цифровой синтез. Практический курс»](https://dmkpress.com/catalog/electronics/circuit_design/978-5-97060-850-0/)

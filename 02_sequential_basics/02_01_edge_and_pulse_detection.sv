@@ -41,6 +41,8 @@ endmodule
 // Testbench
 //----------------------------------------------------------------------------
 
+`define KV(key, value)="name=",$sformatf(":%b", value)
+
 module testbench;
 
   logic clk;

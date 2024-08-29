@@ -95,9 +95,6 @@ module testbench;
           $fatal(1, "Test Failed");
         end
       end
-      else
-        // Testbench ignores output when vld is not set
-        $display ("vld %b, last %b, %b+%b=%b", vld, last, a, b, sav_sum);
     end
 
     $display ("PASS %s", `__FILE__);

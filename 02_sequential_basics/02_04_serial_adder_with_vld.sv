@@ -58,7 +58,7 @@ module testbench;
   end
 
   logic vld, a, b, last, sav_sum;
-  serial_adder_with_vld sav (.sum (sav_sum), .*);
+  serial_adder_with_vld sav (.sum (actual), .*);
 
   localparam n = 16;
 
@@ -69,7 +69,7 @@ module testbench;
   localparam [0 : n - 1] seq_last    = 16'b0010_0001_0101_0010;
 
   // Expected sequence of correct output values
-  localparam [0 : n - 1] seq_sav_sum = 16'b0110_0111_0100_0010;
+  localparam [0 : n - 1] expected = 16'b0110_0111_0100_0010;
 
   initial
   begin
@@ -85,13 +85,13 @@ module testbench;
       @ (posedge clk);
 
       if (vld) begin
-        if (sav_sum !== seq_sav_sum[i])
+        if (actual !== expected[i])
         begin
           $display("FAIL %s", `__FILE__);
           $display("++ INPUT    => {%s, %s, %s, %s, %s}",
                    `PD(i), `PB(vld), `PB(last), `PB(a), `PB(b));
           $display("++ TEST     => {%s, %s}",
-                   `PB(sav_sum), `PB(seq_sav_sum[i]));
+                   `PB(expected[i]), `PB(actual));
           $fatal(1, "Test Failed");
         end
       end

@@ -140,15 +140,7 @@ module testbench;
 
       @ (posedge clk);
 
-      $display ("a %b, b %b, lst %b %b %b (expected %b %b %b), mst %b %b %b (expected %b %b %b)",
-        a, b,
-        scl_less, scl_eq, scl_greater,
-        seq_scl_less[i], seq_scl_eq[i], seq_scl_greater[i],
-        scm_less, scm_eq, scm_greater,
-        seq_scm_less[i], seq_scm_eq[i], seq_scm_greater[i]);
-
-      if ({scl_less, scl_eq, scl_greater} !== {seq_scl_less[i], seq_scl_eq[i], seq_scl_greater[i]}
-          || {scm_less, scm_eq, scm_greater} !== {seq_scm_less[i], seq_scm_eq[i], seq_scm_greater[i]})
+      if ({scl_less, scl_eq, scl_greater} !== {seq_scl_less[i], seq_scl_eq[i], seq_scl_greater[i]})
       begin
         $display("FAIL %s", `__FILE__);
         $display("++ INPUT    => {%s, %s, %s}",
@@ -157,6 +149,14 @@ module testbench;
                  `PB(scl_less), `PB(scl_eq),
                  `PB(scl_greater), `PB(seq_scl_less[i]),
                  `PB(seq_scl_eq[i]), `PB(seq_scl_greater[i]));
+        $fatal(1, "(ERROR: This shouldn't fail!) Test Failed");
+      end
+
+      if ({scm_less, scm_eq, scm_greater} !== {seq_scm_less[i], seq_scm_eq[i], seq_scm_greater[i]})
+      begin
+        $display("FAIL %s", `__FILE__);
+        $display("++ INPUT    => {%s, %s, %s}",
+                 `PD(i), `PB(a), `PB(b));
         $display("++ TEST     => {%s, %s, %s} != {%s, %s, %s}",
                  `PB(scm_less), `PB(scm_eq),
                  `PB(scm_greater), `PB(seq_scm_less[i]),

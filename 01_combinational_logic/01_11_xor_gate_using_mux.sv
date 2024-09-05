@@ -1,3 +1,5 @@
+`include "../util.sv"
+
 module mux
 (
   input  d0, d1,
@@ -48,9 +50,9 @@ module testbench;
         if (o !== (a ^ b))
           begin
             $display("FAIL %s", `__FILE__);
-            $display("++ INPUT    => {a:%h, b:%h, i:%h, j:%h}", a, b, i, j);
-            $display("++ EXPECTED => {o:%h}", a ^ b);
-            $display("++ ACTUAL   => {o:%h}", o);
+            $display("++ INPUT    => {%s, %s, %s, %s}", `PH(a), `PH(b), `PH(i), `PH(j));
+            $display("++ EXPECTED => {%s}", `PH(a^b));
+            $display("++ ACTUAL   => {%s}", `PH(o));
             $fatal(1, "Test Failed");
 
           end

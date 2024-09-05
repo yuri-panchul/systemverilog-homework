@@ -92,7 +92,7 @@ module testbench;
                    `PD(i), `PB(vld), `PB(last), `PB(a), `PB(b));
           $display("++ TEST     => {%s, %s}",
                    `PB(expected[i]), `PB(actual));
-          $fatal(1, "Test Failed");
+          $finish(1);
         end
       end
     end

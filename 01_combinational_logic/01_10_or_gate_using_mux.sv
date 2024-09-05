@@ -55,7 +55,7 @@ module testbench;
             $display("++ INPUT    => {%s, %s, %s, %s}", `PH(a), `PH(b), `PH(i), `PH(j));
             $display("++ EXPECTED => {%s}", `PH(a|b));
             $display("++ ACTUAL   => {%s}", `PH(o));
-            $fatal(1, "Test Failed");
+            $finish(1);
           end
       end
 

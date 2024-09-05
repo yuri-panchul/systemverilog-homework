@@ -107,7 +107,7 @@ module testbench;
         $display("FAIL %s", `__FILE__);
         $display("++ TEST     => {%s, %s, %s}",
                  `PD(round), `PD(expected), `PD(actual));
-        $fatal(1, "Test Failed");
+        $finish(1);
       end
       round += 1;
     end

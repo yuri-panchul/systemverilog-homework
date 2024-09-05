@@ -104,7 +104,7 @@ module testbench;
         // of results in the event that there is a failure.
         $display("++ TEST     => {%s, %s, %s}",
                  `PD(i), `PB(ocpd_detected), `PB(seq_one_cycle_pulse[i]));
-        $fatal(1, "Test Failed");
+        $finish(1);
       end
     end
 

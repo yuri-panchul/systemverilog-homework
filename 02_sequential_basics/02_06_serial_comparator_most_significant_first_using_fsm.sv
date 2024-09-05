@@ -161,7 +161,7 @@ module testbench;
                  `PB(scm_less), `PB(scm_eq),
                  `PB(scm_greater), `PB(seq_scm_less[i]),
                  `PB(seq_scm_eq[i]), `PB(seq_scm_greater[i]));
-        $fatal(1, "Test Failed");
+        $finish(1);
       end
     end
 

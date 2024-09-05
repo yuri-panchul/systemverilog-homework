@@ -60,7 +60,7 @@ module testbench;
         $display("++ INPUT    => {%s, %s, %s, %s, %s}", `PH(d0), `PH(d1), `PH(d2), `PH(d3), `PH(sel));
         $display("++ EXPECTED => {%s}", `PH(ty));
         $display("++ ACTUAL   => {%s}", `PH(y));
-        $fatal(1, "Test Failed");
+        $finish(1);
       end
 
   endtask

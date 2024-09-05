@@ -119,7 +119,7 @@ module testbench;
         $display("++ TEST     => {%s, %s, %s, %s, %s}",
                  `PD(i), `PB(seq_a[i]), `PB(seq_b[i]),
                  `PB(actual), `PB(seq_expected[i]));
-        $fatal(1, "Test Failed");
+        $finish(1);
       end
     end
 

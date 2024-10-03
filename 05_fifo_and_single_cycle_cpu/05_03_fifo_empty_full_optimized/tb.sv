@@ -80,7 +80,7 @@ module tb;
 
         for (int i = 0; i < fifo_depth; i ++)
         begin
-            write_data <= i * 16 + i;
+            write_data <= fifo_width' (i * 16 + i);
             @ (posedge clk);
         end
 
@@ -101,7 +101,7 @@ module tb;
 
         for (int i = 0; i < fifo_depth / 2; i ++)
         begin
-            write_data <= i * 16 + i;
+            write_data <= fifo_width' (i * 16 + i);
             @ (posedge clk);
         end
 
@@ -110,7 +110,7 @@ module tb;
         repeat (5)
             for (int i = 0; i < fifo_depth; i ++)
             begin
-                write_data <= i * 16 + i;
+                write_data <= fifo_width' (i * 16 + i);
                 @ (posedge clk);
             end
 
@@ -147,7 +147,7 @@ module tb;
                 pop  <= '1;
                 push <= '1;
 
-                write_data <= $urandom;
+                write_data <= fifo_width' ($urandom);
             end
 
             if (~ empty & $urandom_range (1, 100) <= 50)
@@ -156,7 +156,7 @@ module tb;
             if (~ full & $urandom_range (1, 100) <= 60)
             begin
                 push <= '1;
-                write_data <= $urandom;
+                write_data <= fifo_width' ($urandom);
             end
         end
 

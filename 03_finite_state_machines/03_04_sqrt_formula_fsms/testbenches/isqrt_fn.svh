@@ -8,7 +8,7 @@ function [15:0] isqrt_fn (input [31:0] x);
 
     logic [31:0] m, tx, ty, b;
 
-    m  = 31'h4000_0000;
+    m  = 32'h4000_0000;
     tx = x;
     ty = 0;
 

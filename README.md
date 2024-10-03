@@ -1,10 +1,12 @@
-# Collection of SystemVerilog tasks for the School of Digital Circuit Synthesis
+# Collection of SystemVerilog exercises for the School of Digital Circuit Synthesis
+
+[Русский](README_ru.md)
 
 > **Not a day without a line in Verilog**
 >
 > Collection of tasks of increasing complexity
 >
-> Yuri Panchul, 2021-2023
+> Yuri Panchul, 2021-2024
 
 ## Links
 
@@ -35,12 +37,12 @@ Under Ubuntu and Debain based Linux you can install Icarus Verilog and GTKWave w
 
 If you have an old version of Linux distribution (Ubuntu), then when you install Icarus Verilog you will get an old version that does not support `always_comb`, `always_ff` and many other SystemVerilog constructs. How to solve this problem:
 
-1. **Checking iverilog version** 
+1. **Checking iverilog version**
     ```bash
     iverilog -v
     ```
     If the iverilog version is less than 11, go to point 3.
-    
+
 
 2. **Installation of preliminary packages**
     ```bash
@@ -81,23 +83,26 @@ If you have an old version of Linux distribution (Ubuntu), then when you install
 ---
 ### Verilator
 
-Additionally, to check the code for some syntactic and stylistic errors, you can install Verilator (versions 5.002+).
+Additionally, to check the code for some syntactic and stylistic errors, you can install Verilator (version 5.002+).
 
 For Ubuntu 23.04 and above:
 
 `sudo apt-get install verilator`
 
-For earlier versions of Ubuntu or other distributions, you can install Verilator along with [OSS CAD Suite] (https://github.com/yossyshq/oss-cad-suite-build?tab=Readme-ov-v-v-ville#installation)
+For earlier versions of Ubuntu or other distributions, you can install Verilator along with [OSS CAD Suite](https://github.com/YosysHQ/oss-cad-suite-build?tab=readme-ov-file#installation).
 
-To check, add the option`--lint` to the script:
-`./run_all_using_iverilog_under_linux_or_macos_brew.sh --lint`
 
-The result will appear in the file `lint.txt`
+If using OSS CAD SUITE, for setting the environment, it is recommended to use `export PATH="<extracted_location>/oss-cad-suite/bin:$PATH"` instead of `source <extracted_location>/oss-cad-suite/environment`, because latter requires additional `unset VERILATOR_ROOT` command.
+
+To perform the check, add the `--lint` or `-l` option to the script:
+`./run_linux_mac.sh --lint`
+
+The result will be written to `lint.txt`
 
 ---
 ### Installation on Windows
 
-The Icarus Verilog version for Windows can be downloaded [from this site] (https://bleyer.org/icarus/)
+The Icarus Verilog version for Windows can be downloaded [from this site](https://bleyer.org/icarus/)
 
 [Video Instructions for the installation of icarus verilog on Windows](https://youtu.be/5kync4z5vow)
 
@@ -117,11 +122,19 @@ Icarus can even be put on Apple Mac, which is unusual for EDA tools (EDA - Elect
 
 ## Execution and checking tasks
 
-To check the tasks for Linux and MacOS, you need to open the console in the folder and start the script `./run_all_using_iverilog_under_linux_or_macos_brew.sh`. It will create a file _log.txt_ with the results of compilation and simulation of all set tasks.
+To check the tasks for Linux and MacOS, you need to open the console in the folder and start the script `./run_linux_mac.sh`. It will create a file _log.txt_ with the results of compilation and simulation of all set tasks.
 
-To check the tasks for Windows, you need to open the console in the task folder and run the bat file `run_all_using_iverilog_under_windows.bat`. This will also create a file _log.txt_ with the results of the check.
+To check the tasks for Windows, you need to open the console in the task folder and run the bat file `run_windows.bat`. This will also create a file _log.txt_ with the results of the check.
 
 After the test for all tasks will show **PASS**.
+
+## GTKWave alternative
+
+Instead of GTKWave you can use cross-platform waveform viewer [Surfer](https://surfer-project.org/).
+
+It looks much nicer on modern screens (and especially on Wayland), works faster and you can even try it out in your web browser without installing.
+
+![Surfer](https://gitlab.com/surfer-project/surfer/-/raw/main/snapshots/render_readme_screenshot.png)
 
 ## Recommended literature that will help in solving problems
 

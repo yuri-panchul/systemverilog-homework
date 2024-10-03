@@ -18,6 +18,7 @@ module sr_cpu
     input           rst,      // reset
 
     output  [31:0]  imAddr,   // instruction memory address
+    input           imDataVld,
     input   [31:0]  imData,   // instruction memory data
 
     input   [ 4:0]  regAddr,  // debug access reg address
@@ -51,7 +52,14 @@ module sr_cpu
     wire [31:0] pcPlus4  = pc + 32'd4;
     wire [31:0] pcNext   = pcSrc ? pcBranch : pcPlus4;
 
-    register_with_rst r_pc (clk, rst, pcNext, pc);
+    register_with_rst_and_en r_pc
+    (
+        .clk      ( clk       ),
+        .rst      ( rst       ),
+        .d        ( pcNext    ),
+        .q        ( pc        )
+    );
+
 
     // program memory access
 
@@ -81,18 +89,19 @@ module sr_cpu
     wire [31:0] rd2;
     wire [31:0] wd3;
 
-    sr_register_file rf
+    sr_register_file i_rf
     (
-        .clk        ( clk         ),
-        .a0         ( regAddr     ),
-        .a1         ( rs1         ),
-        .a2         ( rs2         ),
-        .a3         ( rd          ),
-        .rd0        ( rd0         ),
-        .rd1        ( rd1         ),
-        .rd2        ( rd2         ),
-        .wd3        ( wd3         ),
-        .we3        ( regWrite    )
+        .clk        ( clk                  ),
+        .a0         ( regAddr              ),
+        .a1         ( rs1                  ),
+        .a2         ( rs2                  ),
+        .a3         ( rd                   ),
+        .rd0        ( rd0                  ),
+        .rd1        ( rd1                  ),
+        .rd2        ( rd2                  ),
+        .wd3        ( wd3                  ),
+        .we3        ( regWrite
+        )
     );
 
     // alu

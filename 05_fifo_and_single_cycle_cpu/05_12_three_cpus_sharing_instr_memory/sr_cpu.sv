@@ -92,7 +92,7 @@ module sr_cpu
     wire [31:0] rd2;
     wire [31:0] wd3;
 
-    sr_register_file rf
+    sr_register_file i_rf
     (
         .clk        ( clk                  ),
         .a0         ( regAddr              ),

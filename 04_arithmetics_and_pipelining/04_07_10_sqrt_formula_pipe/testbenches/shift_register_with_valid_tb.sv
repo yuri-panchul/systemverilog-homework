@@ -100,9 +100,6 @@ module shift_register_with_valid_tb
     //--------------------------------------------------------------------------
     // Driving stimulus
 
-    localparam max_latency       = depth,
-               gap_between_tests = 100;
-
     bit run_completed = '0;
 
     task run;
@@ -129,8 +126,8 @@ module shift_register_with_valid_tb
 
             repeat (3 * depth)
             begin
-                in_data <= $urandom ();
-                in_vld  <= $urandom ();
+                in_data <= width' ($urandom());
+                in_vld  <= 1'     ($urandom());
 
                 @ (posedge clk);
             end
@@ -150,7 +147,8 @@ module shift_register_with_valid_tb
 
     always @ (posedge clk)
     begin
-        $write ("%s time %7d cycle %5d", test_id, $time, cycle ++);
+        $write ("%s time %7d cycle %5d", test_id, $time, cycle);
+        cycle <= cycle + 1'b1;
 
         if (rst)
             $write (" rst");

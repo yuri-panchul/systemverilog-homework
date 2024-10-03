@@ -30,4 +30,5 @@ factorial:
 
 loop2:  mul     a0, a0, t0
         addi    t0, t0, 1
-        b       loop
+        beqz    zero, loop2
+        # b       loop

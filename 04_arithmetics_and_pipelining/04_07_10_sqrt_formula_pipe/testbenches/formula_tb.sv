@@ -230,7 +230,8 @@ module formula_tb
 
     always @ (posedge clk)
     begin
-        $write ("%s time %7d cycle %5d", test_id, $time, cycle ++);
+        $write ("%s time %7d cycle %5d", test_id, $time, cycle);
+        cycle <= cycle + 1'b1;
 
         if (rst)
             $write (" rst");
@@ -255,6 +256,12 @@ module formula_tb
     logic [res_width - 1:0] res_expected;
 
     logic was_reset = 0;
+
+    // Blocking assignments are okay in this synchronous always block, because
+    // data is passed using queue and all the checks are inside that always
+    // block, so no race condition is possible
+
+    // verilator lint_off BLKSEQ
 
     always @ (posedge clk)
     begin
@@ -306,6 +313,8 @@ module formula_tb
             end
         end
     end
+
+    // verilator lint_on BLKSEQ
 
     //----------------------------------------------------------------------
 

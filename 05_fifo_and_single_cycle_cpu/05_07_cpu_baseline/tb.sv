@@ -21,6 +21,9 @@ module tb;
     logic [ 4:0] regAddr;  // debug access reg address
     wire  [31:0] regData;  // debug access reg data
 
+    localparam ROM_SIZE = 1024;
+    localparam ADDR_W   = $clog2(ROM_SIZE);
+
     sr_cpu cpu
     (
         .clk     ( clk     ),
@@ -33,10 +36,10 @@ module tb;
         .regData ( regData )
     );
 
-    instruction_rom # (.SIZE (1024)) rom
+    instruction_rom # (.SIZE (ROM_SIZE)) i_rom
     (
-        .a       ( imAddr  ),
-        .rd      ( imData  )
+        .a       ( ADDR_W' (imAddr) ),
+        .rd      ( imData           )
     );
 
     //------------------------------------------------------------------------
@@ -68,7 +71,7 @@ module tb;
             // Uncomment the following `define
             // to generate a VCD file and analyze it using GTKwave
 
-            // $dumpvars;
+            $dumpvars;
         `endif
 
         regAddr <= 5'd10;  // a0 register used for I/O
@@ -103,7 +106,8 @@ module tb;
 
     always @ (posedge clk)
     begin
-        $write ("cycle %5d", cycle ++);
+        $write ("cycle %5d", cycle);
+        cycle <= cycle + 1'b1;
 
         if (rst)
         begin

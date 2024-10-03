@@ -6,7 +6,13 @@ module fifo_monitor
 )
 (
     input               clk,
+
+    // Reset signal has to be asynchronous in flip_flop_fifo_with_counter
+    // for one of FPGA boards, and synchronous in testbench
+    // verilator lint_off SYNCASYNCNET
     input               rst,
+    // verilator lint_on SYNCASYNCNET
+
     input               push,
     input               pop,
     input [width - 1:0] write_data,
@@ -16,9 +22,20 @@ module fifo_monitor
 );
 
     logic [width - 1:0] queue [$];
+
+
+    // Might be needed for queue.pop_front() in some simulators
+    // verilator lint_off UNUSEDSIGNAL
     logic [width - 1:0] dummy;
+    // verilator lint_on UNUSEDSIGNAL
 
     logic was_reset = 0;
+
+    // Blocking assignments are okay in this synchronous always block, because
+    // data is passed using queue and all the checks are inside that always
+    // block, so no race condition is possible
+
+    // verilator lint_off BLKSEQ
 
     always @ (posedge clk)
     begin
@@ -45,8 +62,8 @@ module fifo_monitor
             // assert ( full  == ( queue.size () == depth ));
 
             assert (~ (  ~ empty
-                       & queue.size () != 0
-                       & read_data != queue [0] ));
+                       && queue.size () != 0
+                       && read_data != queue [0] ));
 
             // Modeling
 
@@ -90,5 +107,7 @@ module fifo_monitor
             end
         end
     end
+
+    // verilator lint_on BLKSEQ
 
 endmodule

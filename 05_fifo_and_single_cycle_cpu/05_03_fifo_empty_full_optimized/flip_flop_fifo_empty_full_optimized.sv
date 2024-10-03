@@ -15,10 +15,8 @@ module flip_flop_fifo_empty_full_optimized
 
     //------------------------------------------------------------------------
 
-    localparam pointer_width = $clog2 (depth),
-               counter_width = $clog2 (depth + 1);
-
-    localparam [counter_width - 1:0] max_ptr = counter_width' (depth - 1);
+    localparam pointer_width = $clog2 (depth);
+    localparam max_ptr       = pointer_width' (depth - 1);
 
     //------------------------------------------------------------------------
 

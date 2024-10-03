@@ -1,0 +1,7 @@
+{signal: [
+  {name: 'clk'  , wave: 'p...P.p.Pp.Pp...P.P.Pp.Pp..P.P.Pp.Pp..P.P.Pp.P'},
+  {name: 'rst'  , wave: 'x10..........10.........10.........10.........'},
+  {name: 'vld'  , wave: 'x0.1....0.10...1....0.10..1....0.10..1....0.10'},
+  {name: 'rdy'  , wave: 'x1...0.10.10.1......0.101......0.101......0.10'},
+  {name: 'data' , wave: 'x..345..x.7x...345689..x..345689..x..345689..x', data: "A B C D E F G H I J K L M N O P Q R T U V W"},
+]}

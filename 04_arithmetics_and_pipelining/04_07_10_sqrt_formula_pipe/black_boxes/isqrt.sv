@@ -26,7 +26,14 @@ module isqrt
     wire [31:0] ix [0:15], iy [0:15];
     wire [31:0] ox [0:15], oy [0:15];
 
+    // From Verilator warning description: Often UNOPTFLAT is caused by logic
+    // that isn’t truly circular as viewed by synthesis, which analyzes
+    // per the signal bit, but is circular to the IEEE event model which
+    // analyzes per-signal.
+
+    // verilator lint_off UNOPTFLAT
     wire [15:0] ivld, ovld;
+    // verilator lint_on UNOPTFLAT
 
     generate
         genvar i;
@@ -34,7 +41,7 @@ module isqrt
         for (i = 0; i < 16; i = i + 1)
         begin : u
             if (i % n_slices_per_stage != n_slices_per_stage - 1)
-            begin
+            begin : slice_comb_gen
                 isqrt_slice_comb #(.m (m >> (i * 2))) inst
                 (
                     .ix  ( ix [i] ),
@@ -46,7 +53,7 @@ module isqrt
                 assign ovld [i] = ivld [i];
             end
             else
-            begin
+            begin : slice_reg_gen
                 isqrt_slice_reg #(.m (m >> (i * 2))) inst
                 (
                     .clk  ( clk      ),
@@ -76,7 +83,7 @@ module isqrt
     assign ix   [0] = x;
     assign iy   [0] = 0;
 
-    assign y_vld = ovld [15];
-    assign y     = oy   [15];
+    assign y_vld =    ovld [15];
+    assign y     = 16' (oy [15]);
 
 endmodule

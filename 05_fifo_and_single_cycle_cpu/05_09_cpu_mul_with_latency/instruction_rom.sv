@@ -12,11 +12,12 @@
 
 module instruction_rom
 #(
-    parameter SIZE = 64
+    parameter SIZE   = 64,
+    parameter ADDR_W = $clog2(SIZE)
 )
 (
-    input  [31:0] a,
-    output [31:0] rd
+    input  [ADDR_W - 1:0] a,
+    output [        31:0] rd
 );
     reg [31:0] rom [0:SIZE - 1];
     assign rd = rom [a];

@@ -13,7 +13,7 @@ function [31:0] formula_2_fn
     input [31:0] b,
     input [31:0] c
 );
-    return isqrt_fn (a + isqrt_fn (b + isqrt_fn (c)));
+    return 32' (isqrt_fn (a + 32' (isqrt_fn (b + 32' (isqrt_fn (c) ) ) ) ) );
 
 endfunction
 

@@ -51,6 +51,9 @@ module formula_1_impl_1_fsm
         isqrt_x_vld = '0;
         isqrt_x     = 'x;  // Don't care
 
+        // This lint warning is bogus because we assign the default value above
+        // verilator lint_off CASEINCOMPLETE
+
         case (state)
         st_idle:
         begin
@@ -93,6 +96,9 @@ module formula_1_impl_1_fsm
             end
         end
         endcase
+
+        // verilator lint_on  CASEINCOMPLETE
+
     end
 
     //------------------------------------------------------------------------
@@ -117,6 +123,6 @@ module formula_1_impl_1_fsm
         if (state == st_idle)
             res <= '0;
         else if (isqrt_y_vld)
-            res <= res + isqrt_y;
+            res <= res + 32' (isqrt_y);
 
 endmodule

@@ -7,7 +7,12 @@ module tb
     // Signals to drive Device Under Test - DUT
 
     logic clk;
+
+    // Reset signal has to be asynchronous in flip_flop_fifo_with_counter
+    // for one of FPGA boards, and synchronous in testbench
+    // verilator lint_off SYNCASYNCNET
     logic rst;
+    // verilator lint_on SYNCASYNCNET
 
     // Upstream
 
@@ -52,7 +57,8 @@ module tb
 
     always @ (posedge clk)
     begin
-        $write ("time %7d cycle %5d", $time, cycle ++);
+        $write ("time %7d cycle %5d", $time, cycle);
+        cycle <= cycle + 1'b1;
 
         if ( rst       ) $write ( " rst"       ); else $write ( "    "       );
 
@@ -90,6 +96,12 @@ module tb
     logic [width - 1:0] sum_data_expected;
 
     logic was_reset = 0;
+
+    // Blocking assignments are okay in this synchronous always block, because
+    // data is passed using queue and all the checks are inside that always
+    // block, so no race condition is possible
+
+    // verilator lint_off BLKSEQ
 
     always @ (posedge clk)
     begin
@@ -133,6 +145,8 @@ module tb
             end
         end
     end
+
+    // verilator lint_on BLKSEQ
 
     //------------------------------------------------------------------------
     // Check at the end of simulation
@@ -279,7 +293,7 @@ module tb
             end
             else if (~ a_valid | a_ready)
             begin
-                a_valid <= $urandom ();
+                a_valid <= 1' ($urandom());
             end
 
             // If this assertion fails, it is an internal error in the testbench
@@ -292,10 +306,10 @@ module tb
             end
             else if (~ b_valid | b_ready)
             begin
-                b_valid <= $urandom ();
+                b_valid <= 1' ($urandom());
             end
 
-            sum_ready <= $urandom ();
+            sum_ready <= 1' ($urandom());
 
             @ (posedge clk);
         end
@@ -316,12 +330,12 @@ module tb
         if (rst)
             a_data <= '0;
         else if (a_valid & a_ready)
-            a_data <= $urandom;
+            a_data <= width' ($urandom);
 
     always @ (posedge clk)
         if (rst)
             b_data <= '0;
         else if (b_valid & b_ready)
-            b_data <= $urandom;
+            b_data <= width' ($urandom);
 
 endmodule

@@ -60,7 +60,7 @@ module tb;
             if (   i <= 1 && regData [i] == passRegData_Fibonacci
                 || i >  1 && regData [i] == passRegData_Factorial )
             begin
-                testPass [i] = 1;
+                testPass [i] <= 1;
             end
         end
     end
@@ -119,19 +119,18 @@ module tb;
     //------------------------------------------------------------------------
 
     int unsigned cycle = 0;
-    bit wasRst = 1'b0;
 
     logic [31:0] prevImAddr   [nCPUs];
     logic [31:0] prevRegData  [nCPUs];
 
     always @ (posedge clk)
     begin
-        $write ("cycle %5d", cycle ++);
+        $write ("cycle %5d", cycle);
+        cycle <= cycle + 1'b1;
 
         if (rst)
         begin
             $write (" rst");
-            wasRst <= 1'b1;
         end
         else
         begin

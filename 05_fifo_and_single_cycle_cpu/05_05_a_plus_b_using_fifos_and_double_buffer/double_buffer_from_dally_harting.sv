@@ -5,8 +5,6 @@
 // by William James Dally and R. Curtis Harting
 // 2012
 
-// It is equivalent to 2-deep FIFO
-
 module double_buffer_from_dally_harting
 # (
     parameter width = 0

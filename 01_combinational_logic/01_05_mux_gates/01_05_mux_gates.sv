@@ -1,3 +1,7 @@
+//----------------------------------------------------------------------------
+// Example
+//----------------------------------------------------------------------------
+
 module mux_2_1_width_1
 (
   input  d0, d1,
@@ -48,6 +52,8 @@ module mux_4_1_width_1
 endmodule
 
 //----------------------------------------------------------------------------
+// Task
+//----------------------------------------------------------------------------
 
 module mux_4_1
 (
@@ -56,12 +62,10 @@ module mux_4_1
   output [3:0] y
 );
 
-  // TODO
-
+  // Task:
   // Using code for mux_2_1_width_1, mux_2_1_width_2,
   // mux_4_1_width_1 as examples,
-  // write code for 4:1 mux using only &, | and ~ operations,
-  // and possibly some wire continuous assignments.
+  // write code for 4:1 mux using only &, | and ~ operations.
 
 
 endmodule

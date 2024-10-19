@@ -36,6 +36,13 @@ module testbench;
 
   initial
   begin
+    `ifdef __ICARUS__
+      // Uncomment the following line
+      // to generate a VCD file and analyze it using GTKwave or Surfer
+
+      // $dumpvars;
+    `endif
+
     @ (negedge rst);
     while (fifo1.size () < n)
     begin

@@ -28,22 +28,24 @@ module testbench;
 
   localparam n = 16;
 
-  // Ascending bit range in a packed vector is intentional here
-  // verilator lint_off ASCRANGE
-
   // Sequence of input values
-  localparam [0 : n - 1] seq_vld     = 16'b0110_1111_1100_0111;
-  localparam [0 : n - 1] seq_a       = 16'b0100_1001_1001_0110;
-  localparam [0 : n - 1] seq_b       = 16'b0010_1010_1001_0110;
-  localparam [0 : n - 1] seq_last    = 16'b0010_0001_0101_0010;
+  localparam [n - 1:0] seq_vld     = 16'b1110_0001_1111_0110;
+  localparam [n - 1:0] seq_a       = 16'b0110_1001_1001_0010;
+  localparam [n - 1:0] seq_b       = 16'b0110_1001_0101_0100;
+  localparam [n - 1:0] seq_last    = 16'b0100_1010_1000_0100;
 
   // Expected sequence of correct output values
-  localparam [0 : n - 1] expected = 16'b0110_0111_0100_0010;
-
-  // verilator lint_on ASCRANGE
+  localparam [n - 1:0] expected = 16'b0110_0010_1110_0110;
 
   initial
   begin
+    `ifdef __ICARUS__
+      // Uncomment the following line
+      // to generate a VCD file and analyze it using GTKwave or Surfer
+
+      // $dumpvars;
+    `endif
+
     @ (negedge rst);
 
     for (int i = 0; i < n; i ++)

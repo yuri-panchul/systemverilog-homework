@@ -2,6 +2,11 @@
 
 #-----------------------------------------------------------------------------
 
+waveform_viewer="gtkwave"
+# waveform_viewer="surfer"
+
+#-----------------------------------------------------------------------------
+
 simulate_rtl()
 {
     if ! command -v iverilog > /dev/null 2>&1
@@ -23,11 +28,11 @@ simulate_rtl()
     if [ -d testbenches ]
     then
         iverilog -g2005-sv        \
+                 -o sim.out       \
                  -I testbenches   \
                  testbenches/*.sv \
                  black_boxes/*.sv \
                  ./*.sv           \
-                 -o sim.out       \
                  >> log.txt 2>&1  \
                  && vvp sim.out   \
                  >> log.txt 2>&1
@@ -36,8 +41,8 @@ simulate_rtl()
     elif [ -f tb.sv ]
     then
         iverilog -g2005-sv       \
-                 ./*sv           \
                  -o sim.out      \
+                 ./*sv           \
                  >> log.txt 2>&1 \
                  && vvp sim.out  \
                  >> log.txt 2>&1
@@ -49,8 +54,8 @@ simulate_rtl()
             if [ ! -d "$d"testbenches ]
             then
                 iverilog -g2005-sv          \
-                         "$d"*.sv           \
                          -o "$d"sim.out     \
+                         "$d"*.sv           \
                          >> log.txt 2>&1    \
                          && vvp "$d"sim.out \
                          >> log.txt 2>&1
@@ -59,6 +64,12 @@ simulate_rtl()
             fi
         done
     fi
+
+
+    # Don't print iverilog warning about not supporting constant selects
+    sed -i '/sorry: constant selects/d' log.txt
+    # Don't print $finish calls to make log cleaner
+    sed -i '/finish called/d' log.txt
 }
 
 #-----------------------------------------------------------------------------
@@ -200,11 +211,22 @@ open_waveform()
     if [ -f dump.vcd ]
     then
 
-        if [ -f gtkwave.tcl ]
+        if [ "$waveform_viewer" = "gtkwave" ]
         then
-            gtkwave dump.vcd --script gtkwave.tcl &
-        else
-            gtkwave dump.vcd &
+            if [ -f gtkwave.tcl ]
+            then
+                gtkwave dump.vcd --script gtkwave.tcl &
+            else
+                gtkwave dump.vcd &
+            fi
+        elif [ "$waveform_viewer" = "surfer" ]
+        then
+            if [ -f state.ron ]
+            then
+                surfer dump.vcd --state-file state.ron &
+            else
+                surfer dump.vcd &
+            fi
         fi
 
     else

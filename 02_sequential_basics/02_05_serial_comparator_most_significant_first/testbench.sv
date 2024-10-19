@@ -14,14 +14,13 @@ module testbench;
 
   logic rst;
 
-  initial
-  begin
+  task reset();
     rst <= 'x;
     repeat (2) @ (posedge clk);
     rst <= '1;
     repeat (2) @ (posedge clk);
     rst <= '0;
-  end
+  endtask
 
   logic a, b;
   logic scl_less, scl_eq, scl_greater;
@@ -39,55 +38,107 @@ module testbench;
 
   localparam n = 16;
 
-  // Ascending bit range in a packed vector is intentional here
-  // verilator lint_off ASCRANGE
+  wire [n - 1:0] seq_a           [3];
+  wire [n - 1:0] seq_b           [3];
+
+  wire [n - 1:0] seq_scl_less    [3];
+  wire [n - 1:0] seq_scl_eq      [3];
+  wire [n - 1:0] seq_scl_greater [3];
+
+  wire [n - 1:0] seq_scm_less    [3];
+  wire [n - 1:0] seq_scm_eq      [3];
+  wire [n - 1:0] seq_scm_greater [3];
+
 
   // Sequence of input values
-  localparam [0 : n - 1] seq_a           = 16'b0110_0100_1000_0010;
-  localparam [0 : n - 1] seq_b           = 16'b0110_0010_0110_0010;
+  assign seq_a           [0] = 16'b0100_0001_0010_0110;
+  assign seq_b           [0] = 16'b0100_0110_0100_0110;
 
   // Expected sequence of correct output values
-  localparam [0 : n - 1] seq_scl_less    = 16'b0000_0011_0111_1111;
-  localparam [0 : n - 1] seq_scl_eq      = 16'b1111_1000_0000_0000;
-  localparam [0 : n - 1] seq_scl_greater = 16'b0000_0100_1000_0000;
+  // LSB comes first
+  assign seq_scl_less    [0] = 16'b1111_1110_1100_0000;
+  assign seq_scl_eq      [0] = 16'b0000_0000_0001_1111;
+  assign seq_scl_greater [0] = 16'b0000_0001_0010_0000;
 
-  localparam [0 : n - 1] seq_scm_less    = 16'b0000_0000_0000_0000;
-  localparam [0 : n - 1] seq_scm_eq      = 16'b1111_1000_0000_0000;
-  localparam [0 : n - 1] seq_scm_greater = 16'b0000_0111_1111_1111;
+  // MSB comes first
+  assign seq_scm_less    [0] = 16'b0000_0000_0000_0000;
+  assign seq_scm_eq      [0] = 16'b0000_0000_0001_1111;
+  assign seq_scm_greater [0] = 16'b1111_1111_1110_0000;
 
-  // verilator lint_on ASCRANGE
+  //---------------------------------------------------------------------------
+
+  // Sequence of input values
+  assign seq_a           [1] = 16'b0100_0001_0000_0110;
+  assign seq_b           [1] = 16'b0101_0110_0100_0110;
+
+  // Expected sequence of correct output values
+  assign seq_scl_less    [1] = 16'b1111_1110_1100_0000;
+  assign seq_scl_eq      [1] = 16'b0000_0000_0011_1111;
+  assign seq_scl_greater [1] = 16'b0000_0001_0000_0000;
+
+  assign seq_scm_less    [1] = 16'b1111_1111_1100_0000;
+  assign seq_scm_eq      [1] = 16'b0000_0000_0011_1111;
+  assign seq_scm_greater [1] = 16'b0000_0000_0000_0000;
+
+  //---------------------------------------------------------------------------
+
+  // Sequence of input values
+  // equal numbers case
+  assign seq_a           [2] = 16'b0100_0111_0010_0110;
+  assign seq_b           [2] = 16'b0100_0111_0010_0110;
+
+  // Expected sequence of correct output values
+  assign seq_scl_less    [2] = 16'b0000_0000_0000_0000;
+  assign seq_scl_eq      [2] = 16'b1111_1111_1111_1111;
+  assign seq_scl_greater [2] = 16'b0000_0000_0000_0000;
+
+  assign seq_scm_less    [2] = 16'b0000_0000_0000_0000;
+  assign seq_scm_eq      [2] = 16'b1111_1111_1111_1111;
+  assign seq_scm_greater [2] = 16'b0000_0000_0000_0000;
+
+  //---------------------------------------------------------------------------
 
   initial
   begin
-    @ (negedge rst);
+    `ifdef __ICARUS__
+      // Uncomment the following line
+      // to generate a VCD file and analyze it using GTKwave or Surfer
 
-    for (int i = 0; i < n; i ++)
+      // $dumpvars;
+    `endif
+
+    for (int i = 0; i < 3; i ++)
     begin
-      a <= seq_a[i];
-      b <= seq_b[i];
+      reset();
 
-      @ (posedge clk);
-
-      if ({scl_less, scl_eq, scl_greater} !== {seq_scl_less[i], seq_scl_eq[i], seq_scl_greater[i]})
+      for (int j = 0; j < n; j ++)
       begin
-        $display("FAIL %s", `__FILE__);
-        $display("++ INPUT    => {%s, %s, %s}",
-                 `PD(i), `PB(a), `PB(b));
-        $display("++ TEST     => {%s, %s, %s, %s, %s, %s}",
-                 `PB(scl_less), `PB(scl_eq), `PB(scl_greater),
-                 `PB(seq_scl_less[i]), `PB(seq_scl_eq[i]), `PB(seq_scl_greater[i]));
-        $finish(1);
-      end
+        a <= seq_a[i][j];
+        b <= seq_b[i][j];
 
-      if ({scm_less, scm_eq, scm_greater} !== {seq_scm_less[i], seq_scm_eq[i], seq_scm_greater[i]})
-      begin
-        $display("FAIL %s", `__FILE__);
-        $display("++ INPUT    => {%s, %s, %s}",
-                 `PD(i), `PB(a), `PB(b));
-        $display("++ TEST     => {%s, %s, %s, %s, %s, %s}",
-                 `PB(scm_less), `PB(scm_eq), `PB(scm_greater),
-                 `PB(seq_scm_less[i]), `PB(seq_scm_eq[i]), `PB(seq_scm_greater[i]));
-        $finish(1);
+        @ (posedge clk);
+
+        if ({scl_less, scl_eq, scl_greater} !== {seq_scl_less[i][j], seq_scl_eq[i][j], seq_scl_greater[i][j]})
+        begin
+          $display("FAIL %s", `__FILE__);
+          $display("++ INPUT    => {%s, %s, %s}",
+                   `PD(j), `PB(a), `PB(b));
+          $display("++ TEST     => {%s, %s, %s} != {%s, %s, %s}",
+                   `PB(scl_less), `PB(scl_eq), `PB(scl_greater),
+                   `PB(seq_scl_less[i][j]), `PB(seq_scl_eq[i][j]), `PB(seq_scl_greater[i][j]));
+          $fatal(1, "(ERROR: This shouldn't fail!) Test Failed");
+        end
+
+        if ({scm_less, scm_eq, scm_greater} !== {seq_scm_less[i][j], seq_scm_eq[i][j], seq_scm_greater[i][j]})
+        begin
+          $display("FAIL %s", `__FILE__);
+          $display("++ INPUT    => {%s, %s, %s}",
+                   `PD(j), `PB(a), `PB(b));
+          $display("++ TEST     => {%s, %s, %s} != {%s, %s, %s}",
+                   `PB(scm_less), `PB(scm_eq), `PB(scm_greater),
+                   `PB(seq_scm_less[i][j]), `PB(seq_scm_eq[i][j]), `PB(seq_scm_greater[i][j]));
+          $finish(1);
+        end
       end
     end
 

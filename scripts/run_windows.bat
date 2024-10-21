@@ -1,6 +1,6 @@
 @echo off
 setlocal
-echo ALL PROBLEMS > log.txt
+type nul > log.txt
 set mainDir=%cd%
 
 where iverilog > nul 2>&1
@@ -51,22 +51,21 @@ if exist "program.s" (
     rem :: dump .text HexText program.hex - dump segment .text to program.hex file in HexText format
 
     java -jar "%PathToBin%" nc a ae1 dump .text HexText program.hex program.s >> log.txt
-    %iverilog% -g2005-sv *.sv >> log.txt 2>&1
-    %vvp% a.out >> log.txt 2>&1
+    %iverilog% -g2005-sv *.sv 2>&1 | findstr /v /c:"sorry: constant selects" >> log.txt
+    %vvp% a.out 2>&1 | findstr /v /c:"$finish called" >> log.txt
     del a.out
 ) else if exist "testbenches" (
-    %iverilog% -g2005-sv -I testbenches testbenches/*.sv black_boxes/*.sv *.sv >> log.txt 2>&1
-    %vvp% a.out >> log.txt 2>&1
+    %iverilog% -g2005-sv -I testbenches testbenches/*.sv black_boxes/*.sv *.sv 2>&1 | findstr /v /c:"sorry: constant selects" >> log.txt
+    %vvp% a.out 2>&1 | findstr /v /c:"$finish called" >> log.txt
     del /q a.out
 ) else if exist "tb.sv" (
-    %iverilog% -g2005-sv *.sv >> log.txt 2>&1
-    %vvp% a.out >> log.txt 2>&1
+    %iverilog% -g2005-sv *.sv 2>&1 | findstr /v /c:"sorry: constant selects" >> log.txt
+    %vvp% a.out 2>&1 | findstr /v /c:"$finish called" >> log.txt
     del a.out
 ) else (
     for /d %%d in (*) do (
         if exist "%%d/program.s" (
             pushd %%d
-            del log.txt
             where java > nul 2>&1
             if errorlevel 1 (
             echo ERROR: java.exe is not in the path. It is needed to run RARS, a RISC-V instruction set simulator."
@@ -79,28 +78,29 @@ if exist "program.s" (
             rem :: ae<n>                          - terminate RARS with integer exit code if an assemble error occurs
             rem :: dump .text HexText program.hex - dump segment .text to program.hex file in HexText format
 
+            type nul > log.txt
             java -jar %PathToBin% nc a ae1 dump .text HexText program.hex program.s >> log.txt 2>&1
-            %iverilog% -g2005-sv *.sv >> log.txt 2>&1
-            %vvp% a.out >> log.txt 2>&1
+            %iverilog% -g2005-sv *.sv 2>&1 | findstr /v /c:"sorry: constant selects" >> log.txt
+            %vvp% a.out 2>&1 | findstr /v /c:"$finish called" >> log.txt
             del a.out
             popd
         ) else if exist "%%d/testbenches" (
             pushd %%d
-            del log.txt
-            %iverilog% -g2005-sv -I testbenches testbenches/*.sv black_boxes/*.sv *.sv >> log.txt 2>&1
-            %vvp% a.out >> log.txt 2>&1
+            type nul > log.txt
+            %iverilog% -g2005-sv -I testbenches testbenches/*.sv black_boxes/*.sv *.sv 2>&1 | findstr /v /c:"sorry: constant selects" >> log.txt
+            %vvp% a.out 2>&1 | findstr /v /c:"$finish called" >> log.txt
             del a.out
             popd
         ) else if exist "%%d/tb.sv" (
             pushd %%d
-            del log.txt
-            %iverilog% -g2005-sv *.sv >> log.txt 2>&1
-            %vvp% a.out >> log.txt 2>&1
+            type nul > log.txt
+            %iverilog% -g2005-sv *.sv 2>&1 | findstr /v /c:"sorry: constant selects" >> log.txt
+            %vvp% a.out 2>&1 | findstr /v /c:"$finish called" >> log.txt
             del a.out
             popd
         ) else (
-            %iverilog% -g2005-sv %%d/*.sv >> log.txt 2>&1
-            %vvp% a.out >> log.txt 2>&1
+            %iverilog% -g2005-sv %%d/*.sv 2>&1 | findstr /v /c:"sorry: constant selects" >> log.txt
+            %vvp% a.out 2>&1 | findstr /v /c:"$finish called" >> log.txt
             del a.out
         )
     )

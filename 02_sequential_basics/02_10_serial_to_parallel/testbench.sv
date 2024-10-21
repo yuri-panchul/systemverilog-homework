@@ -29,13 +29,24 @@ module testbench;
 
     // Instantiation
 
-    localparam width = 8;
+    localparam width     = 8;
 
-    logic               serial_valid;
-    logic               serial_data;
+    localparam n_outputs = 100;
+    localparam n_inputs  = n_outputs * width;
 
-    wire                parallel_valid;
-    wire  [width - 1:0] parallel_data;
+    // Minimum to count at least 1000 valid inputs
+    localparam in_cnt_w  = $clog2(n_inputs + 1);
+    // 8 times smaller than input
+    localparam out_cnt_w = $clog2(n_outputs + 1);
+
+    logic                   serial_valid;
+    logic                   serial_data;
+
+    wire                    parallel_valid;
+    wire  [    width - 1:0] parallel_data;
+
+    logic [ in_cnt_w - 1:0] in_vld_cnt;
+    logic [out_cnt_w - 1:0] out_vld_cnt;
 
     serial_to_parallel  # (.width (width)) dut (.*);
 
@@ -52,13 +63,17 @@ module testbench;
     begin
         if (rst)
         begin
-            was_reset <= 1'b1;
-            queue = {};
+            was_reset   <= 1'b1;
+            out_vld_cnt <= '0;
+            in_vld_cnt  <= '0;
+            queue        = {};
         end
         else if (was_reset)
         begin
             if (parallel_valid)
             begin
+                out_vld_cnt <= out_vld_cnt + 1'b1;
+
                 if (queue.size () < width)
                 begin
                     $display ("FAIL %s", `__FILE__);
@@ -85,14 +100,20 @@ module testbench;
                 end
             end
 
-            if (serial_valid)
+            if (serial_valid) begin
+                in_vld_cnt <= in_vld_cnt + 1'b1;
+
                 queue.push_back (serial_data);
+            end
         end
     end
 
     //------------------------------------------------------------------------
 
     // Stimulus generation
+
+    int current_inputs;
+    logic d_serial_valid;
 
     initial
     begin
@@ -107,10 +128,29 @@ module testbench;
 
         @ (negedge rst);
 
-        repeat (1000)
+        while (current_inputs != n_inputs)
         begin
-            { serial_valid, serial_data } <= 2' ($urandom ());
+            d_serial_valid = 1' ($urandom());
+            current_inputs += 32' (d_serial_valid);
+            { serial_valid, serial_data } <= { d_serial_valid, 1' ($urandom())};
+
             @ (posedge clk);
+        end
+
+        // Stop driving and wait for output
+        // We have to wait 2 cycles here: one to get an output from the module
+        // and another one to wait for non-blocking assignment to out_vld_cnt
+        serial_valid <= '0;
+        @(posedge clk);
+        @(posedge clk);
+
+        if (in_cnt_w' (out_vld_cnt * width) !== in_vld_cnt) begin
+            $display ("FAIL %s", `__FILE__);
+
+            $display("++ TEST     => {%s != %s}", `PD(out_vld_cnt*width), `PD(in_vld_cnt));
+            $display("++ EXPECTED => out_vld_cnt * width == in_vld_cnt");
+
+            $finish (1);
         end
 
         $display ("PASS %s", `__FILE__);

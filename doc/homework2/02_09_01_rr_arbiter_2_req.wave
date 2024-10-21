@@ -1,0 +1,5 @@
+{signal: [
+    {name: 'clk'      , wave: 'p.................'},
+    {name: 'requests' , wave: 'x3.x4x56..x7x6896x', data: '01 00 10 11 10 11 01 10 11'},
+    {name: 'grants'   , wave: 'x3.x4x5666x7x6896x', data: '01 00 10 01 10 01 10 01 01 10 01'},
+]}

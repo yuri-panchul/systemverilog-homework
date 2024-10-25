@@ -70,6 +70,12 @@ module testbench;
         end
         else if (was_reset)
         begin
+            if (serial_valid) begin
+                in_vld_cnt <= in_vld_cnt + 1'b1;
+
+                queue.push_back (serial_data);
+            end
+
             if (parallel_valid)
             begin
                 out_vld_cnt <= out_vld_cnt + 1'b1;
@@ -98,12 +104,6 @@ module testbench;
                         $finish (1);
                     end
                 end
-            end
-
-            if (serial_valid) begin
-                in_vld_cnt <= in_vld_cnt + 1'b1;
-
-                queue.push_back (serial_data);
             end
         end
     end

@@ -113,7 +113,7 @@ module testbench;
     // Stimulus generation
 
     int current_inputs;
-    logic d_serial_valid;
+    logic d_serial_valid, d_serial_data;
 
     initial
     begin
@@ -130,9 +130,20 @@ module testbench;
 
         while (current_inputs != n_inputs)
         begin
-            d_serial_valid = (current_inputs <= 24) | 1' ($urandom());
+            if (current_inputs <= 20)
+            begin
+                d_serial_valid = 1'b1;
+                d_serial_data  = ~ serial_data;
+            end
+            else
+            begin
+                d_serial_valid = 1' ($urandom());
+                d_serial_data  = 1' ($urandom());
+            end
+
             current_inputs += 32' (d_serial_valid);
-            { serial_valid, serial_data } <= { d_serial_valid, 1' ($urandom())};
+
+            { serial_valid, serial_data } <= { d_serial_valid, d_serial_data };
 
             @ (posedge clk);
         end

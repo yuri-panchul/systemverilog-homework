@@ -90,9 +90,14 @@ module testbench;
 
       for (int i = 0; i < n; i ++)
       begin
-        requests <= { req_1 [i], req_0 [i] };
+        requests        <= { req_1 [i], req_0 [i] };
+        expected_grants <= { expected_grant_1 [i], expected_grant_0 [i] };
+
+        // expected_grants are assigned before @ (posedge clk)
+        // rather than after @ (posedge clk)
+        // in order to appear on the waveform at the same cycles as grants.
+
         @ (posedge clk);
-        expected_grants = { expected_grant_1 [i], expected_grant_0 [i] };
 
         if (grants !== expected_grants)
         begin // TODO: If you comment the line out it just says "I give up"

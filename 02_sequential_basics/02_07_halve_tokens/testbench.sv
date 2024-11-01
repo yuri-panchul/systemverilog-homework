@@ -78,7 +78,7 @@ module testbench;
 
         //--------------------------------------------------------------------
 
-        if (n_half_tokens != n_orig_tokens / 2)
+        if (n_half_tokens !== n_orig_tokens / 2)
         begin
             $display("FAIL %s", `__FILE__);
             $display("++ INPUT    => {%s}",

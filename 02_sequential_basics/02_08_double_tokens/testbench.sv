@@ -82,7 +82,7 @@ module testbench;
 
         //--------------------------------------------------------------------
 
-        if (n_double_tokens != n_orig_tokens * 2)
+        if (n_double_tokens !== n_orig_tokens * 2)
         begin
             $display("FAIL %s", `__FILE__);
             $display("++ INPUT    => {%s}",
@@ -101,7 +101,7 @@ module testbench;
             @ (posedge clk);
         end
 
-        if (double_overflow != 1'b1)
+        if (double_overflow !== 1'b1)
         begin
             $display("FAIL %s", `__FILE__);
             $display("++ INPUT    => {%s} for 1000 cycles",`PD(a));

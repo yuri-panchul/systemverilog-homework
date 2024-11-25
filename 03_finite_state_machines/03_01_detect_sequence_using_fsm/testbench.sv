@@ -64,12 +64,12 @@ module testbench;
       if (   det4bit !== seq_det4bit[i]
           || det6bit !== seq_det6bit[i])
       begin
-        $display ("%s FAIL - see log above", `__FILE__);
+        $display ("FAIL %s - see log above", `__FILE__);
         $finish;
       end
     end
 
-    $display ("%s PASS", `__FILE__);
+    $display ("PASS %s", `__FILE__);
     $finish;
   end
 

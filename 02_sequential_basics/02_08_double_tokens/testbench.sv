@@ -1,4 +1,4 @@
-`include "../include/util.svh"
+`include "util.svh"
 
 module testbench;
 
@@ -86,10 +86,10 @@ module testbench;
         begin
             $display("FAIL %s", `__FILE__);
             $display("++ INPUT    => {%s}",
-                             `PB(n_orig_tokens));
+                             `PD(n_orig_tokens));
 
-            $display("++ TEST     => {%s, %s}",
-                             `PB(n_orig_tokens), `PB(n_double_tokens));
+            $display("++ TEST     => {%s}",
+                             `PD(n_double_tokens));
             $finish(1);
         end
 

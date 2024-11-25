@@ -1,4 +1,4 @@
-`include "../include/util.svh"
+`include "util.svh"
 
 module testbench;
 
@@ -92,7 +92,9 @@ module testbench;
                 else
                 begin
                     for (int i = 0; i < width; i ++)
+                        // verilator lint_off BLKSEQ
                         parallel_data_expected [i] = queue.pop_front ();
+                        // verilator lint_on BLKSEQ
 
                     if (parallel_data !== parallel_data_expected)
                     begin

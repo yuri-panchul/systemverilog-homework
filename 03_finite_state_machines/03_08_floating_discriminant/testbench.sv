@@ -2,51 +2,29 @@
 // Testbench
 //----------------------------------------------------------------------------
 
-module formula_tb
-# (
-    parameter formula = 1,
-              impl    = 1
-);
-
-    `include "formula_1_fn.svh"
-    `include "formula_2_fn.svh"
-
+module testbench;
     //--------------------------------------------------------------------------
     // Signals to drive Device Under Test - DUT
 
-    localparam arg_width = 32, res_width = 32;
+    logic               clk;
+    logic               rst;
 
-    logic                    clk_enable;
-    logic                    clk;
-    logic                    rst;
+    logic               arg_vld;
+    logic  [FLEN - 1:0] a;
+    logic  [FLEN - 1:0] b;
+    logic  [FLEN - 1:0] c;
 
-    logic                    arg_vld;
-    logic  [arg_width - 1:0] a;
-    logic  [arg_width - 1:0] b;
-    logic  [arg_width - 1:0] c;
+    wire                res_vld;
+    wire   [FLEN - 1:0] res;
+    wire                res_negative;
+    wire                err;
 
-    wire                     res_vld;
-    wire   [res_width - 1:0] res;
+    wire                busy;
 
     //--------------------------------------------------------------------------
     // Instantiating DUT
 
-    generate
-
-        if (formula == 1 && impl == 1)
-        begin : if_1_1
-            formula_1_impl_1_top i_formula_1_impl_1_top (.*);
-        end
-        else if (formula == 1 && impl == 2)
-        begin : if_1_2
-            formula_1_impl_2_top i_formula_1_impl_2_top (.*);
-        end
-        else
-        begin : if_else
-            formula_2_top i_formula_2_top (.*);
-        end
-
-    endgenerate
+    floating_discriminant dut (.*);
 
     //--------------------------------------------------------------------------
     // Driving clk
@@ -57,10 +35,7 @@ module formula_tb
 
         forever
         begin
-            # 5
-
-            if (clk_enable)
-                clk = ~ clk;
+            # 5 clk = ~ clk;
         end
     end
 
@@ -82,16 +57,12 @@ module formula_tb
 
     string test_id;
 
-    initial $sformat (test_id, "%s formula %0d impl %0d:",
-        `__FILE__, formula, impl);
+    initial $sformat (test_id, "%s", `__FILE__);
 
     //--------------------------------------------------------------------------
     // Driving stimulus
 
     task run ();
-
-        // Enabling the testbench
-        clk_enable = '1; # 1
 
         `ifdef USE_FORK_JOIN_NONE
 
@@ -100,7 +71,7 @@ module formula_tb
         fork
         begin
             repeat (1000) @ (posedge clk);
-            $display ("%s FAIL: timeout!", test_id);
+            $display ("FAIL %s: timeout!", test_id);
             $finish;
         end
         join_none
@@ -117,9 +88,9 @@ module formula_tb
 
         // Direct testing - a single test
 
-        a       <= 1;
-        b       <= 4;
-        c       <= 9;
+        a       <= $realtobits ( 1 );
+        b       <= $realtobits ( 4 );
+        c       <= $realtobits ( 3 );
         arg_vld <= '1;
 
         @ (posedge clk);
@@ -132,9 +103,9 @@ module formula_tb
 
         for (int i = 0; i < 100; i = i * 3 + 1)
         begin
-            a       <= i;
-            b       <= i;
-            c       <= i;
+            a       <= $realtobits ( i );
+            b       <= $realtobits ( i+10 );
+            c       <= $realtobits ( i );
             arg_vld <= '1;
 
             @ (posedge clk);
@@ -148,9 +119,9 @@ module formula_tb
 
         repeat (10)
         begin
-            a       <= $urandom ();
-            b       <= $urandom ();
-            c       <= $urandom ();
+            a       <= $realtobits ( $urandom () / 1000.0 ) ;
+            b       <= $realtobits ( $urandom () / 1000.0 ) ;
+            c       <= $realtobits ( $urandom () / 1000.0 ) ;
             arg_vld <= '1;
 
             @ (posedge clk);
@@ -160,9 +131,6 @@ module formula_tb
                 @ (posedge clk);
         end
 
-        // Disabling the testbench
-        clk_enable = '0;
-
         `ifdef USE_FORK_JOIN_NONE
 
             // Disabling timeout check
@@ -171,6 +139,30 @@ module formula_tb
         `endif
 
     endtask
+
+    //--------------------------------------------------------------------------
+    // Running testbench
+
+    initial
+    begin
+        `ifdef __ICARUS__
+            // Uncomment the following line
+            // to generate a VCD file and analyze it using GTKwave
+
+            // $dumpvars;
+        `endif
+
+        run ();
+
+        $finish;
+    end
+
+    //--------------------------------------------------------------------------
+    // Utility tasks and functions
+
+    function is_err ( [FLEN - 1:0] a_bits );
+        return a_bits [FLEN - 2 -: NE] === '1;
+    endfunction
 
     //--------------------------------------------------------------------------
     // Logging
@@ -188,12 +180,13 @@ module formula_tb
             $write ("    ");
 
         if (arg_vld)
-            $write (" arg %d %d %d", a, b, c);
+            // Optionnaly change to `PF_BITS optionally
+            $write (" arg %s %s %s", `PG_BITS (a), `PG_BITS (b), `PG_BITS (c) );
         else
             $write ("                                     ");
 
         if (res_vld)
-            $write (" res %d", res);
+            $write (" res %s", `PG_BITS(res) );
 
         $display;
     end
@@ -201,8 +194,9 @@ module formula_tb
     //--------------------------------------------------------------------------
     // Modeling and checking
 
-    logic [res_width - 1:0] queue [$];
-    logic [res_width - 1:0] res_expected;
+    logic [FLEN - 1:0] queue [$];
+    logic [FLEN - 1:0] res_expected;
+    logic              err_expected;
 
     logic was_reset = 0;
 
@@ -223,11 +217,7 @@ module formula_tb
         begin
             if (arg_vld)
             begin
-                case (formula)
-                1: res_expected = formula_1_fn (a, b, c);
-                2: res_expected = formula_2_fn (a, b, c);
-                default: assert (0);
-                endcase
+                res_expected = $realtobits( $bitstoreal (b) * $bitstoreal (b) - 4 * $bitstoreal (a) * $bitstoreal (c) );
 
                 queue.push_back (res_expected);
             end
@@ -236,8 +226,8 @@ module formula_tb
             begin
                 if (queue.size () == 0)
                 begin
-                    $display ("%s FAIL: unexpected result %0d",
-                        test_id, res);
+                    $display ("FAIL %s: unexpected result %s",
+                        test_id, `PG_BITS (res) );
 
                     $finish;
                 end
@@ -251,10 +241,18 @@ module formula_tb
                         res_expected = queue.pop_front ();
                     `endif
 
-                    if (res !== res_expected)
+                    err_expected = is_err ( res_expected );
+                    if (err !== err_expected )
                     begin
-                        $display ("%s FAIL: res mismatch. Expected %0d, actual %0d",
-                            test_id, res_expected, res);
+                        $display ("FAIL %s: error mismatch. Expected %s, actual %s",
+                            test_id, `PB (err_expected), `PB (err) );
+
+                        $finish;
+                    end
+                    else if ( ( err_expected === 1'b0 ) && ( res !== res_expected ) )
+                    begin
+                        $display ("FAIL %s: res mismatch. Expected %s, actual %s",
+                            test_id, `PG_BITS (res_expected), `PG_BITS (res) );
 
                         $finish;
                     end
@@ -271,11 +269,11 @@ module formula_tb
     begin
         if (queue.size () == 0)
         begin
-            $display ("%s PASS", test_id);
+            $display ("PASS %s", test_id);
         end
         else
         begin
-            $write ("%s FAIL: data is left sitting in the model queue:",
+            $write ("FAIL %s: data is left sitting in the model queue:",
                 test_id);
 
             for (int i = 0; i < queue.size (); i ++)
@@ -320,9 +318,8 @@ module formula_tb
     initial
     begin
         repeat (1000) @ (posedge clk);
-        $display ("%s FAIL: timeout!", test_id);
+        $display ("FAIL %s: timeout!", test_id);
         $finish;
     end
 
 endmodule
-

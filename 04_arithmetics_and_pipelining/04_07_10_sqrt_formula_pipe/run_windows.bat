@@ -1,22 +1,12 @@
 @echo off
 
-set targetDir=scripts
-set targetFile=run_windows.bat
-set dir=%~dp0
+if not exist "C:\Program Files\Git\bin\bash.exe" (
+    echo "Starting from Homework 3, this Windows batch script invokes"
+    echo "a Bash shell interpreter from the Git for Windows package."
+    echo "This is necessary for more flexible checking of the results."
+    echo "Please install Git for Windows from https://gitforwindows.org/ and re-run this batch again."
 
-:loop
-if %dir:~-1% == "\" (
-    echo Directory %targetDir% not found in the path
     exit /b
 )
 
-if exist "%dir%\%targetDir%" (
-    set "ScriptPath=%dir%\%targetDir%\%targetFile%"
-    goto :end
-)
-
-for %%i in ("%dir:~0,-1%") do set "dir=%%~dpi"
-goto :loop
-:end
-
-call "%ScriptPath%" "%1"
+"C:\Program Files\Git\bin\bash.exe" run_linux_mac.sh

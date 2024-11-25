@@ -21,5 +21,5 @@ fi
 dir_source_script="$(cd "$(dirname "$dir_source_script")" && pwd)/$(basename "$dir_source_script")"
 . "$dir_source_script"
 
-cd 03_04_sqrt_formula_fsms || exit
+cd 03_04_05_sqrt_formula_fsms || exit
 ./run_linux_mac.sh

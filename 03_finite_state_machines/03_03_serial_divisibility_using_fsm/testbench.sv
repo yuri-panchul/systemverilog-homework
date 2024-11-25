@@ -79,14 +79,14 @@ module testbench;
 
         if (div_by_3 !== expected_div_by_3 || div_by_5 !== expected_div_by_5)
         begin
-          $display ("%s FAIL - see log above", `__FILE__);
+          $display ("FAIL %s - see log above", `__FILE__);
           $finish;
         end
       end
       $display("Number %b accepeted", input_bits);
     end
 
-    $display ("%s PASS", `__FILE__);
+    $display ("PASS %s", `__FILE__);
     $finish;
   end
 

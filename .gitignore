@@ -1,3 +1,4 @@
+import/
 *.hex
 a.out
 dump*.vcd

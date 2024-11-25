@@ -1,4 +1,4 @@
-`include "../include/util.svh"
+`include "util.svh"
 
 module testbench;
 

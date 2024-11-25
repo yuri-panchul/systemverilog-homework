@@ -1,8 +1,19 @@
 @echo off
+
+@REM This Windows batch script is intended for Homework 1 and 2 only.
+@REM We expect students to adopt Bash scripts starting Homework 3.
+@REM This reduces our burden of maintaining two scripts to do the same thing
+@REM for more advanced checking.
+@REM
+@REM At the same time we don't want the beginning students to have an extra
+@REM barrier of entry when starting the homework, so we keep Windows batch
+@REM for the first two Homeworks. However Bash is more commonly used
+@REM as a scripting language in the electronic industry.
+
 setlocal
 type nul > log.txt
 set mainDir=%cd%
-@REM set wave_viewer=surfer
+rem set wave_viewer=surfer
 set wave_viewer=gtkwave
 
 where iverilog > nul 2>&1
@@ -22,22 +33,43 @@ if errorlevel 1 (
     set gtkwave=gtkwave
 )
 
-set targetDir=bin
-set targetFile=rars1_6.jar
+set targetDir=common
 set dir=%~dp0
 
-    :loop
+    :loop_common
     if %dir:~-1% == "\" (
         echo Directory %targetDir% not found in the path
         exit /b
     )
     if exist "%dir%\%targetDir%" (
-        set PathToBin="%dir%\%targetDir%\%targetFile%"
-        goto :end
+        set common_path="%dir%%targetDir%"
+        goto :end_common
     )
     for %%i in ("%dir:~0,-1%") do set "dir=%%~dpi"
-    goto :loop
-    :end
+    goto :loop_common
+    :end_common
+    set targetDir=""
+    set dir=""
+
+set targetDir=bin
+set targetFile=rars1_6.jar
+set dir=%~dp0
+
+    :loop_bin
+    if %dir:~-1% == "\" (
+        echo Directory %targetDir% not found in the path
+        exit /b
+    )
+    if exist "%dir%\%targetDir%" (
+        set PathToBin="%dir%%targetDir%/%targetFile%"
+        goto :end_bin
+    )
+    for %%i in ("%dir:~0,-1%") do set "dir=%%~dpi"
+    goto :loop_bin
+    :end_bin
+    set targetDir=""
+    set targetFile=""
+    set dir=""
 
 if exist "program.s" (
     where java > nul 2>&1
@@ -98,7 +130,7 @@ if exist "program.s" (
             del a.out
             popd
         ) else (
-            %iverilog% -g2005-sv %%d/*.sv 2>&1 | findstr /v /c:"sorry: constant selects" >> log.txt
+            %iverilog% -g2005-sv -I %common_path% %%d/*.sv 2>&1 | findstr /v /c:"sorry: constant selects" >> log.txt
             %vvp% a.out 2>&1 | findstr /v /c:"$finish called" >> log.txt
             del a.out
         )

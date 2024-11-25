@@ -184,7 +184,7 @@ module testbench;
             // Uncomment the following line
             // to generate a VCD file and analyze it using GTKwave
 
-            $dumpvars (0, testbench);
+            // $dumpvars (0, testbench);
         `endif
 
         for (int i  = 0; i  <  N; i  ++)

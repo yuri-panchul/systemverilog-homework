@@ -9,4 +9,4 @@ if not exist "C:\Program Files\Git\bin\bash.exe" (
     exit /b
 )
 
-"C:\Program Files\Git\bin\bash.exe" run_linux_mac.sh -wave
+"C:\Program Files\Git\bin\bash.exe" run_linux_mac.sh --wave

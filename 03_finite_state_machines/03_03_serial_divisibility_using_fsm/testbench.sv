@@ -83,7 +83,7 @@ module testbench;
           $finish;
         end
       end
-      $display("Number %b accepeted", input_bits);
+      $display("Number %b accepted", input_bits);
     end
 
     $display ("PASS %s", `__FILE__);

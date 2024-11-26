@@ -2,6 +2,8 @@
 // Testbench
 //----------------------------------------------------------------------------
 
+`include "util.svh"
+
 // In this code we assume FLEN=64 and use "real" type, 64-bit constants,
 // $bitstoreal, $realtobits and the corresponding macros for printing.
 // If we ever change FLEN to 32, we have to use "shortreal" type,

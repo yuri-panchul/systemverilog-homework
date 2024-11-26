@@ -2,7 +2,7 @@
 // Task
 //----------------------------------------------------------------------------
 
-module floating_discriminant (
+module float_discriminant (
     input                     clk,
     input                     rst,
 

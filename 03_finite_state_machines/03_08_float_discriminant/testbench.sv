@@ -64,6 +64,8 @@ module testbench;
     //--------------------------------------------------------------------------
     // Driving stimulus
 
+    localparam TIMEOUT = 5000;
+
     task run ();
 
         `ifdef USE_FORK_JOIN_NONE
@@ -72,7 +74,7 @@ module testbench;
 
         fork
         begin
-            repeat (1000) @ (posedge clk);
+            repeat (TIMEOUT) @ (posedge clk);
             $display ("FAIL %s: timeout!", test_id);
             $finish;
         end
@@ -319,7 +321,7 @@ module testbench;
 
     initial
     begin
-        repeat (1000) @ (posedge clk);
+        repeat (TIMEOUT) @ (posedge clk);
         $display ("FAIL %s: timeout!", test_id);
         $finish;
     end

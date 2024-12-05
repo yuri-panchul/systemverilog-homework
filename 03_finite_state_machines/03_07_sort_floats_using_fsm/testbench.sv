@@ -301,6 +301,18 @@ module testbench;
 
     logic was_reset = 0;
 
+    //--------------------------------------------------------------------------
+
+    function float_equal_ignoring_sign_with_zeroes (input [FLEN - 1:0] a, b);
+
+        return    a === b
+               ||
+                     { a [FLEN - 2:0] , b [FLEN - 2:0] } === '0
+                  && ( a [FLEN - 1  ] ^ b [FLEN - 1  ] ) !== 'x;
+    endfunction
+
+    //--------------------------------------------------------------------------
+
     // Blocking assignments are okay in this synchronous always block, because
     // data is passed using queue and all the checks are inside that always
     // block, so no race condition is possible
@@ -354,7 +366,8 @@ module testbench;
 
                         $finish;
                     end
-                    else if ( (err_expected === 1'b0) && (res !== res_expected) )
+                    else if (   (err_expected === 1'b0)
+                             && ! float_equal_ignoring_sign_with_zeroes (res, res_expected))
                     begin
                         $display ("FAIL %s: res mismatch. Expected %s, actual %s",
                             test_id, format_result (res_expected), format_result (res) );

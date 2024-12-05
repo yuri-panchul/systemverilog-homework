@@ -46,6 +46,36 @@ module testbench;
     `undef DEFINE_SORT
 
     //--------------------------------------------------------------------------
+
+    `define DEFINE_ARR_EQUAL(N)                                              \
+                                                                             \
+        function farr_eq``N (input [0:N - 1][FLEN - 1:0] arr_a, arr_b);      \
+                                                                             \
+            logic [FLEN - 1:0] a, b;                                         \
+            logic both_zeros;                                                \
+                                                                             \
+            for (int i = 0; i < N; i ++)                                     \
+            begin                                                            \
+                a = arr_a [i];                                               \
+                b = arr_b [i];                                               \
+                                                                             \
+                both_zeros =    { a [FLEN - 2:0] , b [FLEN - 2:0] } === '0   \
+                             && ( a [FLEN - 1  ] ^ b [FLEN - 1  ] ) !== 'x;  \
+                                                                             \
+                if (a !== b && ! both_zeros)                                 \
+                    return 0;                                                \
+            end                                                              \
+                                                                             \
+            return 1;                                                        \
+                                                                             \
+        endfunction                                                          \
+
+    `DEFINE_ARR_EQUAL (2)
+    `DEFINE_ARR_EQUAL (3)
+
+    `undef DEFINE_ARR_EQUAL
+
+    //--------------------------------------------------------------------------
     // Signals to drive Device Under Test - DUT
 
     logic [FLEN - 1:0] a, b, c;
@@ -112,6 +142,14 @@ module testbench;
         exp_err2 = is_err ( ta ) || is_err ( tb );
         exp_err3 = exp_err2      || is_err ( tc );
 
+        // Testing testbench for 0 detection
+        //
+        // force { res1_ab0, res1_ab1 } = { 1'b0, 63'b0, 1'b1, 63'b0 };
+        // force res2_array = { 1'b1, 63'b0, 1'b0, 63'b0 };
+        // expected2  = { 1'b0, 63'b0, 1'b1, 63'b0 };
+        // force res3_array = { 1'b1, 63'b0, 1'b1, 63'b0, 1'b0, 63'b0 };
+        // expected3  = { 1'b0, 63'b0, 1'b1, 63'b0, 1'b1, 63'b0 };
+
         if ( err1 !== exp_err2 || err2 !== exp_err2 || err3 !== exp_err3)
         begin
             $display ("FAIL %s", `__FILE__);
@@ -121,9 +159,9 @@ module testbench;
             $finish  (1);
         end
         else if ( ( exp_err2 === '0 && exp_err3 === '0)    && (
-                  ( { res1_ab0, res1_ab1 } !== expected2 ) ||
-                  ( { res2_array }         !== expected2 ) ||
-                  ( { res3_array }         !== expected3 ) ) )
+                  ( ! farr_eq2 ( { res1_ab0, res1_ab1 }, expected2) ) ||
+                  ( ! farr_eq2 (   res2_array,           expected2) ) ||
+                  ( ! farr_eq3 (   res3_array,           expected3) ) ) )
         begin
             $display ("FAIL %s", `__FILE__);
 

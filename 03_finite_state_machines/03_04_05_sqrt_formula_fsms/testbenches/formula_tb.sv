@@ -125,12 +125,16 @@ module formula_tb
         @ (posedge clk);
         arg_vld <= '0;
 
-        while (~ res_vld)
+        //while (~ res_vld)
+        //    @ (posedge clk);
+		
+		repeat(6)
             @ (posedge clk);
 
         // Direct testing - a group of tests
 
-        for (int i = 0; i < 100; i = i * 3 + 1)
+        //for (int i = 0; i < 100; i = i * 3 + 1)
+		for (int i = 0; i < 100; i = i + 1)
         begin
             a       <= i;
             b       <= i;
@@ -140,9 +144,12 @@ module formula_tb
             @ (posedge clk);
             arg_vld <= '0;
 
-            while (~ res_vld)
-                @ (posedge clk);
+        //    while (~ res_vld)
+        //        @ (posedge clk);
         end
+
+        repeat(9)
+            @ (posedge clk);
 
         // Random testing
 
@@ -156,9 +163,14 @@ module formula_tb
             @ (posedge clk);
             arg_vld <= '0;
 
-            while (~ res_vld)
-                @ (posedge clk);
+       //     while (~ res_vld)
+       //         @ (posedge clk);
         end
+
+        repeat(50)
+            @ (posedge clk);
+
+
 
         // Disabling the testbench
         clk_enable = '0;

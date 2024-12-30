@@ -22,10 +22,10 @@ module formula_2_top
     wire        isqrt_y_vld;
     wire [15:0] isqrt_y;
 	
-	/*
-	formula_2_fsm i_formula_2_fsm (.*);
+/*
+    formula_2_fsm i_formula_2_fsm (.*);
 	
-	 isqrt i_isqrt
+    isqrt i_isqrt
     (
         .clk   ( clk         ),
         .rst   ( rst         ),
@@ -35,18 +35,18 @@ module formula_2_top
         .y     ( isqrt_y     )
     );
 	
-	*/
+*/
 	
-   ////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
   
      localparam  N = 49;  // Latency of a non-pipelined module formula_2_fsm -> (3*16+1)
   
      logic [N-1:0]       res_vlds;
-  	 logic [N-1:0][31:0] ress ; 
+     logic [N-1:0][31:0] ress ; 
      logic [N-1:0][31:0] c_reg; 
      logic [N-1:0][31:0] b_reg;
-	 logic [N-1:0][31:0] a_reg;
-	 logic [N-1:0]       in_vld;
+     logic [N-1:0][31:0] a_reg;
+     logic [N-1:0]       in_vld;
      logic [  5:0]       index;
      logic [ 31:0]       res_comb;	
 
@@ -55,17 +55,17 @@ module formula_2_top
      generate
 	   genvar i;
 		  
-       for( i = 0; i < N; i++)
+         for( i = 0; i < N; i++)
 	     begin
 	   
-	       wire        isqrt_x_vld_local;
+	   wire        isqrt_x_vld_local;
            wire [31:0] isqrt_x_local; 
            wire        isqrt_y_vld_local;
            wire [15:0] isqrt_y_local; 
 	 	   
            formula_2_fsm i_formula_2_fsm
-		   (
-		      .clk        (      clk        ),
+	  (
+	      .clk        (      clk        ),
               .rst        (      rst        ),
               .arg_vld    (   in_vld[i]     ),
               .a          (    a_reg[i]     ),
@@ -77,7 +77,7 @@ module formula_2_top
               .isqrt_x    (  isqrt_x_local  ),
               .isqrt_y_vld(isqrt_y_vld_local),
               .isqrt_y    (  isqrt_y_local  )
-		   );
+	   );
  
            isqrt i_isqrt
            (
@@ -89,34 +89,34 @@ module formula_2_top
              .y     (   isqrt_y_local   )
            );
 	
-	    end
+	end
      endgenerate
   
    // Register the input data and the valid signal, storing them in a vector under the current module's index
      always_ff @(posedge clk)
- 	   begin
+       begin
          if (rst)
-	        index <= '0; 
-		 else
+	     index <= '0; 
+	 else
            begin
              a_reg[index]  <= a;
              b_reg[index]  <= b;
              c_reg[index]  <= c;
-			 in_vld[index] <= arg_vld;
+	     in_vld[index] <= arg_vld;
              index <= (index == N-1) ? '0 : index + 1; 
-		   end
+	   end
        end
 	 
    // Generating output signals
      always_comb
-	   begin
+       begin
          res_comb = '0; 
          for (int i = 0; i < N; i++)
             if (res_vlds[i])
                 res_comb = ress[i];
-	   end
+       end
 	 
-	 assign res = res_comb; 
-	 assign res_vld = |res_vlds; 
+    assign res = res_comb; 
+    assign res_vld = |res_vlds; 
 
 endmodule

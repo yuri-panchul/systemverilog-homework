@@ -1,4 +1,6 @@
-module reorder
+`timescale 1ns/1ps
+
+module put_in_order
 # (
     parameter width    = 16,
               n_inputs = 4
@@ -14,62 +16,77 @@ module reorder
     output                [width - 1:0] down_data
 );
 
-localparam dwdt = $clog2(n_inputs);
+localparam ptr_width = $clog2(n_inputs);
 
-//latch input data
-logic [n_inputs - 1:0][width - 1:0]     in_data_latch;
-logic [n_inputs - 1:0]                  in_vld_latch;
-always_ff @(posedge clk) begin
-    if (rst) begin
-        in_data_latch <= '0;
-        in_vld_latch  <= '0;
-    end else begin
+logic [n_inputs - 1:0][width - 1:0] data_d;
+logic [n_inputs - 1:0][width - 1:0] data_q;
+logic [n_inputs - 1:0]              data_vld_d;
+logic [n_inputs - 1:0]              data_vld_q;
 
-        for ( int i = 0; i < n_inputs; i++ ) begin
-            if ( up_vlds[i] == 1'b1 ) begin
-                in_data_latch[i] <= up_data[i];
-                in_vld_latch[i]  <= 1'b1;
-            end  
-        end
-        //Не уверен, что так можно делать
-        //Мы должны сбросить бит валидности после выставления данных, но есть моменты, когда 
-        //буфер, который мы хотим сбросить уже снова должен содержать валидные данные
-        if ( in_vld_latch[data_ptr] == 1'b1 &&
-             up_vlds[data_ptr]      != 1'b1 ) begin
-            in_vld_latch[data_ptr] <= 1'b0;
-        end
-    end
-end
+always_comb begin
 
-//Ring ones
-logic[n_inputs-1:0] expected_vld;
-always_ff @(posedge clk) begin
-    if (rst) begin
-        expected_vld <= 1'b1;
-    end else begin
+    data_vld_d = data_vld_q;
 
-        if ( in_vld_latch[data_ptr] == 1'b1 ) begin
-
-            for (int i = 0; i < n_inputs-1; i=i+1) begin
-                expected_vld[i+1] <= expected_vld[i];
-            end
-            expected_vld[0] <= expected_vld[n_inputs-1];
-        
-        end
-    end
-end
-
-//Encoder from expected_vld to counter
-logic [dwdt:0] data_ptr;
-always_comb begin : encoder
     for ( int i = 0; i < n_inputs; i++ ) begin
-        if (expected_vld[i] == 1'b1 ) begin
-            data_ptr <= i;
+        if ( up_vlds[i] ) begin
+            data_vld_d[i] = 1'b1;
+        end
+    end
+
+    if (data_vld_q[out_ptr])
+        data_vld_d[out_ptr] = 1'b0;
+
+    if (up_vlds[out_ptr])
+        data_vld_d[out_ptr] = 1'b1;
+
+end
+
+always_comb begin
+    data_d = data_q;
+    
+    for ( int i = 0; i < n_inputs; i++ ) begin
+        data_d[i] = up_data[i];
+    end
+end
+
+always_ff @(posedge clk) begin
+    data_q <= data_d;
+end
+
+always_ff @(posedge clk) begin
+    if (rst) begin
+        data_vld_q <= '0;
+    end else begin
+        data_vld_q <= data_vld_d;
+    end
+end
+
+//Next data ptr counter
+logic [ptr_width-1:0] out_ptr_d;
+logic [ptr_width-1:0] out_ptr;
+
+always_comb begin
+    
+    out_ptr_d = out_ptr;
+
+    if ( data_vld_q[out_ptr] ) begin
+        if ( out_ptr_d >= (n_inputs-1) ) begin
+            out_ptr_d = '0;
+        end else begin
+            out_ptr_d = out_ptr + 1'b1;
         end
     end
 end
 
-assign down_vld  = in_vld_latch[data_ptr];
-assign down_data = in_data_latch[data_ptr];
+always_ff @(posedge clk) begin
+    if (rst) begin
+        out_ptr <= '0;
+    end else begin
+        out_ptr <= out_ptr_d;
+    end
+end
+
+assign down_vld  = data_vld_q[out_ptr];
+assign down_data = data_q[out_ptr];
 
 endmodule

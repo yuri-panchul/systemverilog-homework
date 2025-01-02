@@ -2,16 +2,18 @@
 
 module testbench;
 
-  localparam             width    = 16;
-  localparam             n_inputs = 5;
+  localparam  width          = 16,
+              n_inputs       = 5,
+              data_ptr_width = $clog2(n_inputs);
 
-  logic                                  clk, rst;
+  logic                                  clk;
+  logic                                  rst;
   logic [n_inputs - 1:0]                 up_vlds;
   logic [n_inputs - 1:0][width - 1 : 0]  up_data;
   logic                                  down_vld;
-  logic [width - 1:0]			               down_data;
+  logic [width - 1:0]                    down_data;
    
-  reorder #(.width(width), .n_inputs(n_inputs))
+  put_in_order #(.width(width), .n_inputs(n_inputs))
   DUT( 
     .clk        ( clk       ), 
     .rst        ( rst       ), 
@@ -28,11 +30,8 @@ module testbench;
   begin
 
     clk = '1;
-
-    forever
-    begin
-      # 5 clk = ~ clk;
-    end
+    forever # 5 clk = ~ clk;
+   
   end
 
   //------------------------------------------------------------------------
@@ -49,46 +48,43 @@ module testbench;
   endtask
 
   //--------------------------------------------------------------------------
-  logic [width-1:0]      current_data;
-  logic [n_inputs - 1:0] ring_one;
-  logic                  running;
-
-  //Simple vld_in generation
-  //Circular one's
-  always_ff @(posedge clk)
-  begin
-    if (rst) begin
-      ring_one <= 1'b0;
+  logic                          running;
+  logic [ width-1:0 ]            current_data;
+  logic [ n_inputs - 1:0 ]       ring_one;
+  logic [ data_ptr_width - 1:0 ] data_ptr;
+  //Pointer to current valid data input
+  always @(posedge clk) begin
+    if ( rst ) begin
+      data_ptr <= '0;
     end else begin
-      
-      if (running) begin
-        //First one
-        if ( ring_one == 0 ) begin
-          ring_one[0] <= 1'b1;
+      if ( running ) begin
+        if ( data_ptr >= (n_inputs - 1) ) begin
+          data_ptr <= '0;
         end else begin
-          //Circular one
-          for (int i = 0; i < n_inputs-1; i=i+1) begin
-            ring_one[i+1] <= ring_one[i];
-          end
-          ring_one[0] <= ring_one[n_inputs-1];
-
+          data_ptr <= data_ptr + 1'b1;
         end
-      //Finish generation
-      end else begin
-        ring_one <= 1'b0;
       end
-
     end
+
   end
 
-  //Input data generator
-  //We generate sequental data for simplify validation and lookup timing diagrams
+  //current valid bit
+  always_comb begin
+    ring_one           = '0;
+    if ( running ) begin
+      ring_one[data_ptr] = 1'b1;
+    end else begin
+      ring_one         = '0;
+    end   
+  end
+
+  //Input data
   always_ff @(posedge clk)
   begin
     if (rst) begin
       current_data <= '0;
     end else begin
-      if (ring_one > 0) begin
+      if ( running ) begin
         current_data <= current_data + 1'b1;
       end
     end
@@ -99,7 +95,7 @@ module testbench;
   generate
     for ( i = 0; i < n_inputs; i++ ) begin : input_generator
       random_delay #(.width(width), .n_inputs(n_inputs))
-      delay(
+      r_delay(
         .clk       ( clk          ),
         .rst       ( rst          ), 
         .vld_in    ( ring_one[i]  ),
@@ -153,9 +149,10 @@ module testbench;
 
       @(posedge clk);
       if ( down_vld ) begin
-        if ( down_data != next_expected ) begin
+        if ( down_data !== next_expected ) begin
           $warning("Test failed. Expected output %d, but get %d", next_expected, down_data);
           $display ("%s FAIL - see above", `__FILE__);
+          #10
           $finish;
         end
         next_expected <= next_expected + 1'b1;
@@ -176,15 +173,17 @@ module random_delay
               n_inputs = 4
 )
 (
-  input 		              clk, rst, vld_in,
+  input 		              clk,
+  input                   rst,
+  input                   vld_in,
   input [width-1:0]	      data_in,
   output reg              vld_out,
   output reg [width-1:0]  data_out
 );
 
-  bit[7:0]         delay; 
-  logic[width-1:0] data_lock;
-  logic            busy; 
+  int                 delay; 
+  logic [ width-1:0 ] data_lock;
+  logic               busy; 
 
   //Input
   initial begin

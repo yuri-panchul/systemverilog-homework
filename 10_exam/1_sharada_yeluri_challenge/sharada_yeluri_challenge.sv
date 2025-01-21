@@ -30,7 +30,7 @@ module sharada_yeluri_challenge
     output                        dequeue_data_valid,
     input                         dequeue_data_ready,
     output [buffer_width   - 1:0] dequeue_data,
-    input  [queue_id_width - 1:0] dequeue_data_queue_id
+    output [queue_id_width - 1:0] dequeue_data_queue_id
 );
 
     // Do it!

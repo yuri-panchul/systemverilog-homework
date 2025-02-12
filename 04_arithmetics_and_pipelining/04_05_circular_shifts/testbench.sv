@@ -26,7 +26,7 @@ module testbench;
     if (! (   resl0 === t_resl && resl1 === t_resl
            && resr0 === t_resr && resr1 === t_resr))
     begin
-      $display ("%s FAIL - see above", `__FILE__);
+      $display ("FAIL %s - see above", `__FILE__);
       $finish;
     end
 
@@ -55,7 +55,7 @@ module testbench;
       test (8'b11110000, 8'b10000111, 8'b00011110);
       test (8'b01100110, 8'b00110011, 8'b11001100);
 
-      $display ("%s PASS", `__FILE__);
+      $display ("PASS %s", `__FILE__);
       $finish;
     end
 

@@ -1,0 +1,9 @@
+{signal: [
+  {name: 'clk'      , wave: 'p................'},
+  {name: 'arg_vld'  , wave: '0101....01.0.....'},
+  {name: 'a'        , wave: 'x3x45678x95x.....', data: "a1 a2 a3 a4 a5"},
+  {name: 'b'        , wave: 'x3x45678x95x.....', data: "b1 b2 b3 b4 b5"},
+  {name: 'c'        , wave: 'x3x45678x95x.....', data: "c1 c2 c3 c4 c5"},
+  {name: 'res_vld'  , wave: '0.....101....01.0'},
+  {name: 'b²-4*a*c' , wave: '....x.3x45678x95x', data: "D1 D2 D3 D4 D5"},
+]}

@@ -94,7 +94,7 @@ module shift_register_with_valid_tb
 
     string test_id;
 
-    initial $sformat (test_id, "%s width %0d depth %0d:",
+    initial $sformat (test_id, "%s width %0d depth %0d",
         `__FILE__, width, depth);
 
     //--------------------------------------------------------------------------
@@ -173,7 +173,7 @@ module shift_register_with_valid_tb
     begin
         if (expected_out_vld !== 'x & out_vld !== expected_out_vld)
         begin
-            $display ("%s FAIL: expected out_vld mismatch. Expected %b, actual %b",
+            $display ("FAIL %s: expected out_vld mismatch. Expected %b, actual %b",
                 test_id, expected_out_vld, out_vld);
 
             $finish;
@@ -181,7 +181,7 @@ module shift_register_with_valid_tb
 
         if (expected_out_vld & (out_data !== expected_out_data))
         begin
-            $display ("%s FAIL: out_data mismatch. Expected %h, actual %h",
+            $display ("FAIL %s: out_data mismatch. Expected %h, actual %h",
                 test_id, expected_out_data, out_data);
 
             $finish;
@@ -194,9 +194,9 @@ module shift_register_with_valid_tb
     final
     begin
         if (run_completed)
-            $display ("%s PASS", test_id);
+            $display ("PASS %s", test_id);
         else
-            $display ("%s FAIL: did not run or run was not completed",
+            $display ("FAIL %s: did not run or run was not completed",
                 test_id);
     end
 

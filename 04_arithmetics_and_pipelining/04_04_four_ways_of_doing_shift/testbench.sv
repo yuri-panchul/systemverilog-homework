@@ -38,12 +38,12 @@ module testbench;
       for (int i = 0; i < 8; i ++)
         if (res [i] !== res [i / 4 * 4])
         begin
-          $display ("%s FAIL - see above", `__FILE__);
+          $display ("FAIL %s - see above", `__FILE__);
           $finish;
         end
     end
 
-    $display ("%s PASS", `__FILE__);
+    $display ("PASS %s", `__FILE__);
     $finish;
   end
 

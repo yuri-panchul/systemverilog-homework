@@ -2,3 +2,5 @@
 
 lint_off -rule DECLFILENAME
 lint_off -rule INITIALDLY
+lint_off -file "*/common/wally_fpu/*"
+lint_off -file "*/import/preprocessed/cvw/*"

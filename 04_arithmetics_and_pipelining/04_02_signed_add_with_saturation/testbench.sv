@@ -18,7 +18,7 @@ module testbench;
 
     if (sum !== t_sum)
       begin
-        $display ("%s FAIL: %d EXPECTED", `__FILE__, t_sum);
+        $display ("FAIL %s: %d EXPECTED", `__FILE__, t_sum);
         $finish;
       end
 
@@ -78,7 +78,7 @@ module testbench;
       test ( -4,  4,  0);
       test ( -4, -4, -8);
 
-      $display ("%s PASS", `__FILE__);
+      $display ("PASS %s", `__FILE__);
       $finish;
     end
 

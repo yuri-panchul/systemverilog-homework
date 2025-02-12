@@ -28,7 +28,7 @@ module testbench;
       $display ("%d", sum);
     else
       begin
-        $display ("\n%s FAIL: overflow is %X",
+        $display ("\nFAIL %s: overflow is %X",
           `__FILE__, overflow);
 
         $finish;
@@ -36,14 +36,14 @@ module testbench;
 
     if (overflow !== t_overflow)
       begin
-        $display ("%s FAIL: EXPECTED %soverflow",
+        $display ("FAIL %s: EXPECTED %soverflow",
           `__FILE__, t_overflow ? "" : "no ");
 
         $finish;
       end
     else if (sum !== t_sum)
       begin
-        $display ("%s FAIL: EXPECTED sum %d",
+        $display ("FAIL %s: EXPECTED sum %d",
           `__FILE__, t_sum);
         $finish;
       end
@@ -104,7 +104,7 @@ module testbench;
       test ( -4,  4, 0);
       test ( -4, -4, 0);
 
-      $display ("%s PASS", `__FILE__);
+      $display ("PASS %s", `__FILE__);
       $finish;
     end
 

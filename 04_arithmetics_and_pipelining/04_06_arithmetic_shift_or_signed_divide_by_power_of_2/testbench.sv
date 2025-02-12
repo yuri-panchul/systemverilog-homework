@@ -33,7 +33,7 @@ module testbench;
       for (int i = 1; i < 4; i ++)
         if (res [i] !== res [0])
         begin
-          $display ("%s FAIL. EXPECTED %d %b",
+          $display ("FAIL %s. EXPECTED %d %b",
             `__FILE__, res [0], res [0]);
 
           $finish;
@@ -50,7 +50,7 @@ module testbench;
         */
     end
 
-    $display ("%s PASS", `__FILE__);
+    $display ("PASS %s", `__FILE__);
     $finish;
   end
 

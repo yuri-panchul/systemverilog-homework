@@ -17,7 +17,7 @@ module sharada_yeluri_challenge
 (
     input                         clock,
     input                         reset,
-    
+
     input                         enqueue_valid,
     output                        enqueue_ready,
     input  [buffer_width   - 1:0] enqueue_data,
@@ -26,7 +26,7 @@ module sharada_yeluri_challenge
     input                         dequeue_request_valid,
     output                        dequeue_request_ready,
     input  [queue_id_width - 1:0] dequeue_request_queue_id,
-    
+
     output                        dequeue_data_valid,
     input                         dequeue_data_ready,
     output [buffer_width   - 1:0] dequeue_data,

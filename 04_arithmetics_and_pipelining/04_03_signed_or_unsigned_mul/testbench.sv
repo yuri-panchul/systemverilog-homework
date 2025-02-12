@@ -39,7 +39,7 @@ module testbench;
 
       if (sres !== t_sres)
       begin
-        $display ("%s FAIL: %d EXPECTED", `__FILE__, t_sres);
+        $display ("FAIL %s: %d EXPECTED", `__FILE__, t_sres);
         $finish;
       end
     end
@@ -49,7 +49,7 @@ module testbench;
 
       if (res !== t_res)
       begin
-        $display ("%s FAIL: %d EXPECTED", `__FILE__, t_res);
+        $display ("FAIL %s: %d EXPECTED", `__FILE__, t_res);
         $finish;
       end
     end
@@ -70,7 +70,7 @@ module testbench;
       for (int j = 32' (smin); j <= 32' (smax); j ++)
         test (n' (i), n' (j), 1'b1);
 
-      $display ("%s PASS", `__FILE__);
+      $display ("PASS %s", `__FILE__);
       $finish;
     end
 

@@ -5,8 +5,8 @@
 
 module tb;
 
-    formula_tb # ( .formula (1), .pipe (1) ) i_formula_1_pipe_tb           ();
-    formula_tb # ( .formula (1), .pipe (0) ) i_formula_1_pipe_aware_fsm_tb ();
+    formula_tb # ( .homework (4), .formula (1), .pipe (1) ) i_formula_1_pipe_tb           ();
+    formula_tb # ( .homework (4), .formula (1), .pipe (0) ) i_formula_1_pipe_aware_fsm_tb ();
 
     shift_register_with_valid_tb # ( .width (8), .depth (8) )
     i_shift_register_with_valid_tb1 ();
@@ -14,7 +14,7 @@ module tb;
     shift_register_with_valid_tb # ( .width (17), .depth (13) )
     i_shift_register_with_valid_tb2 ();
 
-    formula_tb # ( .formula (2), .pipe (1) ) i_formula_2_pipe_tb           ();
+    formula_tb # ( .homework (4), .formula (2), .pipe (1) ) i_formula_2_pipe_tb           ();
 
     initial
     begin

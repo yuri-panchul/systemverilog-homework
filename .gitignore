@@ -1,6 +1,6 @@
 import/
 *.hex
-a.out
+sim.out
 dump*.vcd
 log.txt
 lint.txt

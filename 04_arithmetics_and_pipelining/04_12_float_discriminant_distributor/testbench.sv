@@ -38,7 +38,7 @@ module testbench;
 
     localparam PIPE        = 0,
                FSM         = 0,
-               DISTRIBUTOR = 0,
+               DISTRIBUTOR = 1,
                MOCKUP      = 0,
                DEFECTIVE   = 0;
 

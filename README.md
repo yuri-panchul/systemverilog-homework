@@ -4,7 +4,7 @@
 
 ## 1. The required software installation
 
-The exercises in this repository use self-checking testbenches and scripts for basic verification of the student’s solutions. They work under Linux, MacOS, Windows with Git Bash or Windows WSL. The required software includes Icarus Verilog, Git and Bash. Git for Windows includes Bash. You may also need GTKWave or Surfer waveform viewer for debug and Verilator for linting. To install the necessary software do the following:
+The exercises in this repository use self-checking testbenches and scripts for basic verification of the student’s solutions. They work under Linux, MacOS, Windows with Git Bash and Windows WSL. The required software includes Icarus Verilog, Git and Bash. Git for Windows includes Bash. You may also need GTKWave or Surfer waveform viewer for debug and Verilator for linting. To install the necessary software, do the following:
 
 ### 1.1. Debian-derived Linux, Simply Linux or Windows WSL Ubuntu
 
@@ -21,7 +21,7 @@ Check the version of Icarus is at least 11 and preferrably 12.
 iverilog -v
 ```
 
-If not, [build Icarus Verilog from source](https://github.com/steveicarus/iverilog).
+If not, [build Icarus Verilog from the source](https://github.com/steveicarus/iverilog).
 
 ### 1.2. Windows without WSL
 
@@ -41,7 +41,7 @@ brew install icarus-verilog
 git clone https://github.com/yuri-panchul/systemverilog-homework.git
 ```
 
-We recommend to clone it in a place without spaces or unusual characters in the path. While we are trying hard to write robust Bash scripts to handle all the unusual environment conditions, we do not test the package with weird directory names like "abc%^ $# \/a b".
+We recommend cloning it in a place without spaces or unusual characters in the path. While we are trying hard to write robust Bash scripts to handle all the unusual environment conditions, we do not test the package with weird directory names like "abc%^ $# \/a b".
 
 ## 3. The first exercise
 
@@ -73,7 +73,7 @@ FAIL 01_02_mux_if/testbench.sv
 ...
 ```
 
-Your goal is to get **PASS** on every exercise. To get the PASS on the first exercise, edit the file [systemverilog-homework/01_combinational_logic/01_01_mux_question/01_01_mux_question.sv](01_combinational_logic/01_01_mux_question/01_01_mux_question.sv). Re-run the script and if your solution is functionally correct you will see:
+Your goal is to get **PASS** on every exercise. To get the PASS on the first exercise, edit the file [systemverilog-homework/01_combinational_logic/01_01_mux_question/01_01_mux_question.sv](01_combinational_logic/01_01_mux_question/01_01_mux_question.sv). Re-run the script and if your solution is functionally correct, you will see:
 
 ```
 PASS 01_01_mux_question/testbench.sv

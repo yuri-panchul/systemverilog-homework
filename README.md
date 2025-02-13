@@ -1,144 +1,129 @@
-# Collection of SystemVerilog exercises for the School of Digital Circuit Synthesis
+# A collection of SystemVerilog exercises from the beginning to the microarchitectural job interview level
 
 [Русский](README_ru.md)
 
-> **Not a day without a line in Verilog**
->
-> Collection of tasks of increasing complexity
->
-> Yuri Panchul, 2021-2024
+## 1. The required software installation
 
-## Links
+The exercises in this repository use self-checking testbenches and scripts for basic verification of the student’s solutions. They work under Linux, MacOS, Windows with Git Bash or Windows WSL. The required software includes Icarus Verilog, Git and Bash. Git for Windows includes Bash. You may also need GTKWave or Surfer waveform viewer for debug and Verilator for linting. To get up and running you need to do the following:
 
-* [School of Digital Circuit Synthesis](https://engineer.yadro.com/chip-design-school/)
-* [Lesson one: introduction to the design flow and exercises with combinational logic](https://youtu.be/DFcvEO-gP0c)
+### 1.1. Debian-derived Linux, Simply Linux or Windows WSL Ubuntu
 
-<!-- Some markdown video embedding tricks from https://stackoverflow.com/questions/4279611/how-to-embed-a-video-into-github-readme-md -->
+To install the necessary software do the following:
 
-[![](https://img.youtube.com/vi/DFcvEO-gP0c/hqdefault.jpg)](https://youtu.be/DFcvEO-gP0c)
+```bash
+sudo apt-get update
+sudo apt-get install git iverilog gtkwave surfer verilator
+```
 
+If you use other Linux distribution, google how to install Git, Icarus Verilog, GTKWave, Surfer and Verilator.
 
-## Installation instructions
+Check the version of Icarus is at least 11 and preferrably 12.
 
-The tasks can be solved with any Verilog simulator that supports SystemVerilog. And also with the free Icarus Verilog simulator, which, although it does not support all of SystemVerilog, does support Verilog 2005 with some SystemVerilog elements, sufficient for solving our tasks. Icarus Verilog is used with GTKWave, a program for working with timing diagrams. We will not need GTKWave for the first ten tasks, but it is worth installing it together with Icarus Verilog for the future.
+```bash
+iverilog -v
+```
 
-<p><img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/5c1/69d/934/5c169d9349c4352399b6cd962cdaa645.png">
-<img src="https://habrastorage.org/r/w1560/getpro/habr/upload_files/219/8b5/8d9/2198b58d9b1daa7345c07d2770ca2763.png">
-</p>
+If not, [build Icarus Verilog from source](https://github.com/steveicarus/iverilog).
 
-### Installation on Linux
+### 1.2. Windows without WSL
 
-Under Ubuntu and Debain based Linux you can install Icarus Verilog and GTKWave with the command:
+Install [Git for Windows](https://gitforwindows.org/) and [Icarus Verilog for Windows](https://bleyer.org/icarus/iverilog-v12-20220611-x64_setup.exe).
 
-`sudo apt-get install verilog gtkwave`
+### 1.3. MacOS
 
----
-#### Note:
+Use [brew](https://formulae.brew.sh/formula/icarus-verilog):
 
-If you have an old version of Linux distribution (Ubuntu), then when you install Icarus Verilog you will get an old version that does not support `always_comb`, `always_ff` and many other SystemVerilog constructs. How to solve this problem:
+```zsh
+brew install icarus-verilog
+```
 
-1. **Checking iverilog version**
-    ```bash
-    iverilog -v
-    ```
-    If the iverilog version is less than 11, go to point 3.
+## 2. Cloning the repository
 
+```
+git clone https://github.com/yuri-panchul/systemverilog-homework.git
+```
 
-2. **Installation of preliminary packages**
-    ```bash
-    sudo apt-get install build-essential bison flex gperf readline-common libncurses5-dev nmon autoconf
-    ```
+We recommend to clone it in a place without spaces or unusual characters in the path. While we are trying hard to write robust Bash scripts to handle all the unusual environment conditions, we do not test the package with weird directory names like "abc%^ $# \/a b".
 
-3. **Download the latest version of iverilog**
+## 3. The first exercise
 
-    To date (8.25.2024) the latest version of Iverilog: 12.0
-    Go [here](https://sourceforge.net/projects/iverilog/files/iverilog/12.0/) and download the archive.
+```sh
+cd 01_combinational_logic
+```
 
-4. **Assembly iverilog**
-    - Extract the archive:
-        ```bash
-        tar -xzf verilog-12.0.tar.gz
-        ```
+On Linux, MacOS or Windows WSL
 
-    - Enter into the verilog folder:
-        ```bash
-        cd verilog-12.0
-        ```
+```sh
+./run_linux_mac.sh
+```
 
-    - Configure iverilog:
-        ```bash
-        ./configure --prefix=/usr
-        ```
+On Windows without WSL
 
-    - Run the make checks
-        ```bash
-        make check
-        ```
-        As a result, several inscriptions of `HELLO, World!` Will appear in the terminal
+```bat
+run_windows.bat
+```
 
-    - Install icarus
-        ```bash
-        sudo make install
-        ```
----
-### Verilator
+You will see the following output:
 
-Additionally, to check the code for some syntactic and stylistic errors, you can install Verilator (version 5.002+).
+```
+FAIL 01_01_mux_question/testbench.sv
+++ INPUT    => {d0:a, d1:b, d2:c, d3:d, sel:0}
+++ EXPECTED => {ty:a}
+++ ACTUAL   => {y:z}
+FAIL 01_02_mux_if/testbench.sv
+++ INPUT    => {d0:a, d1:b, d2:c, d3:d, sel:0}
+...
+```
 
-For Ubuntu 23.04 and above:
+Your goal is to get **PASS** on every exercise. To get the PASS on the first exercise, edit the file [systemverilog-homework/01_combinational_logic/01_01_mux_question/01_01_mux_question.sv](01_combinational_logic/01_01_mux_question/01_01_mux_question.sv). Re-run the script and if your solution is functionally correct you will see:
 
-`sudo apt-get install verilator`
+```
+PASS 01_01_mux_question/testbench.sv
+FAIL 01_02_mux_if/testbench.sv
+++ INPUT    => {d0:a, d1:b, d2:c, d3:d, sel:0}
+...
+```
 
-For earlier versions of Ubuntu or other distributions, you can install Verilator along with [OSS CAD Suite](https://github.com/YosysHQ/oss-cad-suite-build?tab=readme-ov-file#installation).
+Continue until you get **PASS** for every exercise.
 
+You can see more detailed results in `log.txt`.
 
-If using OSS CAD SUITE, for setting the environment, it is recommended to use `export PATH="<extracted_location>/oss-cad-suite/bin:$PATH"` instead of `source <extracted_location>/oss-cad-suite/environment`, because latter requires additional `unset VERILATOR_ROOT` command.
+## 4. If you want to debug waveforms
 
-To perform the check, add the `--lint` or `-l` option to the script:
-`./run_linux_mac.sh --lint`
+Find the following place in the associated `testbench.sv` file and uncomment `$dumpvars`:
 
-The result will be written to `lint.txt`
+```v
+initial
+begin
+    `ifdef __ICARUS__
+    // Uncomment the following line
+    // to generate a VCD file and analyze it using GTKwave or Surfer
 
----
-### Installation on Windows
+    // $dumpvars;
+`endif
+```
 
-The Icarus Verilog version for Windows can be downloaded [from this site](https://bleyer.org/icarus/)
+Then re-run the script with `--wave` option:
 
-[Video Instructions for the installation of icarus verilog on Windows](https://youtu.be/5kync4z5vow)
+```sh
+./run_linux_mac.sh --wave
+```
 
+## 5. If you want to run lint (Linux, MacOS and WSL only)
 
-[![](https://img.youtube.com/vi/5Kync4z5VOw/hqdefault.jpg)](https://www.youtube.com/watch?v=5Kync4z5VOw)
+```sh
+./lint_linux_mac.sh --lint
+```
+You can see the results in `lint.txt`
 
-### Installation on Apple Mac
+## 6. Running more advanced exercises starting Homework 3
 
-Icarus can even be put on Apple Mac, which is unusual for EDA tools (EDA - Electronic Design Automation). This can be done in the console using the Brew:
+Read the article ["A new edition of SystemVerilog-Homework adds exercises that use FPU of an open-source CPU"](https://verilog-meetup.com/2025/02/11/a-new-edition-of-systemverilog-homework-adds-exercises-that-use-fpu-of-an-open-source-cpu/).
 
-`brew install icarus-verilog`
+## 7. More steps
 
-[Video Instructions for the installation of icarus verilog on macos](https://youtu.be/juykyoyr8hs)
+You need to read some books in parallel with doing the exercises. You can get a list of recommended literature in the article [Self-education and educating others](https://verilog-meetup.com/2024/02/03/self-education-and-educating-others/).
 
-[![](https://img.youtube.com/vi/jUYkYoYr8hs/hqdefault.jpg)](https://www.youtube.com/watch?v=jUYkYoYr8hs)
+Once you develop a solution, especially for more challenging tasks on pipelining from Homework 4, you also need to check whether the code is synthesizable and has reasonable timing. You can use various FPGA synthesis tools for it (Xilinx, Altera, Gowin, Lattice, Efinix) or ASIC design tools (Synopsys Design Compiler, Cadence Genus, Open Lane, Caravel, Tiny Tapeout) – it is up to you. If you want to try open-source ASIC synthesis, there is an article on how to work around the pitfalls in this way: [The State of Caravel: the First Look](https://verilog-meetup.com/2025/02/11/a-new-edition-of-systemverilog-homework-adds-exercises-that-use-fpu-of-an-open-source-cpu/).
 
-
-## Execution and checking tasks
-
-To check the tasks for Linux and MacOS, you need to open the console in the folder and start the script `./run_linux_mac.sh`. It will create a file _log.txt_ with the results of compilation and simulation of all set tasks.
-
-To check the tasks for Windows, you need to open the console in the task folder and run the bat file `run_windows.bat`. This will also create a file _log.txt_ with the results of the check.
-
-After the test for all tasks will show **PASS**.
-
-## GTKWave alternative
-
-Instead of GTKWave you can use cross-platform waveform viewer [Surfer](https://surfer-project.org/).
-
-It looks much nicer on modern screens (and especially on Wayland), works faster and you can even try it out in your web browser without installing.
-
-![Surfer](https://gitlab.com/surfer-project/surfer/-/raw/main/snapshots/render_readme_screenshot.png)
-
-## Recommended literature that will help in solving problems
-
-1. [Harris D.M., Harris S.L., “Digital circuitry and computer architecture: RISC-V”](https://dmkpress.com/catalog/electronics/circuit_design/978-5-97060-961-3). There is [a version for a tablet for a previous edition](https://silicon-russia.com/public_materials/2018_01_15_latest_harris_harris_ru_barabanov_version/digital_design_rus-25.10.2017.pdf) (based on MIPS architecture), but there are shorter [slides for lectures](http://www.silicon-russia.com/public_materials/2016_09_01_harris_and_harris_slides/DDCA2e_LectureSlides_Ru_20160901.zip).
-![](https://habrastorage.org/r/w1560/getpro/habr/upload_files/26c/817/9c3/26c8179c34c52fa937cd2200f789c3d0.png)
-
-2. [Романов А.Ю., Панчул Ю.В. и коллектив авторов. «Цифровой синтез. Практический курс»](https://dmkpress.com/catalog/electronics/circuit_design/978-5-97060-850-0/)
+However this is not the end of the story. Your solution has to be reviewed by somebody with experience in SystemVerilog and microarchitecture: a teacher, colleague or interviewer. In any case, good luck and we hope you enjoy the experience.

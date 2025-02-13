@@ -21,6 +21,7 @@ module signed_add_with_saturation
   input  [3:0] a, b,
   output [3:0] sum
 );
+
   // Task:
   //
   // Implement a module that adds two signed numbers with saturation.

@@ -1,0 +1,20 @@
+{signal: [
+  {name: 'N',           wave: '7.............', data: ['4']},
+  {name: 'clk',           wave: 'p.............'},
+  {name: 'rst',           wave: '10............'},
+  {name: 'abc',           wave: 'x.345x7x3457x.', data: ['1', '2', '3', '4','1', '2', '3', '4']},
+  {name: 'arg_vld',       wave: 'x01..0101...0.'},
+  {name: 'abc_reg',       wave: 'x..345x7x3457x', data: ['1', '2', '3', '4','1', '2', '3', '4']},
+  {name: 'arg_vld_reg',   wave: 'x0.1..0101...0'},
+  {name: 'index',         wave: 'x8..88.8.8888.',data: ['0', '1', '2', '3', '0', '1', '2', '3']},
+  {name: 'isqrt_y_1',     wave: 'x.....3x....3x',data: ['1','1']},
+  {name: 'isqrt_y_vld_1', wave: 'x0....10....10'},
+  {name: 'isqrt_y_2',     wave: 'x......4x....4',data: ['2','2']},
+  {name: 'isqrt_y_vld_2', wave: 'x0.....10....1'},
+  {name: 'isqrt_y_3',     wave: 'x.......5x....',data: ['3']},
+  {name: 'isqrt_y_vld_3', wave: 'x0......10....'},
+  {name: 'isqrt_y_4',     wave: 'x.........7x..',data: ['4']},
+  {name: 'isqrt_y_vld_4', wave: 'x0........10..'},
+  {name: 'res',           wave: 'x.....345x7x34',data: ['1', '2', '3', '4', '1', '2']},
+  {name: 'res_vld',       wave: 'x0....1..0101.',}
+]}

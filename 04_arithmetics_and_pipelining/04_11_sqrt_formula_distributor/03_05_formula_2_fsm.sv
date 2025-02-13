@@ -23,7 +23,9 @@ module formula_2_fsm
     input               isqrt_y_vld,
     input        [15:0] isqrt_y
 );
+
     // Task:
+    //
     // Implement a module that calculates the formula from the `formula_2_fn.svh` file
     // using only one instance of the isqrt module.
     //

@@ -23,6 +23,7 @@ module formula_1_pipe_aware_fsm
     input               isqrt_y_vld,
     input        [15:0] isqrt_y
 );
+
     // Task:
     //
     // Implement a module formula_1_pipe_aware_fsm
@@ -58,7 +59,7 @@ module formula_1_pipe_aware_fsm
     // For more details, see the discussion of this problem
     // in the article by Yuri Panchul published in
     // FPGA-Systems Magazine :: FSM :: Issue ALFA (state_0)
-    // You can download this issue from https://fpga-systems.ru/fsm
+    // You can download this issue from https://fpga-systems.ru/fsm#state_0
 
 
 endmodule

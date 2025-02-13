@@ -67,6 +67,7 @@ module shift_register_with_valid
     output               out_vld,
     output [width - 1:0] out_data
 );
+
     // Task:
     //
     // Implement a variant of a shift register module
@@ -75,7 +76,7 @@ module shift_register_with_valid
     // For the discussion of shift registers
     // see the article by Yuri Panchul published in
     // FPGA-Systems Magazine :: FSM :: Issue ALFA (state_0)
-    // You can download this issue from https://fpga-systems.ru/fsm
+    // You can download this issue from https://fpga-systems.ru/fsm#state_0
 
 
 endmodule

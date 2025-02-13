@@ -16,14 +16,19 @@ module float_discriminant_distributor (
 );
 
     // Task:
-    // a module that simulates the operation of a pipeline by implementing several
-    // Implement a module that uses several bloks "float_discriminant" for calculate discriminant
-    // similarly, the pipeline, that is, accepts data every clock cycle and returns the result
-    // after several clock cycles.
     //
-    // Note:
-    // the "float_discriminant" module is located in the "float_discriminant.sv" file. Do not modify
-    // it, use it "as is".
+    // Implement a module that will calculate the discriminant based
+    // on the triplet of input number a, b, c. The module must be pipelined.
+    // It should be able to accept a new triple of arguments on each clock cycle
+    // and also, after some time, provide the result on each clock cycle.
+    // The idea of the task is similar to the task 04_11. The main difference is
+    // in the underlying module 03_08 instead of formula modules.
+    //
+    // Note 1:
+    // Reuse your file "03_08_float_discriminant.sv" from the Homework 03.
+    //
+    // Note 2:
+    // Latency of the module "float_discriminant" should be clarified from the waveform.
 
 
 endmodule

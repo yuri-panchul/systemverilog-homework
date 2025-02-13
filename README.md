@@ -109,12 +109,14 @@ Then re-run the script with `--wave` option:
 ./run_linux_mac.sh --wave
 ```
 
+GTKWave or Surfer has to be installed.
+
 ## 5. If you want to run lint (Linux, MacOS and WSL only)
 
 ```sh
 ./lint_linux_mac.sh --lint
 ```
-You can see the results in `lint.txt`
+You can see the results in `lint.txt`. Verilator has to be installed.
 
 ## 6. Running more advanced exercises starting Homework 3
 

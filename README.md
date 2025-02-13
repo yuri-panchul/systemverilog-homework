@@ -4,11 +4,9 @@
 
 ## 1. The required software installation
 
-The exercises in this repository use self-checking testbenches and scripts for basic verification of the student’s solutions. They work under Linux, MacOS, Windows with Git Bash or Windows WSL. The required software includes Icarus Verilog, Git and Bash. Git for Windows includes Bash. You may also need GTKWave or Surfer waveform viewer for debug and Verilator for linting. To get up and running you need to do the following:
+The exercises in this repository use self-checking testbenches and scripts for basic verification of the student’s solutions. They work under Linux, MacOS, Windows with Git Bash or Windows WSL. The required software includes Icarus Verilog, Git and Bash. Git for Windows includes Bash. You may also need GTKWave or Surfer waveform viewer for debug and Verilator for linting. To install the necessary software do the following:
 
 ### 1.1. Debian-derived Linux, Simply Linux or Windows WSL Ubuntu
-
-To install the necessary software do the following:
 
 ```bash
 sudo apt-get update

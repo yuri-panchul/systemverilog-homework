@@ -33,7 +33,7 @@ find_path()
 
 import_files()
 {
-    import=$(echo "$1" | sed 's/common/import/g')
+    import=$(echo "$1" | sed -e 's/common/import/g')
 
     if ! [ -d "$import/original/cvw" ]
     then
@@ -54,23 +54,23 @@ import_files()
        "$import/original/cvw/src/generic/flop"/*.*                 \
        "$import/preprocessed/cvw"
 
-    sed -i 's/#(P) //g' "$import/preprocessed/cvw/"*
-    sed -i 's/P\./  /g' "$import/preprocessed/cvw/"*
-    sed -i 's/import cvw::\*;  #(parameter cvw_t P) //g' "$import/preprocessed/cvw"/*
+    sed -i -e 's/#(P) //g' "$import/preprocessed/cvw/"*
+    sed -i -e 's/P\./  /g' "$import/preprocessed/cvw/"*
+    sed -i -e 's/import cvw::\*;  #(parameter cvw_t P) //g' "$import/preprocessed/cvw"/*
 
-    sed -i 's/, parameter type TYPE=logic \[WIDTH-1:0\]//g' \
+    sed -i -e 's/, parameter type TYPE=logic \[WIDTH-1:0\]//g' \
         "$import/preprocessed/cvw/flopenl.sv"
 
-    sed -i 's/ TYPE / logic [WIDTH-1:0] /g' \
+    sed -i -e 's/ TYPE / logic [WIDTH-1:0] /g' \
         "$import/preprocessed/cvw/flopenl.sv"
 
-    sed -i 's/module fmalza #(WIDTH, NF) /module fmalza #(parameter WIDTH = 0, NF = 0) /g' \
+    sed -i -e 's/module fmalza #(WIDTH, NF) /module fmalza #(parameter WIDTH = 0, NF = 0) /g' \
         "$import/preprocessed/cvw/fmalza.sv"
 
-    sed -i 's/(parameter FLEN)/(parameter FLEN=64)/g' \
+    sed -i -e 's/(parameter FLEN)/(parameter FLEN=64)/g' \
         "$import/preprocessed/cvw/fregfile.sv"
 
-    sed -i 's/ var / /g' \
+    sed -i -e 's/ var / /g' \
         "$import/preprocessed/cvw/or_rows.sv"
 }
 
@@ -288,9 +288,9 @@ simulate_rtl()
     fi
 
     # Don't print iverilog warning about not supporting constant selects
-    sed -i '/sorry: constant selects/d' log.txt
+    sed -i -e '/sorry: constant selects/d' log.txt
     # Don't print $finish calls to make log cleaner
-    sed -i '/finish called/d' log.txt
+    sed -i -e '/finish called/d' log.txt
 }
 
 #-----------------------------------------------------------------------------
@@ -374,8 +374,8 @@ lint_code()
         done
     fi
 
-    sed -i '/- Verilator:/d' lint.txt
-    sed -i '/- V e r i l a t i o n/d' lint.txt
+    sed -i -e '/- Verilator:/d' lint.txt
+    sed -i -e '/- V e r i l a t i o n/d' lint.txt
 }
 
 #-----------------------------------------------------------------------------

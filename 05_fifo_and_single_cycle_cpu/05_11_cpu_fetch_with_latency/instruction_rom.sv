@@ -18,20 +18,15 @@ module instruction_rom
 (
     input                       clk,
     input        [ADDR_W - 1:0] a,
-    output logic [        31:0] rd,
-    output logic                rd_vld
+    output logic [        31:0] rd
 );
     reg [31:0] rom [0:SIZE - 1];
 
     // We intentionally introduce latency here
 
     always_ff @ (posedge clk)
-    begin
-        rd  <= rom [a];
-    end
+        rd <= rom [a];
 
-    // Task: Add definition for a rd_vld signal
-    // assign rd_vld = ...
     initial $readmemh ("program.hex", rom);
 
 endmodule

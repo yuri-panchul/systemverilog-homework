@@ -95,8 +95,6 @@ Task: Add the multiplication instruction `mul` for the correct execution of `pro
 
 ## Exercise 7. Multiplication instruction with latency
 
-> Exercise: **Optional**
->
 > Directory: `05_09_cpu_mul_with_latency`
 
 Task: Based on previous exercise, implement `mul` instruction with the latency of 2 (or parameterized latency `N`), thus the result would occur 2 (`N`) clock cycles after the instruction.
@@ -106,30 +104,20 @@ Note: Multiple variants are allowed - from very simple, where the whole processo
 
 ## Exercise 8. New unconditional jump instruction `b`
 
-> Exercise: **Optional**
->
 > Directory: `05_10_cpu_with_b_instr`
 
 Task: Add unconditional jump `b` instruction. To do that, it is necessary to extend `sr_control.sv` and `sr_decode.sv` modules, as well as to add logic to update `pcNext` and save the result in the register.
 
 ## Exercise 9. Instruction memory module with latency
 
-> Exercise: **Optional**
->
 > Directory: `05_12_three_cpus_sharing_instr_memory`
 
 Task: Modify the processor to work with instruction memory which has a read latency of 1 clock cycle.
 
-Possible solutions:
-* Add an additional `imDataVld` flag for valid data coming from instruction memory
-* Implement pipelined processor (solution with higher complexity)
-
-Note: This exercise requires additional changes to the testbench `tb.sv` file as well.
+You can assume either non-pipelined or pipelined memory. In the first case you just need to track whether instruction memory data is valid for the current clock cycle. In the second case you can try to implement a pipelined CPU design with a rudimentary branch prediction ("predict no branch").
 
 ## Exercise 10. Three processors and an arbiter
 
-> Exercise: **Optional**
->
 > Directory: `05_12_three_cpus_sharing_instr_memory`
 
 Examine the arbiter in file `round_robin_arbiter_8.sv`

@@ -16,7 +16,6 @@ module tb;
     logic        rst;
 
     wire  [31:0] imAddr;   // instruction memory address
-    wire         imDataVld;
     wire  [31:0] imData;   // instruction memory data
 
     logic [ 4:0] regAddr;  // debug access reg address
@@ -27,25 +26,22 @@ module tb;
 
     sr_cpu cpu
     (
-        .clk       ( clk     ),
-        .rst       ( rst     ),
+        .clk     ( clk     ),
+        .rst     ( rst     ),
 
-        .imAddr    ( imAddr  ),
-        .imDataVld ( imDataVld ),
-        .imData    ( imData  ),
+        .imAddr  ( imAddr  ),
+        .imData  ( imData  ),
 
-        .regAddr   ( regAddr ),
-        .regData   ( regData )
+        .regAddr ( regAddr ),
+        .regData ( regData )
     );
 
     instruction_rom # (.SIZE (ROM_SIZE)) i_rom
     (
         .clk     ( clk              ),
         .a       ( ADDR_W' (imAddr) ),
-        .rd_vld  ( imDataVld        ),
         .rd      ( imData           )
     );
-
 
     //------------------------------------------------------------------------
 
@@ -103,6 +99,20 @@ module tb;
 
     //------------------------------------------------------------------------
 
+    logic imDataVld;
+
+    always_ff @ (posedge clk)
+        if (rst)
+            imDataVld <= 1'b0;
+        else
+            `ifdef PIPELINED_CPU_AND_MEMORY
+            imDataVld <= 1'b1;
+            `else
+            imDataVld <= ~ imDataVld;
+            `endif
+
+    //------------------------------------------------------------------------
+
     int unsigned cycle = 0;
     bit wasRst = 1'b0;
 
@@ -129,7 +139,7 @@ module tb;
         else
             $write ("         ");
 
-        if (wasRst & ~ rst & $isunknown (imData))
+        if (wasRst & ~ rst & imDataVld & $isunknown (imData))
         begin
             $display ("%s FAIL: fetched instruction at address %x contains Xs: %x",
                 `__FILE__, imAddr, imData);

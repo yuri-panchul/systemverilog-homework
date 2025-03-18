@@ -18,7 +18,6 @@ module sr_cpu
     input           rst,      // reset
 
     output  [31:0]  imAddr,   // instruction memory address
-    input           imDataVld,
     input   [31:0]  imData,   // instruction memory data
 
     input   [ 4:0]  regAddr,  // debug access reg address
@@ -51,6 +50,7 @@ module sr_cpu
     wire [31:0] pcBranch = pc + immB;
     wire [31:0] pcPlus4  = pc + 32'd4;
     wire [31:0] pcNext   = pcSrc ? pcBranch : pcPlus4;
+
 
     register_with_rst_and_en r_pc
     (

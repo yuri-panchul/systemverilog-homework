@@ -110,7 +110,7 @@ Task: Add unconditional jump `b` instruction. To do that, it is necessary to ext
 
 ## Exercise 9. Instruction memory module with latency
 
-> Directory: `05_12_three_cpus_sharing_instr_memory`
+> Directory: `05_11_cpu_fetch_with_latency`
 
 Task: Modify the processor to work with instruction memory which has a read latency of 1 clock cycle.
 

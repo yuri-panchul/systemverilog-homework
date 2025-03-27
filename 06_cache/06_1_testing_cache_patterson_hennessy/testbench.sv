@@ -42,7 +42,7 @@ module testbench;
 
     task init_signals ();
 
-        cpu_req  <= '0;
+        cpu_req <= '0;
 
     endtask
 
@@ -105,23 +105,14 @@ module testbench;
     endtask
 
     //------------------------------------------------------------------------
-    // Running testbench
+    // Test sequences
 
-    initial
-    begin
-        `ifdef __ICARUS__
-            // Uncomment the following line
-            // to generate a VCD file and analyze it using GTKwave
+    task test ();
 
-            $dumpvars;
-        `endif
+        $display ("******************** Test ********************");
 
         init_signals ();
         drive_reset  ();
-
-        //--------------------------------------------------------------------
-
-        make_gap_between_tests ();
 
         $display ("Write within a cache line");
 
@@ -147,16 +138,49 @@ module testbench;
 
         $display ("We are supposed to see an eviction and writeback");
 
+        // Try to do a transaction with the same index, but different tag
+        //
+        // +--------------------------------------+
+        // | 332222222222111111 111100000000 0  0 |
+        // | 109876543210987654 321098765432 1  0 |
+        // +--------------------------------------+
+        // | 31    tag       14 13  index  2 byte |
+        // +-------------------+------------+-----+
+        //
+        // You should be able to see
+        // mem: write : addr 00000100 data 44444444333333332222222211111111
+
 
         $display ("We are supposed to see an eviction and fill");
 
+        // You should be able to see
+        // mem: read  : addr 00000108 data 44444444333333332222222211111111
 
-        //--------------------------------------------------------------------
 
         make_gap_between_tests ();
 
-        $display ("PASS %s", `__FILE__);
+    endtask
 
+    //------------------------------------------------------------------------
+    // Running testbench
+
+    bit log_tag_index_byte, log_state;
+
+    initial
+    begin
+        `ifdef __ICARUS__
+            // Uncomment the following line
+            // to generate a VCD file and analyze it using GTKwave
+
+            $dumpvars;
+        `endif
+
+        log_tag_index_byte = 0;
+        log_state          = 0;
+
+        test ();
+
+        $display ("PASS %s", `__FILE__);
         $finish;
     end
 
@@ -184,25 +208,35 @@ module testbench;
     begin
         cycle ++;
 
-        // if (cache.vstate != cache.rstate)
-        //     $display ("%d state %s -> %s: ", cycle,
-        //         cache.rstate.name (), cache.vstate.name ());
+        if (log_state & cache.vstate != cache.rstate)
+            $display ("%d state %s -> %s: ", cycle,
+                cache.rstate.name (), cache.vstate.name ());
 
         if (cpu_req.valid & ~ cpu_req_stays_pending)
         begin
             $write ("%d cpu: ", cycle);
 
             if (cpu_req.rw)
-                $write ("write : %h %h",
-                    cpu_req.addr, cpu_req.data);
-            else if (cpu_res.ready)
-                $write ("read  : %h %h",
-                    cpu_req.addr, cpu_res.data);
+                $write ("write");
             else
-                $write ("read  : %h",
-                    cpu_req.addr);
+                $write ("read ");
 
-            if (~ cpu_res.ready)
+            $write (" : addr %h", cpu_req.addr);
+
+            if (log_tag_index_byte)
+                $write (" tag %h index %h byte %h",
+                    cpu_req.addr [TAGMSB:TAGLSB],
+                    cpu_req.addr [TAGLSB - 1:2],
+                    cpu_req.addr [1:0]);
+
+            if (cpu_req.rw)
+                $write (" data %h", cpu_req.data);
+            else if (cpu_res.ready)
+                $write (" data %h", cpu_res.data);
+
+            if (cpu_res.ready)
+                $write (" completed");
+            else
                 $write (" pending");
 
             $display ();
@@ -213,13 +247,13 @@ module testbench;
             $write ("%d mem: ", cycle);
 
             if (mem_req.rw)
-                $write ("write : %h %h",
+                $write ("write : addr %h data %h",
                     mem_req.addr, mem_req.data);
             else if (mem_data.ready)
-                $write ("read  : %h %h",
+                $write ("read  : addr %h data %h",
                     mem_req.addr, mem_data.data);
             else
-                $write ("read  : %h",
+                $write ("read  : addr %h",
                     mem_req.addr);
 
             if (~ mem_data.ready)

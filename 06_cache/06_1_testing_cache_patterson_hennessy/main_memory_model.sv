@@ -15,8 +15,10 @@ import cache_def::*;
 
     cache_data_type ['h1000 - 1:0] mem;
 
-    always_comb
-        mem_data.ready = 1'b1;
+    // Probability of ready is 20%
+
+    always_ff @ (posedge clk)
+        mem_data.ready <= ($urandom_range (0, 99) < 1);
 
     always_ff @ (posedge clk)
         if (mem_req.valid & mem_req.rw)

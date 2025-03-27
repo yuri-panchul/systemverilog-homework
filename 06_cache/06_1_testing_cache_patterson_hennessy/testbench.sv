@@ -130,11 +130,13 @@ module testbench;
 
         drive_write (32'h0200, 32'h55555555);
         drive_write (32'h3104, 32'h66666666);
+        drive_write (32'h8004, 32'h77777777);
 
         $display ("Read from different cache lines");
 
         drive_read  (32'h0501);
         drive_read  (32'h2000);
+        drive_read  (32'hffff);
 
         $display ("We are supposed to see an eviction and writeback");
 
@@ -150,12 +152,14 @@ module testbench;
         // You should be able to see
         // mem: write : addr 00000100 data 44444444333333332222222211111111
 
+        // TODO
 
         $display ("We are supposed to see an eviction and fill");
 
         // You should be able to see
         // mem: read  : addr 00000108 data 44444444333333332222222211111111
 
+        // TODO
 
         make_gap_between_tests ();
 
@@ -175,7 +179,7 @@ module testbench;
             $dumpvars;
         `endif
 
-        log_tag_index_byte = 0;
+        log_tag_index_byte = 1;
         log_state          = 0;
 
         test ();
@@ -224,9 +228,10 @@ module testbench;
             $write (" : addr %h", cpu_req.addr);
 
             if (log_tag_index_byte)
-                $write (" tag %h index %h byte %h",
+                $write (" tag %h index %h word %h byte %h",
                     cpu_req.addr [TAGMSB:TAGLSB],
-                    cpu_req.addr [TAGLSB - 1:2],
+                    cpu_req.addr [TAGLSB - 1:4],
+                    cpu_req.addr [3:2],
                     cpu_req.addr [1:0]);
 
             if (cpu_req.rw)

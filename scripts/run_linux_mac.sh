@@ -48,15 +48,21 @@ import_files()
        "$import/original/cvw/config/rv32gc/config.vh"              \
        "$import/original/cvw/config/shared/BranchPredictorType.vh" \
        "$import/original/cvw/config/shared/config-shared.vh"       \
+       "$import/original/cvw/src/cache"/*.*                        \
        "$import/original/cvw/src/fpu"/*/*                          \
        "$import/original/cvw/src/fpu"/*.*                          \
        "$import/original/cvw/src/generic"/*.*                      \
        "$import/original/cvw/src/generic/flop"/*.*                 \
+       "$import/original/cvw/src/generic/mem/ram1p1rwbe.sv"        \
+       "$import/original/cvw/src/generic/mem/ram1p1rwe.sv"         \
        "$import/preprocessed/cvw"
 
     sed -i -e 's/#(P) //g' "$import/preprocessed/cvw/"*
     sed -i -e 's/P\./  /g' "$import/preprocessed/cvw/"*
     sed -i -e 's/import cvw::\*;  #(parameter cvw_t P) //g' "$import/preprocessed/cvw"/*
+    sed -i -e '/import cvw::\*; #(parameter cvw_t P,[[:space:]]*$/{N;s/import cvw::\*; #(parameter cvw_t P,[[:space:]]*\n[[:space:]]*/#(/}' "$import/preprocessed/cvw"/*
+    sed -i -e 's/\(cacheway #(\)P, /\1/' "$import/preprocessed/cvw"/*
+    sed -i -e 's/import cvw::\*[[:space:]]*; //' "$import/preprocessed/cvw"/*
 
     sed -i -e 's/, parameter type TYPE=logic \[WIDTH-1:0\]//g' \
         "$import/preprocessed/cvw/flopenl.sv"
@@ -263,7 +269,7 @@ simulate_rtl()
                         ${d}testbenches/*.sv
                         $common_path/isqrt/*.sv
                         $d*.sv"
-            elif [ -f "$d"testbench.sv ] && grep -q "realtobits" "$d"testbench.sv;
+            elif [ -f "$d"testbench.sv ] && grep -q "realtobits\|cache" "$d"testbench.sv;
             then
                 # It is an exercise with Wally CPU blocks
                 prepare_wally_env "$choice"
@@ -342,7 +348,7 @@ lint_code()
                             ${d}*.sv
                             -top tb"
             else
-                if [ -f "$d"testbench.sv ] && grep -q "realtobits" "$d"testbench.sv;
+                if [ -f "$d"testbench.sv ] && grep -q "realtobits\|cache" "$d"testbench.sv;
                 then
                     import_path=$(find_path "../import/preprocessed/cvw")
 

@@ -1,4 +1,4 @@
-// A simple memory responder written by Yuri Panchul
+// A simple memory responder
 // to accomodate the cache example from Patterson & Hennessy (?) Edition
 // Section 5.12. Advanced Material: Implementing Cache Controllers
 
@@ -13,18 +13,38 @@ import cache_def::*;
     timeunit      1ns;
     timeprecision 1ps;
 
+    mem_req_type pend_mem_req;
     cache_data_type ['h1000 - 1:0] mem;
 
-    // Probability of ready is 20%
+    bit [3:0] latency_counter;
 
     always_ff @ (posedge clk)
-        mem_data.ready <= ($urandom_range (0, 99) < 1);
+    begin
+        if (latency_counter > 0)
+        begin
+            latency_counter <= latency_counter - 1;
+        end
+        else if (pend_mem_req.valid)
+        begin
+            pend_mem_req.valid <= 1'b0;
 
-    always_ff @ (posedge clk)
-        if (mem_req.valid & mem_req.rw)
-            mem [mem_req.addr >> 4] <= mem_req.data;
+            if (pend_mem_req.rw)
+                mem [pend_mem_req.addr >> 4] <= pend_mem_req.data;
+            else
+                mem_data.data <= mem [pend_mem_req.addr >> 4];
 
-    always_comb
-        mem_data.data = mem [mem_req.addr >> 4];
+            mem_data.ready <= 1'b1;
+        end
+        else if (mem_req.valid)
+        begin
+            pend_mem_req    <= mem_req;
+            latency_counter <= '1;
+            mem_data.ready  <= 1'b0;
+        end
+        else
+        begin
+            mem_data.ready  <= 1'b0;
+        end
+    end
 
 endmodule

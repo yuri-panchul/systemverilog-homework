@@ -62,7 +62,7 @@ module testbench;
     //------------------------------------------------------------------------
     // Driving stimulus
 
-    localparam TIMEOUT = 5000;
+    localparam TIMEOUT = 50000;
 
     //------------------------------------------------------------------------
 
@@ -206,6 +206,14 @@ module testbench;
 
     //------------------------------------------------------------------------
 
+    bit last_mem_req_rw;
+
+    always @ (posedge clk)
+        if (mem_req.valid)
+             last_mem_req_rw <= mem_req.rw;
+
+    //------------------------------------------------------------------------
+
     int unsigned cycle = 0;
 
     always @ (posedge clk)
@@ -225,10 +233,15 @@ module testbench;
             else
                 $write ("read ");
 
+            if (cpu_res.ready)
+                $write (" response");
+            else
+                $write (" request ");
+
             $write (" : addr %h", cpu_req.addr);
 
             if (log_tag_index_byte)
-                $write (" tag %h index %h word %h byte %h",
+                $write (" tag  %h index %h word %h byte %h",
                     cpu_req.addr [TAGMSB:TAGLSB],
                     cpu_req.addr [TAGLSB - 1:4],
                     cpu_req.addr [3:2],
@@ -239,12 +252,17 @@ module testbench;
             else if (cpu_res.ready)
                 $write (" data %h", cpu_res.data);
 
-            if (cpu_res.ready)
-                $write (" completed");
-            else
-                $write (" pending");
-
             $display ();
+        end
+
+        if (mem_data.ready)
+        begin
+            $write ("%d mem: ", cycle);
+
+            if (last_mem_req_rw)
+                $display ("write response");
+            else
+                $display ("read  response :               data %h", mem_data.data);
         end
 
         if (mem_req.valid)
@@ -252,19 +270,11 @@ module testbench;
             $write ("%d mem: ", cycle);
 
             if (mem_req.rw)
-                $write ("write : addr %h data %h",
+                $display ("write request  : addr %h data %h",
                     mem_req.addr, mem_req.data);
-            else if (mem_data.ready)
-                $write ("read  : addr %h data %h",
-                    mem_req.addr, mem_data.data);
             else
-                $write ("read  : addr %h",
+                $display ("read  request  : addr %h",
                     mem_req.addr);
-
-            if (~ mem_data.ready)
-                $write (" pending");
-
-            $display ();
         end
     end
 
@@ -277,5 +287,42 @@ module testbench;
         $display ("FAIL: timeout!");
         $finish;
     end
+
+    //------------------------------------------------------------------------
+    // Signals to see on GTKWave
+
+    bit [ 31:0]     wv_cpu_req_addr;
+    bit [ 31:0]     wv_cpu_req_data;
+    bit             wv_cpu_req_rw;
+    bit             wv_cpu_req_valid;
+
+    bit [ 31:0]     wv_cpu_res_data;
+    bit             wv_cpu_res_ready;
+
+    bit [ 31:0]     wv_mem_req_addr;
+    bit [127:0]     wv_mem_req_data;
+    bit             wv_mem_req_rw;
+    bit             wv_mem_req_valid;
+
+    cache_data_type wv_mem_data_data;
+    bit             wv_mem_data_ready;
+
+    //------------------------------------------------------------------------
+
+    assign wv_cpu_req_addr   = cpu_req.addr;
+    assign wv_cpu_req_data   = cpu_req.data;
+    assign wv_cpu_req_rw     = cpu_req.rw;
+    assign wv_cpu_req_valid  = cpu_req.valid;
+
+    assign wv_cpu_res_data   = cpu_res.data;
+    assign wv_cpu_res_ready  = cpu_res.ready;
+
+    assign wv_mem_req_addr   = mem_req.addr;
+    assign wv_mem_req_data   = mem_req.data;
+    assign wv_mem_req_rw     = mem_req.rw;
+    assign wv_mem_req_valid  = mem_req.valid;
+
+    assign wv_mem_data_data  = mem_data.data;
+    assign wv_mem_data_ready = mem_data.ready;
 
 endmodule

@@ -1,5 +1,7 @@
-// Code from Patterson & Hennessy (?) Edition
+// Code from David A. Patterson and John L. Hennessy.
+// Computer Organization and Design: The Hardware/Software Interface, 5th Edition
 // Section 5.12. Advanced Material: Implementing Cache Controllers
+// https://booksite.elsevier.com/9780124077263/downloads/advance_contents_and_appendices/section_5.12.pdf
 
 // cache: data memory, single port, 1024 blocks
 

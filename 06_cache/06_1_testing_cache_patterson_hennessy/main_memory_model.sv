@@ -1,6 +1,10 @@
 // A simple memory responder
-// to accomodate the cache example from Patterson & Hennessy (?) Edition
+// to accomodate the cache example from
+
+// David A. Patterson and John L. Hennessy.
+// Computer Organization and Design: The Hardware/Software Interface, 5th Edition
 // Section 5.12. Advanced Material: Implementing Cache Controllers
+// https://booksite.elsevier.com/9780124077263/downloads/advance_contents_and_appendices/section_5.12.pdf
 
 module main_memory_model
 import cache_def::*;

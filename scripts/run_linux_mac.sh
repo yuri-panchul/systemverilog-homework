@@ -44,17 +44,18 @@ import_files()
     rm    -rf "$import/preprocessed"
     mkdir -p  "$import/preprocessed/cvw"
 
+    # "$import/original/cvw/src/cache"/*.*                        \
+    # "$import/original/cvw/src/generic/mem/ram1p1rwbe.sv"        \
+    # "$import/original/cvw/src/generic/mem/ram1p1rwe.sv"         \
+
     cp -r  \
        "$import/original/cvw/config/rv32gc/config.vh"              \
        "$import/original/cvw/config/shared/BranchPredictorType.vh" \
        "$import/original/cvw/config/shared/config-shared.vh"       \
-       "$import/original/cvw/src/cache"/*.*                        \
        "$import/original/cvw/src/fpu"/*/*                          \
        "$import/original/cvw/src/fpu"/*.*                          \
        "$import/original/cvw/src/generic"/*.*                      \
        "$import/original/cvw/src/generic/flop"/*.*                 \
-       "$import/original/cvw/src/generic/mem/ram1p1rwbe.sv"        \
-       "$import/original/cvw/src/generic/mem/ram1p1rwe.sv"         \
        "$import/preprocessed/cvw"
 
     sed -i -e 's/#(P) //g' "$import/preprocessed/cvw/"*

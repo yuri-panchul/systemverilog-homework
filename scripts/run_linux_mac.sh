@@ -270,7 +270,8 @@ simulate_rtl()
                         ${d}testbenches/*.sv
                         $common_path/isqrt/*.sv
                         $d*.sv"
-            elif [ -f "$d"testbench.sv ] && grep -q "realtobits\|cache" "$d"testbench.sv;
+            # elif [ -f "$d"testbench.sv ] && grep -q "realtobits\|cache" "$d"testbench.sv;
+            elif [ -f "$d"testbench.sv ] && grep -q "realtobits" "$d"testbench.sv;
             then
                 # It is an exercise with Wally CPU blocks
                 prepare_wally_env "$choice"
@@ -349,7 +350,8 @@ lint_code()
                             ${d}*.sv
                             -top tb"
             else
-                if [ -f "$d"testbench.sv ] && grep -q "realtobits\|cache" "$d"testbench.sv;
+                # if [ -f "$d"testbench.sv ] && grep -q "realtobits\|cache" "$d"testbench.sv;
+                if [ -f "$d"testbench.sv ] && grep -q "realtobits" "$d"testbench.sv;
                 then
                     import_path=$(find_path "../import/preprocessed/cvw")
 

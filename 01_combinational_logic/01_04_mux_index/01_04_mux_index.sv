@@ -32,6 +32,11 @@ module mux_4_1
   // Task:
   // Using code for mux_2_1 as an example,
   // write code for 4:1 mux using array index
+ logic [3:0] d [0:1][0:1];
+ assign d[0][0] = d0; 
+ assign d[0][1] = d1; 
+ assign d[1][0] = d2; 
+ assign d[1][1] = d3; 
 
-
+ assign y = d[sel[1]][sel[0]]; 
 endmodule

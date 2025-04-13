@@ -25,6 +25,34 @@ module serial_to_parallel
     //
     // Note:
     // Check the waveform diagram in the README for better understanding.
+    logic [3:0] n_bits;
+    logic [width - 1:0] register;
 
+    always_ff @(posedge clk or posedge rst) 
+        begin
+        if (rst) 
+            begin
+            register       <= 0;
+            n_bits         <= 0;
+            parallel_valid <= 0;
+            end 
+        else 
+            begin
+            parallel_valid <= 0; 
+
+            if (serial_valid) 
+                begin
+                register = {serial_data, register[width-1:1]}; // = - to use it in following if
+                n_bits   <= n_bits + 1;
+
+                if (n_bits == width - 1) 
+                    begin
+                    parallel_data  <= register;
+                    parallel_valid <= 1;
+                    n_bits         <= 0;
+                    end
+                end
+            end
+        end
 
 endmodule

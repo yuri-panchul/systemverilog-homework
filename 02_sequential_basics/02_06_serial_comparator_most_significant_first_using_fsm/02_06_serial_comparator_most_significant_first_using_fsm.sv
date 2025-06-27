@@ -14,11 +14,11 @@ module serial_comparator_least_significant_first_using_fsm
 );
 
   // States
-  enum logic[1:0]
+  enum logic[2:0]
   {
-     st_equal       = 2'b00,
-     st_a_less_b    = 2'b01,
-     st_a_greater_b = 2'b10
+     st_a_less_b    = 3'b100,
+     st_equal       = 3'b010,
+     st_a_greater_b = 3'b001
   }
   state, new_state;
 
@@ -41,9 +41,7 @@ module serial_comparator_least_significant_first_using_fsm
   end
 
   // Output logic
-  assign a_eq_b      = (a == b) & (state == st_equal);
-  assign a_less_b    = (~ a &   b) | (a == b & state == st_a_less_b);
-  assign a_greater_b = (  a & ~ b) | (a == b & state == st_a_greater_b);
+  assign { a_less_b, a_eq_b, a_greater_b } = new_state;
 
   always_ff @ (posedge clk)
     if (rst)

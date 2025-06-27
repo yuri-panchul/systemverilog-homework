@@ -29,7 +29,7 @@ package cache_def;
     }
     cache_req_type;
 
-    //128-bit cache line data
+    // 128-bit cache line data
 
     typedef bit [127:0] cache_data_type;
 

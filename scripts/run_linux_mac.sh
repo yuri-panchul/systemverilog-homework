@@ -117,6 +117,17 @@ run_verilator()
 
 #-----------------------------------------------------------------------------
 
+run_yosys()
+{
+    extra_args=$1
+
+    # $extra_args has to be unquoted here, otherwise it would pass as a single argument
+    # shellcheck disable=SC2086
+    yosys -p "read_verilog -sv $extra_args; synth -flatten; tee -a synth_results.txt stat" >> synth_log.txt 2>&1
+}
+
+#-----------------------------------------------------------------------------
+
 prompt_to_clone_if_repo_not_found()
 {
     common_path=$1
@@ -152,6 +163,24 @@ check_iverilog_executable()
                "or cannot be run."                                   \
                "See README.md file in the package directory"         \
                "for the instructions how to install Icarus."         \
+               "Press enter"
+
+        read -r enter
+        exit 1
+    fi
+}
+
+#-----------------------------------------------------------------------------
+
+check_yosys_executable()
+{
+    if ! command -v yosys > /dev/null 2>&1
+    then
+        printf "%s/n"                                        \
+               "ERROR: Yosys is not in the path"             \
+               "or cannot be run."                           \
+               "See README.md file in the package directory" \
+               "for the instructions how to install Yosys." \
                "Press enter"
 
         read -r enter
@@ -389,6 +418,69 @@ lint_code()
 
 #-----------------------------------------------------------------------------
 
+synthesize()
+{
+    check_yosys_executable
+
+    rm -f synth_results.txt
+    rm -f synth_log.txt
+
+    extra_args=""
+
+    if [ -f tb.sv ]
+    then
+        # Testbench is in the same directory with the script (HW 05)
+        printf "Synthesis is not implemented yet for this exercise\n"
+        exit 1
+    elif [ -d "testbenches" ]
+    then
+        # It is isqrt exercise
+        printf "Synthesis is not implemented yet for this exercise\n"
+        exit 1
+    else
+        # Enter each directory in homework
+        for d in */
+        do
+            extra_args=""
+
+
+            if [ -d "$d"testbenches ]
+            then
+                # It is isqrt exercise
+                printf "Synthesis is not implemented yet for this exercise\n"
+                exit 1
+            elif [ -f "$d"testbench.sv ] && grep -q "realtobits" "$d"testbench.sv;
+            then
+                # It is an exercise with Wally CPU blocks
+                printf "Synthesis is not implemented yet for this exercise\n"
+                exit 1
+            else
+                # It is a regular exercise with a testbench in each dir
+                for file in "$d"*.sv
+                do
+                    if [ "$(basename "$file")" != "testbench.sv" ]
+                    then
+                        extra_args="$extra_args $file"
+                    fi
+                done
+            fi
+            # Run Yosys with specific arguments
+            {
+                printf "==============================================================\n"
+                printf "Task: %s\n" "$d"
+                printf "=============================================================="
+            } >> synth_results.txt
+            run_yosys "$extra_args"
+        done
+    fi
+
+    sed -i -e '/excluding submodules/d' synth_results.txt
+    sed -i -e '/|/d' synth_results.txt
+    sed -i -e '/Printing statistics/d' synth_results.txt
+    sed -i -e '/scopeinfo/d' synth_results.txt
+}
+#-----------------------------------------------------------------------------
+
 run_assembly()
 {
     rars_jar=rars1_6.jar
@@ -474,7 +566,7 @@ fi
 
 simulate_rtl
 
-while getopts ":lw-:" opt
+while getopts ":lws-:" opt
 do
     case $opt in
         -)
@@ -483,6 +575,8 @@ do
                     lint_code;;
                 wave)
                     open_waveform;;
+                synth)
+                    synthesize;;
                 *)
                     printf "ERROR: Unknown option\n"
                     printf "Press enter\n"
@@ -493,6 +587,8 @@ do
             lint_code;;
         w)
             open_waveform;;
+        s)
+            synthesize;;
         ?)
             printf "ERROR: Unknown option\n"
             printf "Press enter\n"

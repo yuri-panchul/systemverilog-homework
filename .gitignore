@@ -1,6 +1,11 @@
 import/
+run/
 *.hex
 sim.out
 dump*.vcd
 log.txt
 lint.txt
+mock_interview*.pdf
+/.vscode/
+synth_results.txt
+synth_log.txt

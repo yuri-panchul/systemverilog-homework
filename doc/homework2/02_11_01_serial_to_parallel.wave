@@ -1,0 +1,9 @@
+{signal: [
+    {name: 'clk'            , wave: 'p...........'},
+    {name: 'rst'            , wave: '10..........'},
+    {name: 'parallel_valid' , wave: 'x010........'},
+    {name: 'parallel_data'  , wave: 'x.3x........', data: 'a'},
+    {name: 'busy'           , wave: 'x0.1......0.'},
+    {name: 'serial_valid'   , wave: 'x01.......0.'},
+    {name: 'serial_data'    , wave: 'x.33333333x.', data: 'a0 a1 a2 a3 a4 a5 a6 a7'},
+]}

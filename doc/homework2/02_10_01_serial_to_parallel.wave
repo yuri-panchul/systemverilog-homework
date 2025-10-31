@@ -1,7 +1,8 @@
 {signal: [
-    {name: 'clk'            , wave: 'p.................'},
-    {name: 'serial_valid'   , wave: 'x0.101..0...1...0x'},
-    {name: 'serial_data'    , wave: 'x1030333010133330x', data: 'a0 a1 a2 a3 a4 a5 a6 a7'},
-    {name: 'parallel_valid' , wave: 'x0.............10x'},
-    {name: 'parallel_data'  , wave: 'x0.............30x', data: 'a'},
+    {name: 'clk'            , wave: 'p...............'},
+    {name: 'rst'            , wave: '10..............'},
+    {name: 'serial_valid'   , wave: 'x0101..0..1...0.'},
+    {name: 'serial_data'    , wave: 'x.3x333x..3333x.', data: 'a0 a1 a2 a3 a4 a5 a6 a7'},
+    {name: 'parallel_valid' , wave: 'x0...........10.'},
+    {name: 'parallel_data'  , wave: 'x............3x.', data: 'a'},
 ]}

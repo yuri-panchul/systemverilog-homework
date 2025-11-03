@@ -98,7 +98,8 @@ begin
     // to generate a VCD file and analyze it using GTKwave or Surfer
 
     // $dumpvars;
-`endif
+    `endif
+end
 ```
 
 Then re-run the script with `--wave` option:

@@ -23,6 +23,13 @@ module testbench;
 
   initial
   begin
+    `ifdef __ICARUS__
+          // Uncomment the following line
+          // to generate a VCD file and analyze it using GTKwave
+
+          // $dumpvars;
+    `endif
+
     repeat (20)
     begin
       a = N' ($urandom());

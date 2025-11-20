@@ -81,7 +81,7 @@ module sort_three_floats (
     //
     // Notes:
     // res0 must be less or equal to the res1
-    // res1 must be less or equal to the res1
+    // res1 must be less or equal to the res2
     //
     // The FLEN parameter is defined in the "import/preprocessed/cvw/config-shared.vh" file
     // and usually equal to the bit width of the double-precision floating-point number, FP64, 64 bits.

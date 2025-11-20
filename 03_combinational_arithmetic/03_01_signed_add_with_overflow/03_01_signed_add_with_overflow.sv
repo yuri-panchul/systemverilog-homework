@@ -32,8 +32,10 @@ module signed_add_with_overflow
   // See https://en.wikipedia.org/wiki/Two%27s_complement for details.
   //
   // The 'overflow' output bit should be set to 1
-  // when the sum (either positive or negative)
-  // of two input arguments does not fit into 4 bits.
+  // when the resulting sum (either positive or negative)
+  // of two input arguments is greater or less than
+  // 4-bit maximum or minimum signed number.
+  //
   // Otherwise the 'overflow' should be set to 0.
 
 

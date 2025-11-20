@@ -61,17 +61,24 @@ module testbench;
   localparam        [n - 1:0] umax = ~ { n { 1'b0 } };
 
   initial
-    begin
-      for (int i = 0; i <= umax; i ++)
-      for (int j = 0; j <= umax; j ++)
-        test (n' (i), n' (j), 1'b0);
+  begin
+    `ifdef __ICARUS__
+          // Uncomment the following line
+          // to generate a VCD file and analyze it using GTKwave
 
-      for (int i = 32' (smin); i <= 32' (smax); i ++)
-      for (int j = 32' (smin); j <= 32' (smax); j ++)
-        test (n' (i), n' (j), 1'b1);
+          // $dumpvars;
+    `endif
 
-      $display ("PASS %s", `__FILE__);
-      $finish;
-    end
+    for (int i = 0; i <= umax; i ++)
+    for (int j = 0; j <= umax; j ++)
+      test (n' (i), n' (j), 1'b0);
+
+    for (int i = 32' (smin); i <= 32' (smax); i ++)
+    for (int j = 32' (smin); j <= 32' (smax); j ++)
+      test (n' (i), n' (j), 1'b1);
+
+    $display ("PASS %s", `__FILE__);
+    $finish;
+  end
 
 endmodule

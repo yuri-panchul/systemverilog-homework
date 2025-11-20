@@ -104,7 +104,7 @@ module right_shift_of_N_by_S_using_for_inside_generate
   //
   // Implement a parameterized module
   // that shifts the unsigned input by S bits to the right
-  // sing "generate" and "for"
+  // using "generate" and "for"
 
 
 endmodule

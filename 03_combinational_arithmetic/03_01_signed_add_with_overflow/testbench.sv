@@ -51,61 +51,68 @@ module testbench;
   endtask
 
   initial
-    begin
-      test (  0,  0, 0);
+  begin
+    `ifdef __ICARUS__
+          // Uncomment the following line
+          // to generate a VCD file and analyze it using GTKwave
 
-      test (  1,  2, 0);
-      test (  1, -2, 0);
-      test ( -1,  2, 0);
-      test ( -1, -2, 0);
+          // $dumpvars;
+    `endif
 
-      test (  4,  7, 1);
-      test (  4, -7, 0);
-      test ( -4,  7, 0);
-      test ( -4, -7, 1);
+    test (  0,  0, 0);
 
-      test (  3,  5, 1);
-      test (  3, -5, 0);
-      test ( -3,  5, 0);
-      test ( -3, -5, 0);
+    test (  1,  2, 0);
+    test (  1, -2, 0);
+    test ( -1,  2, 0);
+    test ( -1, -2, 0);
 
-      test (  3,  6, 1);
-      test (  3, -6, 0);
-      test ( -3,  6, 0);
-      test ( -3, -6, 1);
+    test (  4,  7, 1);
+    test (  4, -7, 0);
+    test ( -4,  7, 0);
+    test ( -4, -7, 1);
 
-      test (  2,  1, 0);
-      test ( -2,  1, 0);
-      test (  2, -1, 0);
-      test ( -2, -1, 0);
+    test (  3,  5, 1);
+    test (  3, -5, 0);
+    test ( -3,  5, 0);
+    test ( -3, -5, 0);
 
-      test (  7,  4, 1);
-      test ( -7,  4, 0);
-      test (  7, -4, 0);
-      test ( -7, -4, 1);
+    test (  3,  6, 1);
+    test (  3, -6, 0);
+    test ( -3,  6, 0);
+    test ( -3, -6, 1);
 
-      test (  5,  3, 1);
-      test ( -5,  3, 0);
-      test (  5, -3, 0);
-      test ( -5, -3, 0);
+    test (  2,  1, 0);
+    test ( -2,  1, 0);
+    test (  2, -1, 0);
+    test ( -2, -1, 0);
 
-      test (  6,  3, 1);
-      test ( -6,  3, 0);
-      test (  6, -3, 0);
-      test ( -6, -3, 1);
+    test (  7,  4, 1);
+    test ( -7,  4, 0);
+    test (  7, -4, 0);
+    test ( -7, -4, 1);
 
-      test (  1,  1, 0);
-      test (  1, -1, 0);
-      test ( -1,  1, 0);
-      test ( -1, -1, 0);
+    test (  5,  3, 1);
+    test ( -5,  3, 0);
+    test (  5, -3, 0);
+    test ( -5, -3, 0);
 
-      test (  4,  4, 1);
-      test (  4, -4, 0);
-      test ( -4,  4, 0);
-      test ( -4, -4, 0);
+    test (  6,  3, 1);
+    test ( -6,  3, 0);
+    test (  6, -3, 0);
+    test ( -6, -3, 1);
 
-      $display ("PASS %s", `__FILE__);
-      $finish;
-    end
+    test (  1,  1, 0);
+    test (  1, -1, 0);
+    test ( -1,  1, 0);
+    test ( -1, -1, 0);
+
+    test (  4,  4, 1);
+    test (  4, -4, 0);
+    test ( -4,  4, 0);
+    test ( -4, -4, 0);
+
+    $display ("PASS %s", `__FILE__);
+    $finish;
+  end
 
 endmodule

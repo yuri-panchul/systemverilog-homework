@@ -2,6 +2,22 @@
 
 #-----------------------------------------------------------------------------
 
+if    [ "$OSTYPE" = "cygwin"    ]  \
+   || [ "$OSTYPE" = "msys"      ]
+then
+    if ! command -v iverilog > /dev/null 2>&1
+    then
+        default_icarus_install_path="/c/iverilog"
+
+        if [ -d "$default_icarus_install_path" ]
+        then
+            export PATH="${PATH:+$PATH:}$default_icarus_install_path/bin:$default_icarus_install_path/gtkwave/bin"
+        fi
+    fi
+fi
+
+#-----------------------------------------------------------------------------
+
 waveform_viewer="gtkwave"
 # waveform_viewer="surfer"
 

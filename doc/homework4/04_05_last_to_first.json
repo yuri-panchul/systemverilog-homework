@@ -1,0 +1,12 @@
+{signal: [
+  {name: 'clock',     wave: 'p...............'},
+  {name: 'up_valid',  wave: '01.0.1..01..01..'},
+  {name: 'up_last',   wave: '0.....10x01.x10.'},
+  {name: 'up_data',   wave: 'x44x.445x556x788', data: "B1 B2 B3 B4 C1 C2 C3 D E F1 F2 F3 G1 G2"},
+  {},{},
+  {name: 'clock',     wave: 'p.P.p.P..pP..pP.'},
+  {name: 'down_valid',  wave: '01.0.1..01..01..'},
+  {name: 'down_first',  wave: '010x.0.1x0.1x1.0'},
+  {name: 'down_data',   wave: 'x44x.445x556x788', data: "B1 B2 B3 B4 C1 C2 C3 D E F1 F2 F3 G1 G2"},
+  ]
+}

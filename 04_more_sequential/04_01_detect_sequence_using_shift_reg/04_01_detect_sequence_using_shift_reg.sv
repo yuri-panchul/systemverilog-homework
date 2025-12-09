@@ -38,7 +38,6 @@ module detect_6_bit_sequence_using_shift_reg
   input  new_bit,
   output detected
 );
-
   // Task:
   // Implement a module that detects the "110011" sequence
 

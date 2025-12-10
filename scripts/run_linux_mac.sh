@@ -281,7 +281,7 @@ simulate_rtl()
     extra_args=""
     choice=0
 
-    if [ -f tb.sv ]
+    if [ -f tb.sv ] || [ -f testbench.sv ]
     then
         # Testbench is in the same directory with the script (HW 05)
         extra_args="$extra_args ./*.sv"

@@ -1,0 +1,6 @@
+{signal: [
+  {name: 'clock' , wave: 'p.P.p.Pp.Pp'},
+  {name: 'valid' , wave: '01....0.10.'},
+  {name: 'ready' , wave: '1..0.10.10.'},
+  {name: 'data'  , wave: 'x345..x.7x.', data: "A B C D"},
+]}

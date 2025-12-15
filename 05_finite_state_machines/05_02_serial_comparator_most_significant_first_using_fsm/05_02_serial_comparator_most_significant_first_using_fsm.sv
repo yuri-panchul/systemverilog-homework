@@ -67,7 +67,7 @@ module serial_comparator_most_significant_first_using_fsm
 );
 
   // Task:
-  // Implement a serial comparator module similar to the previus exercise
+  // Implement a serial comparator module similar to the previous exercise
   // but use the Finite State Machine to evaluate the result.
   // Most significant bits arrive first.
 

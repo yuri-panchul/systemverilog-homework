@@ -1,0 +1,13 @@
+{signal: [
+  {name: 'clk'       , wave: 'p................|..'},
+  {name: 'rst'       , wave: '1.0..............|..'},
+
+  {name: 'up_valid'  , wave: 'x.1.......0101....|x.'},
+  {name: 'up_ready'  , wave: 'x.1.......0101.0..|x.'},
+  {name: 'up_token'  , wave: 'x.1.01010.1.......|x.'},
+
+  {name: 'down_ready', wave: 'x.1...........0...|x.', data: ['', '', '', '']},
+  {name: 'down_token', wave: 'x.010..10..10.....|x.'},
+  {name: 'down_valid', wave: 'x.1.......0101.0..|x.'},
+
+]}

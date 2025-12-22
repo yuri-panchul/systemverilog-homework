@@ -1,0 +1,9 @@
+{signal: [
+  {name: 'clock'       , wave: 'p..............'},
+  {name: 'arg_valid'   , wave: '0101....01.0...'},
+  {name: 'a'           , wave: 'x3x45678x95x...', data: "a1 a2 a3 a4 a5"},
+  {name: 'b'           , wave: 'x3x45678x95x...', data: "b1 b2 b3 b4 b5"},
+  {name: 'res_valid'   , wave: '0.....101....0.'},
+  {name: 'res'         , wave: 'x.....3x45678x.', data: "a1/b1 a2/b2 a3/b3 a4/b4 a5/b5"}
+]
+}

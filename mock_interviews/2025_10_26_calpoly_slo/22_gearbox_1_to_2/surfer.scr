@@ -1,0 +1,11 @@
+variable_add tb.clk
+variable_add tb.rst
+variable_add tb.up_vld
+variable_add tb.up_rdy
+variable_add tb.up_data
+variable_add tb.down_vld
+variable_add tb.down_rdy
+variable_add tb.down_data
+variable_add tb.comparison_moment
+variable_add tb.down_data_compared
+variable_add tb.down_data_expected

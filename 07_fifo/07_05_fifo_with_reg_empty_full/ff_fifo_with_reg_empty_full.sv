@@ -15,10 +15,9 @@ module ff_fifo_with_reg_empty_full
 
     //------------------------------------------------------------------------
 
-    localparam pointer_width = $clog2 (depth),
-               counter_width = $clog2 (depth + 1);
+    localparam pointer_width = $clog2 (depth);
 
-    localparam [counter_width - 1:0] max_ptr = counter_width' (depth - 1);
+    localparam [pointer_width - 1:0] max_ptr = pointer_width' (depth - 1);
 
     //------------------------------------------------------------------------
 

@@ -1,26 +1,14 @@
-localparam N = 100 ;                        // number of repitition
-localparam pro_token  = 50;                 // probality generation token
-localparam pro_valid  = 50;                 // token's validity, as percentage
-localparam pro_ready  = 50;                 // probality of readiness
-localparam WIDTH      = 2;
-localparam MAX_TOKEN  = 2**(2*WIDTH)-1;
-localparam ENDTIME    = 1_000_000;
+//----------------------------------------------------------------------------
+// Testbench
+//----------------------------------------------------------------------------
 
 module testbench;
-
-  initial
-    # ENDTIME begin
-     $display("FAIL %s", `__FILE__);
-     $display("TIME OUT");
-    $finish();
-  end
 
     logic clk;
     initial
     begin
         clk = '0;
-        forever
-      # 500 clk = ~ clk;
+        forever # 500 clk = ~ clk;
     end
 
     logic rst;
@@ -35,13 +23,17 @@ module testbench;
 
     //------------------------------------------------------------------------
 
-    logic [  WIDTH-1:0] in_token, hi_token, low_token ;
+    localparam WIDTH     = 2;
+    localparam MAX_TOKEN = 2**(2*WIDTH)-1;
+
+    logic [  WIDTH-1:0] in_token, hi_token, low_token;
     logic [2*WIDTH-1:0] out_token, sample, expected_token;
-    logic [2*WIDTH-1:0] queue_tokens[$] ;
+    logic [2*WIDTH-1:0] queue_tokens[$];
 
     logic up_valid, up_ready;
     logic down_valid, down_ready;
     logic valid_tmp, ready_tmp;
+
     int   probability;
     int   count_token = 0;
     int   stage = 0;
@@ -86,17 +78,27 @@ module testbench;
 
     //------------------------------------------------------------------------
 
+    localparam N         = 100; // number of repetition
+    localparam pro_token = 50;  // probability generation token
+    localparam pro_valid = 50;  // token's validity, as percentage
+    localparam pro_ready = 50;  // probability of readiness
+
+    localparam TIMEOUT   = 50_000;
+
     initial
     begin
         `ifdef __ICARUS__
             // Uncomment the following line
             // to generate a VCD file and analyze it using GTKwave or Surfer
+
             // $dumpvars;
         `endif
+
         sample = '0;
         @ (negedge rst);
 
-    //--- simple test ---
+      //--- Simple test ---
+
       down_ready =  1'b1;
       up_valid   <= 1'b1;
 
@@ -297,5 +299,12 @@ module testbench;
         $display ("PASS %s", `__FILE__);
         $finish;
     end
+
+  initial
+  begin
+      repeat (TIMEOUT) @ (posedge clk);
+      $display ("FAIL %s: timeout!", `__FILE__);
+      $finish;
+  end
 
 endmodule

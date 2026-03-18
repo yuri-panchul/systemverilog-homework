@@ -1,19 +1,8 @@
-localparam N = 100 ;                        // number of repitition
-localparam pro_token  = 50;                 // probality generation token
-localparam pro_valid  = 50;                 // token's validity, as percentage
-localparam pro_ready  = 50;                 // probality of readiness
-localparam WIDTH      = 2;
-localparam MAX_TOKEN  = 2**(WIDTH)-1;
-localparam ENDTIME    = 1_000_000;
+//----------------------------------------------------------------------------
+// Testbench
+//----------------------------------------------------------------------------
 
 module testbench;
-
-  initial
-    # ENDTIME begin
-     $display("FAIL %s", `__FILE__);
-     $display("TIME OUT");
-    $finish();
-  end
 
     logic clk;
     initial
@@ -35,17 +24,20 @@ module testbench;
 
     //------------------------------------------------------------------------
 
-    logic [2*WIDTH-1:0] in_token, sample, expected_token, tmp_token ;
-    logic [WIDTH-1:0]   out_token, first_part  ;
-    logic [2*WIDTH-1:0] queue_tokens[$] ;
+    localparam WIDTH      = 2;
+    localparam MAX_TOKEN  = 2**(WIDTH)-1;
+
+    logic [2*WIDTH-1:0] in_token, sample, expected_token, tmp_token;
+    logic [WIDTH-1:0]   out_token, first_part;
+    logic [2*WIDTH-1:0] queue_tokens[$];
 
     logic up_valid, up_ready;
     logic down_valid, down_ready;
     logic valid_tmp, ready_tmp;
     logic order;
+
     int   count_token = 0;
     int   stage = 0;
-
 
 
     wire up_handshake   = up_valid & up_ready;
@@ -96,6 +88,13 @@ module testbench;
 
     //------------------------------------------------------------------------
 
+    localparam N = 100 ;                        // number of repitition
+    localparam pro_token  = 50;                 // probality generation token
+    localparam pro_valid  = 50;                 // token's validity, as percentage
+    localparam pro_ready  = 50;                 // probality of readiness
+
+    localparam TIMEOUT   = 50_000;
+
     initial
     begin
         `ifdef __ICARUS__
@@ -107,8 +106,6 @@ module testbench;
         sample = '0; //MAX_TOKEN;
 
       @ (negedge rst);
-
-//--------------------------------------------------------------------
 
     //--- simple test ---
       stage <= 1;
@@ -130,7 +127,7 @@ module testbench;
          @(posedge clk);
       end
       up_valid = 1'b0;
-//--------------------------------------------------------------------
+
    // --- test  up_handshake ---
 
       stage  <=2;
@@ -166,8 +163,6 @@ module testbench;
           if(~up_handshake) while (~up_handshake) @(posedge clk);
         end
 
-
-//--------------------------------------------------------------------
 //  --- test  down_handshake ---
 
       stage          <=3;
@@ -201,7 +196,7 @@ module testbench;
 
    up_valid    <= 1'b0;
 
-//------------------------------------------------------------------
+
    // --- random test ---
      stage <= 4;
    // gererating the first token
@@ -271,6 +266,13 @@ module testbench;
         end;
 
         $display ("PASS %s", `__FILE__);
+        $finish;
+    end
+
+    initial
+    begin
+        repeat (TIMEOUT) @ (posedge clk);
+        $display ("FAIL %s: timeout!", `__FILE__);
         $finish;
     end
 

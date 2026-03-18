@@ -1,4 +1,8 @@
-module tb
+//----------------------------------------------------------------------------
+// Testbench
+//----------------------------------------------------------------------------
+
+module testbench
 # (
     parameter width = 4, depth = 4
 );
@@ -46,7 +50,7 @@ module tb
     initial
     begin
         repeat (10000) @ (posedge clk);
-        $display ("Timeout!");
+        $display ("FAIL %s: timeout!", `__FILE__);
         $finish;
     end
 
@@ -319,7 +323,7 @@ module tb
         sum_ready <= 1'b1;
         repeat (depth * 2 + 3) @ (posedge clk);
 
-        $display ("%s PASS", `__FILE__);
+        $display ("PASS %s", `__FILE__);
         $finish;
     end
 

@@ -1,4 +1,8 @@
-module tb;
+//----------------------------------------------------------------------------
+// Testbench
+//----------------------------------------------------------------------------
+
+module testbench;
 
     localparam int width            = 8;
 
@@ -30,12 +34,10 @@ module tb;
     //------------------------------------------------------------------------
     // DUT instantiation
 
-    conv_first_to_last
-    # (.width (width))
-    dut (.*);
+    convert_first_to_last_with_flow_control # (.width (width))
+    inst_conv_fst_to_lst_with_fc (.*);
 
-    upstream_traffic_generator
-    # (.width (width))
+    upstream_traffic_generator # (.width (width))
     upstream (.*);
 
     //------------------------------------------------------------------------
@@ -51,7 +53,7 @@ module tb;
     // Driving down_ready
 
     always @ (posedge clock)
-        down_ready <= $urandom | ~ use_backpressure;
+        down_ready <= 1' ($urandom()) | ~ use_backpressure;
 
     //------------------------------------------------------------------------
     // Logging
@@ -211,7 +213,14 @@ module tb;
         $display ("\n\nnumber of transfers : %0d per %0d cycles",
             down_count, n_cycles);
 
-        // Width this particular DUT
+        if ( up_count <= 0 )
+        begin
+            $display ("\nERROR: upstream locked by up_ready, no transfers detected");
+
+            err = 1;
+        end
+
+        // With this particular DUT
         // we may have 1 extra up_count at the end of simulation.
 
         if (  up_count != down_count
@@ -223,8 +232,10 @@ module tb;
             err = 1;
         end
 
-        if (err)
-            $display ("%s FAIL", `__FILE__);
+        if (~ err)
+            $display ("PASS %s", `__FILE__);
+        else
+            $display ("FAIL %s", `__FILE__);
     end
 
     //------------------------------------------------------------------------
@@ -287,12 +298,6 @@ module tb;
 
             err = 1;
         end
-
-        //--------------------------------------------------------------------
-        // Finish
-
-        if (~ err)
-            $display ("%s PASS", `__FILE__);
 
         $finish;
     end

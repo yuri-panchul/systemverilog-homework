@@ -1,4 +1,8 @@
-module tb
+//----------------------------------------------------------------------------
+// Testbench
+//----------------------------------------------------------------------------
+
+module testbench
 # (
     parameter width = 4, depth = 4
 );
@@ -8,7 +12,7 @@ module tb
 
     logic clk;
 
-    // Reset signal has to be asynchronous in flip_flop_fifo
+    // Reset signal has to be asynchronous in flip_flop_fifo_with_counter
     // for one of FPGA boards, and synchronous in testbench
     // verilator lint_off SYNCASYNCNET
     logic rst;
@@ -30,7 +34,7 @@ module tb
     // DUT instantiation
 
 
-    a_plus_b_using_fifos
+    a_plus_b_using_fifos_and_double_buffer
     # (.width (width), .depth (depth))
     dut (.*);
 
@@ -46,7 +50,7 @@ module tb
     initial
     begin
         repeat (10000) @ (posedge clk);
-        $display ("Timeout!");
+        $display ("FAIL %s: timeout!", `__FILE__);
         $finish;
     end
 
@@ -319,7 +323,7 @@ module tb
         sum_ready <= 1'b1;
         repeat (depth * 2 + 3) @ (posedge clk);
 
-        $display ("%s PASS", `__FILE__);
+        $display ("PASS %s", `__FILE__);
         $finish;
     end
 

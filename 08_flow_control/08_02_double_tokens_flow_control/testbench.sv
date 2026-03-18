@@ -1,10 +1,7 @@
+//----------------------------------------------------------------------------
+// Testbench
+//----------------------------------------------------------------------------
 
-localparam N = 100 ;                        // number of repitition
-localparam pos_token  = 50;                 // possybility generation token
-localparam pos_valid  = 50;                 // token's validity, as percentage
-localparam pos_ready  = 50;                 // possybility of reasiness
-localparam N_hand     = 16;                 // lenght hand test
-//`define      N_hand   16
 module testbench;
 
     logic clk;
@@ -30,28 +27,31 @@ module testbench;
 
     //------------------------------------------------------------------------
 
-    logic a, double_a;
-    logic up_valid, up_ready;
-    logic down_valid, down_ready;
-    logic tmp;
+    logic up_valid;
+    logic up_ready;
+    logic a;
+
+    logic down_valid;
+    logic down_ready;
+    logic double_a;
+
     int   probability;
     int   i;
 
-    /*
-      первые 4 бита - одиночный токен и хэндшейк сверху и снизу.
-      вторые 4 бита - двойной токен и хэндшейк сверху и снизу.
-      третьи 4 бита - двойной токен в первом такте отсутствует хэндшейк сверху.
-      четвертые 4 бита - два одиночных токена и отсутствует хэндшейк снизу.
-      пятые 4 бита  - токенов нет, появляется хэндшейк снизу.
-    */
+    localparam N = 100 ;        // number of repetition
+    localparam pos_token  = 50; // possibility generation token
+    localparam pos_valid  = 50; // token's validity, as percentage
+    localparam pos_ready  = 50; // possibility of readiness
+    localparam N_hand     = 16; // length hand test
 
-    /*
-      the first  nybble - a single token with handshake_up and handshake_down
-      the second nybble - a double token with handshake_up and handshake_down
-      the third  nybble - a double token without a handshake_up at the first step
-      the 4th    nybble - the two single tokens without a handshake_down
-      the 5th    nybble - no tokens but a handshake_down
-    */
+    // the first  nybble - a single token with handshake_up and handshake_down
+    // the second nybble - a double token with handshake_up and handshake_down
+    // the third  nybble - a double token without a handshake_up at the first step
+    // the 4th    nybble - the two single tokens without a handshake_down
+    // the 5th    nybble - no tokens but a handshake_down
+    //
+    // N.B. 'nybble' means 4 bits, or half a byte
+
     logic [0:N_hand-1] a_down_ready     =  'b1111_1111_1111_0000_1111;
     logic [0:N_hand-1] a_up_token       =  'b1000_1100_1100_1010_0000;
     logic [0:N_hand-1] a_up_valid       =  'b1111_1111_0111_1111_1111;
@@ -60,13 +60,11 @@ module testbench;
     logic [0:N_hand-1] a_down_valid     =  'b1111_1111_1111_1111_1111;
     logic [0:N_hand-1] a_up_ready       =  'b1111_1111_1111_1111_1111;
 
-
-
     wire up_handshake   = up_valid & up_ready;
     wire down_handshake = down_valid & down_ready;
 
 
-    double_tokens_fc i_double_tokens_fc(
+    double_tokens_with_flow_control i_double_tokens_with_flow_control (
         .clk        ( clk             ),
         .rst        ( rst             ),
         .up_valid   ( up_valid        ),
@@ -82,14 +80,16 @@ module testbench;
     // Monitor
 
     bit was_reset = 1'b0;
+
     always @ (posedge clk) if (rst) was_reset <= 1'b1;
 
-    int n_orig_tokens = 0,
+    int n_orig_tokens   = 0,
         n_double_tokens = 0;
 
-       wire in_token = up_valid & a ;
+    wire in_token = up_valid & a;
 
-    always @ (posedge clk) begin
+    always @ (posedge clk)
+    begin
         if (~ rst & was_reset &  up_handshake)
         begin
             n_orig_tokens <= n_orig_tokens + 32' (a);
@@ -99,7 +99,7 @@ module testbench;
         begin
             n_double_tokens <= n_double_tokens + 32'(double_a);
         end
-        end
+    end
 
     //------------------------------------------------------------------------
 
@@ -118,6 +118,7 @@ module testbench;
           a          <= a_up_token[i];
           up_valid   <= a_up_valid[i];
           down_ready <= a_down_ready[i];
+
           @(posedge clk);
           if ((a_down_data[i] != double_a) | (a_down_valid[i] != down_valid)) begin
             $display("FAIL %s \n", `__FILE__);
@@ -148,14 +149,13 @@ module testbench;
         end
 
 
-
         repeat (N)
         begin
             probability     = $urandom_range(100,0);
          //   a              <=  ($urandom_range(100,0) < pos_token);
          //   up_valid       <=  ($urandom_range(100,0) < pos_valid);
 
-            // if the ystem is ready to process then generate token
+            // if the system is ready to process then generate token
             if (probability < pos_ready) begin
               down_ready     <= 1'b1;
               a              <=  ($urandom_range(100,0) < pos_token);

@@ -2,7 +2,7 @@
 // Task
 //----------------------------------------------------------------------------
 
-module halve_tokens_fc
+module halve_tokens_with_flow_control
 (
     input  clk,
     input  rst,
@@ -22,7 +22,7 @@ module halve_tokens_fc
     //
     //  Expected behavior of the module
     //  1) When the input signals are up_token and up_valid is high, the signal (token) is processed.
-    //  2) Eevery second signal received for processing is sent to the output of the module.
+    //  2) Every second signal received for processing is sent to the output of the module.
     //  3) When the module cannot process the signal, it sets the up_ready signal to a low level.
     //
     // Example:

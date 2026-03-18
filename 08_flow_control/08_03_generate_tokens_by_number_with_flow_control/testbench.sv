@@ -1,12 +1,6 @@
-
-
-
-localparam N = 100 ;                        // number of repitition
-localparam pro_token  = 50;                 // probality generation token
-localparam pro_valid  = 50;                 // token's validity, as percentage
-localparam pro_ready  = 50;                 // probality of readiness
-localparam WIDTH_A    = 4;                  //
-localparam MAX_A      = $pow(2,WIDTH_A) - 1;//
+//----------------------------------------------------------------------------
+// Testbench
+//----------------------------------------------------------------------------
 
 module testbench;
 
@@ -14,8 +8,7 @@ module testbench;
     initial
     begin
         clk = '0;
-        forever
-      # 500 clk = ~ clk;
+        forever # 500 clk = ~ clk;
     end
 
     logic rst;
@@ -30,17 +23,29 @@ module testbench;
 
     //------------------------------------------------------------------------
 
-    logic [WIDTH_A-1:0] n_tokens ;
-    logic up_valid, up_ready;
-    logic down_valid, down_ready;
-    int   probability;
-    int   i;
+    localparam N          = 100;                 // number of repetition
+    localparam pro_token  = 50;                  // probability generation token
+    localparam pro_valid  = 50;                  // token's validity, as percentage
+    localparam pro_ready  = 50;                  // probability of readiness
+    localparam WIDTH_A    = 4;                   // Width of the generated number
+    localparam MAX_A      = $pow(2,WIDTH_A) - 1; // Maximum possible number of tokens
+
+    logic                 up_valid;
+    logic                 up_ready;
+    logic [WIDTH_A - 1:0] n_tokens;
+
+    logic down_valid;
+    logic down_ready;
+    logic out_token;
+
+    int probability;
+    int i;
 
     wire up_handshake   = up_valid & up_ready;
     wire down_handshake = down_valid & down_ready;
 
-    generate_tokens_fc
-      dut(
+    generate_tokens_by_number_with_flow_control #( .WIDTH( WIDTH_A ) ) i_gen_tokens_by_num_with_fc
+    (
         .clk        ( clk             ),
         .rst        ( rst             ),
         .up_valid   ( up_valid        ),
@@ -49,7 +54,7 @@ module testbench;
         .down_valid ( down_valid      ),
         .down_token ( out_token       ),
         .down_ready ( down_ready      )
-      );
+    );
 
     //------------------------------------------------------------------------
 
@@ -75,6 +80,7 @@ module testbench;
      end
 
     //------------------------------------------------------------------------
+
     initial
     begin
         `ifdef __ICARUS__
@@ -91,31 +97,32 @@ module testbench;
 
         repeat (N)
         begin
-        if (up_ready) begin
-          n_tokens       <= $urandom_range(MAX_A,0);
-          up_valid       <= ($urandom_range(100,0) < pro_valid);
-        end
-        else if (~up_valid)
-          up_valid       <= ($urandom_range(100,0) < pro_valid);
+            if (up_ready)
+            begin
+                n_tokens       <= $urandom_range(MAX_A,0);
+                up_valid       <= ($urandom_range(100,0) < pro_valid);
+            end
+            else if (~up_valid)
+                up_valid       <= ($urandom_range(100,0) < pro_valid);
 
-          down_ready     <= ($urandom_range(100,0) < pro_ready);
-        @ (posedge clk);
-        end
+            down_ready     <= ($urandom_range(100,0) < pro_ready);
 
+            @ (posedge clk);
+        end
 
         n_tokens   <= 1'b0;
         down_ready <= 1'b1;
 
-       //sink
-        repeat ((2 * N) + 3)
-            @ (posedge clk);
+        //sink
+        repeat ((2 * N) + 3) @ (posedge clk);
+
         //--------------------------------------------------------------------
 
-
-        if (n_tokens_up == '0) begin
-          $display("FAIL %s", `__FILE__);
-          $display("NO input tokens");
-          $finish(1);
+        if (n_tokens_up == '0)
+        begin
+            $display("FAIL %s", `__FILE__);
+            $display("NO input tokens");
+            $finish(1);
         end
 
         if (n_tokens_up !== n_tokens_out)

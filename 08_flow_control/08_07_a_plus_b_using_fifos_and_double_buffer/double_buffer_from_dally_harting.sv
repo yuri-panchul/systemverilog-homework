@@ -22,15 +22,18 @@ module double_buffer_from_dally_harting
     output logic [width - 1:0] down_data
 );
 
+    logic               enable;
     logic               buf_valid;
     logic [width - 1:0] buf_data;
 
+    assign enable = down_ready | ~down_valid;
+
     always_ff @ (posedge clk)
     begin
-        if (up_ready & ~ down_ready)
+        if (up_ready & ~enable)
             buf_data <= up_data;
 
-        if (down_ready)
+        if (enable)
             down_data <= up_ready ? up_data : buf_data;
     end
 
@@ -43,13 +46,13 @@ module double_buffer_from_dally_harting
         end
         else
         begin
-            if (up_ready & ~ down_ready)
+            if (up_ready & ~enable)
                 buf_valid  <= up_valid;
 
-            if (down_ready)
+            if (enable)
                 down_valid <= up_ready ? up_valid : buf_valid;
 
-            up_ready <= down_ready;
+            up_ready <= enable;
         end
 
 endmodule

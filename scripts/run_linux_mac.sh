@@ -52,7 +52,7 @@ import_files()
     if ! [ -d "$import/original/cvw" ]
     then
         mkdir -p "$import"
-        git clone --depth 1 https://github.com/openhwgroup/cvw.git "$import/original/cvw"
+        git clone --depth 1 https://github.com/chipdesignschool/cvw.git "$import/original/cvw"
     fi
 
     rm    -rf "$import/preprocessed"

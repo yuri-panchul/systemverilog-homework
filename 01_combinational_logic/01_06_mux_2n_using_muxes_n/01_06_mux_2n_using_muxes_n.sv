@@ -27,5 +27,25 @@ module mux_4_1
   // Task:
   // Implement mux_4_1 using three instances of mux_2_1
 
+  wire [3:0] y1, y2;
+
+  mux_2_1 m1 (
+    .d0(d0), .d1(d1),
+    .sel(sel[0]),
+    .y(y1)
+  );
+
+  mux_2_1 m2 (
+    .d0(d2), .d1(d3),
+    .sel(sel[0]),
+    .y(y2)
+  );
+
+  mux_2_1 m (
+    .d0(y1), .d1(y2),
+    .sel(sel[1]),
+    .y(y)
+  );
+
 
 endmodule
